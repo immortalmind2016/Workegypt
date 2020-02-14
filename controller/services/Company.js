@@ -1,21 +1,24 @@
 var express = require('express')
+var {url}=require("../../config")
+
 const companyUploadImages=(req,res,err)=>{
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
- 
+ FIOLEEEEE
      return res.sendStatus(400)
     }
-    res.send(file)
+    res.json({link:`${url}/${file.destination.replace("public/","")}/${file.filename}`})
 }
 const companyUploadVideos=(req,res,err)=>{
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
- 
+
      return res.sendStatus(400)
     }
-    res.send(file)
+    console.log("FIOLEEEEE ",file)
+    res.json({link:`${url}/${file.destination.replace("public/","")}/${file.filename}`})
 }
 module.exports={
     companyUploadVideos,

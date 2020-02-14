@@ -1,5 +1,5 @@
 const Router=require("express").Router()
-const {signinUser,getUser,signupUser,editUser}=require("../controller/user/user")
+const {signinUser,getUser,signupUser,editUser,forgetPassword,resendConfirmation}=require("../controller/user/user")
 const passport=require("../services/jwtPassport")
 /*
 url : /api/user/signup
@@ -20,7 +20,25 @@ url : /api/user/edit/:id
 @return ok
 
 */
-Router.put("/edit/:id",passport.authenticate('jwt', { session: false }),editUser)
+Router.put("/edit",passport.authenticate('jwt', { session: false }),editUser)
 Router.get("/",passport.authenticate('jwt', { session: false }),getUser)
+/*
+expected data shape
+{
+    data:{
+        email:""
+    }
+}
+*/
+Router.post("/forget-password",forgetPassword)
+/*
+expected data shape
+{
+    data:{
+        email:""
+    }
+}
+*/
+Router.post("/resend-code",resendConfirmation)
 
 module.exports=Router;

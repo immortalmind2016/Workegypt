@@ -5,6 +5,15 @@ const User=new Schema({
         type:String,
         required:true
     },
+    confirmation_token:{
+            type:String
+     
+    },
+    
+    confirmed:{
+        type:Boolean,
+        default:false,
+    },
     email:{
         type:String,
         required:true,
@@ -26,7 +35,12 @@ const User=new Schema({
     new:{
         type:Boolean,
         default:true
+    },
+    payment:{
+        type:Object
     }
+    
+
     
    
 

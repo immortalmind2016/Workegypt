@@ -4,18 +4,30 @@ const mongoose=require("mongoose")
 const Schema=mongoose.Schema
 const Company_profile=new Schema({
     cover_image:{
-        type:String
+        type:String,
+        defualt:""
   
     },
-    company_about:{type:String},
+    company_about:{type:String,default:""},
+    subribe:{
+      type:String,
+      default:"None"
+    },
     social_links:{
+      type:Object,
+      default:{
         facebook:String,
         twitter:String,
         insta:String,
         linkedin:String
+      }
     },
-    company:{
-        type:mongoose.Types.ObjectId,
+    image:{
+        type:String,
+        default:null
+    },
+    user:{
+        type:Schema.Types.ObjectId,
         ref:"User"
     }
     
