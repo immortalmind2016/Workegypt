@@ -233,6 +233,7 @@ const resendConfirmation=(req,res,err)=>{
         sendEmail({to,subject,text,html,from}).then(()=>{
             res.sendStatus(200)
         }).catch(error=>{
+            console.log("ERROR ",error)
             res.json({error})
         });
     })

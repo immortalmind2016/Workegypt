@@ -21,11 +21,16 @@ const editApplicantProfileData=async(req,res,err)=>{
   Applicant_profile.findOneAndUpdate({user:req.user._id},{...data},{new:true},(err,profile)=>{
     
     if(data.image){
+        try{
+          let oldImagePath=old.image.replace(url,"")
+          fs.unlink("./public"+oldImagePath,(err)=>{
+      
+          })
+        }catch(e){
 
-      let oldImagePath=old.image.replace(url,"")
-      fs.unlink("./public"+oldImagePath,(err)=>{
-  
-      })
+        }
+     
+
 
     }
     res.json({profile})

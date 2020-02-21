@@ -25,11 +25,16 @@ const editCompanyProfileData=async(req,res,err)=>{
 
     }
     if(data.cover_image){
-
+      try{
+       
       let oldCoverPath=old.cover_image.replace(url,"")
       fs.unlink("./public"+oldCoverPath,(err)=>{
   
       })
+      }catch(e){
+
+      }
+   
 
     }
     res.json({profile})
