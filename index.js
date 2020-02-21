@@ -26,7 +26,9 @@ app.use(function(req, res, next) {
     var allowedOrigins = ['http://localhost:5000',"http://93f52e7f.ngrok.io",'http://5d845a7f.ngrok.io',"http://490ea9cb.ngrok.io", 'http://127.0.0.1:3000',"http://localhost:3000","http://5945f4bd.ngrok.io","http://42249189.ngrok.io"];
     var origin = req.headers.origin;
     if(allowedOrigins.indexOf(origin) > -1){
-         res.setHeader('Access-Control-Allow-Origin', origin);
+        //res.setHeader('Access-Control-Allow-Origin', origin);
+         res.header("Access-Control-Allow-Origin", "*");
+
     }
     //      res.setHeader("Access-Control-Allow-Origin", "*");
           //res.setHeader("Access-Control-Allow-Origin", "");
