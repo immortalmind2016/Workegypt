@@ -20,7 +20,36 @@ const Applicant_profile=new Schema({
     basic_score:Number,
     main_lang:String,
     basic_quizes:Array,
-    score:Number,
+    score:{
+      type:Array,
+      default:[
+        {
+          en:""
+        },
+        {
+          sp:""
+        },
+        {
+          ge:""
+        },
+        {
+          fr:""
+        },
+        {
+          it:""
+        },
+        {
+          ch:""
+        },
+        {
+          ja:""
+        },
+        {
+          po:""
+        }
+
+      ]
+    },
     tested:false,
     questions:{
         type:Object,
