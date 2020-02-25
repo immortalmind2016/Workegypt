@@ -32,6 +32,10 @@ const Job=new Schema({
        type:Boolean,
          default:true
     },
+    draft:{
+        type:Boolean,
+          default:false
+     },
     quiz_time:Number,
     quiz:[{
      

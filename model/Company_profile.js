@@ -13,6 +13,9 @@ const Company_profile=new Schema({
       type:String,
       default:"None"
     },
+    branding_video:{
+      type:String
+    },
     social_links:{
       type:Object,
       default:{
