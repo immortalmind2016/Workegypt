@@ -18,8 +18,13 @@ const Job=new Schema({
     salary:String,
     type:String, 
     video:String,
+    hide_salary:{
+        type:Boolean,
+        default:false
+    },
     created_date:{
     type:Date,
+
     default:new Date().toLocaleString("en-US", {timeZone: "Africa/cairo"})
     },
     working_hours:{
