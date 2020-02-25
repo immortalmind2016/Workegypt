@@ -15,6 +15,7 @@ const getCompanyProfileData=(req,res,err)=>{
 const editCompanyProfileData=async(req,res,err)=>{
   const data=req.body.data
   const old=await   Company_profile.findOne({user:req.user._id})
+  await User.findOneAndUpdate({_id:user._id},{new:false},()=>{})
 
   Company_profile.findOneAndUpdate({user:req.user._id},{...data,last_update:new Date(),new:false},{new:true},(err,profile)=>{
 
