@@ -7,7 +7,7 @@ const {url} = require("../../config");
 const fs =require("fs")
 const getApplicantProfileData=(req,res,err)=>{
  
-    Applicant_profile.findOne({_id:req.params.id},(err,profile)=>{
+    Applicant_profile.findOne({user:req.params.id},(err,profile)=>{
         console.log("USER ",req.user)
         console.log("PROFILE ",err)
         res.json({profile})
@@ -17,21 +17,21 @@ const getApplicantProfileData=(req,res,err)=>{
 
 const editApplicantProfileData=async(req,res,err)=>{
   const data=req.body.data
+  console.log(data,"DATA")
+ 
+
   const old=await   Applicant_profile.findOne({user:req.user._id})
-  Applicant_profile.findOneAndUpdate({user:req.user._id},{...data},{new:true},(err,profile)=>{
+  console.log(old,"old")
+  Applicant_profile.findOneAndUpdate({user:req.user._id},{...data,last_update:new Date()},{new:true},(err,profile)=>{
     
-    if(data.image){
+    if(data.image!=old.image&&data.image){
         try{
           let oldImagePath=old.image.replace(url,"")
           fs.unlink("./public"+oldImagePath,(err)=>{
       
           })
         }catch(e){
-
         }
-     
-
-
     }
     res.json({profile})
   }).populate("user")

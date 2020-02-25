@@ -1,7 +1,9 @@
 var express = require('express')
 var {url}=require("../../config")
 const applicantUploadVideos=(req,res,err)=>{
+
     const file = req.file
+    console.log(file)
     if (!file) {
       const error = new Error('Please upload a file')
  
@@ -21,6 +23,7 @@ const applicantUploadCv=(req,res,err)=>{
 
 const applicantUploadImages=(req,res,err)=>{
     const file = req.file
+    
     if (!file) {
       const error = new Error('Please upload a file')
  

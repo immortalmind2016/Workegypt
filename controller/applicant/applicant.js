@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-const Job=require("../../model/job")
+const Job=require("../../model/Job")
 const mongoose=require("mongoose")
 
 const Applicant_profile=require("../../model/Applicant_profile")
