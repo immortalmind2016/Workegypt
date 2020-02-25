@@ -41,7 +41,7 @@ const Job=new Schema({
         type:Boolean,
           default:false
      },
-    quiz_time:Number,
+    quiz_time:{type:Number,default:60},
     quiz:[{
      
         id:String,
