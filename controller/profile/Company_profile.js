@@ -16,7 +16,7 @@ const editCompanyProfileData=async(req,res,err)=>{
   const data=req.body.data
   const old=await   Company_profile.findOne({user:req.user._id})
 
-  Company_profile.findOneAndUpdate({user:req.user._id},{...data},{new:true},(err,profile)=>{
+  Company_profile.findOneAndUpdate({user:req.user._id},{...data,last_update:new Date(),new:false},{new:true},(err,profile)=>{
 
     if(data.image){
       try{

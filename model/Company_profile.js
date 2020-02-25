@@ -16,6 +16,10 @@ const Company_profile=new Schema({
     branding_video:{
       type:String
     },
+    last_update:{
+      type:Date,
+      default:null
+  },
     social_links:{
       type:Object,
       default:{

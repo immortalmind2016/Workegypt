@@ -22,7 +22,7 @@ const editApplicantProfileData=async(req,res,err)=>{
 
   const old=await   Applicant_profile.findOne({user:req.user._id})
   console.log(old,"old")
-  Applicant_profile.findOneAndUpdate({user:req.user._id},{...data,last_update:new Date()},{new:true},(err,profile)=>{
+  Applicant_profile.findOneAndUpdate({user:req.user._id},{...data,last_update:new Date(),new:false},{new:true},(err,profile)=>{
     
     if(data.image!=old.image&&data.image){
         try{

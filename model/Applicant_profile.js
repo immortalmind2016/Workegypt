@@ -20,6 +20,10 @@ const Applicant_profile=new Schema({
     basic_score:Number,
     main_lang:String,
     basic_quizes:Array,
+    last_update:{
+      type:Date,
+      default:null
+  },
     score:{
       type:Object,
       default:
