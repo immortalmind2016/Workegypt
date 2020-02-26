@@ -25,7 +25,7 @@ const User=new Schema({
     },      
     created_date:{
         type:Date,
-        default:new Date().toLocaleString("en-US", {timeZone: "Africa/cairo"})
+        default:Date.now()
     },
    
     last_logout:{

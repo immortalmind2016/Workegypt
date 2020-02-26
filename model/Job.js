@@ -25,7 +25,7 @@ const Job=new Schema({
     created_date:{
     type:Date,
 
-    default:new Date().toLocaleString("en-US", {timeZone: "Africa/cairo"})
+    default:Date.now()
     },
     working_hours:{
         type:String
