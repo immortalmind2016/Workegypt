@@ -211,6 +211,24 @@ const Applicant_profile=new Schema({
       type:Array,
       default:[]
     },
+    social_links:{
+      type:Object,
+      default:{
+        facebook:String,
+        twitter:String,
+        insta:String,
+        linkedin:String,
+        behance:String,
+        github:String,
+        stack_over_flow:String,
+        youtube:String,
+        blog:String,
+        other:String,
+
+
+      }
+    },
+    
     
 
  

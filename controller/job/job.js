@@ -15,6 +15,8 @@ const createJob=async(req,res,err)=>{
             language,
             salary,
             type,
+            open,
+            draft
          
         }=req.body.data
         let newJob=new Job({
@@ -26,7 +28,9 @@ const createJob=async(req,res,err)=>{
             language,
             salary,
             type,
-            open:true,
+            open,
+            draft,
+
             applicants:[],
             company:company._id,
             quiz:[]
