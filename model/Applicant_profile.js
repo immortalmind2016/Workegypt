@@ -200,10 +200,19 @@ const Applicant_profile=new Schema({
     current_education_level:{
       type:String
     },
+    gender:{
+      type:String
+    },
     what_would_like_to_work:{
       type:Array,
       default:[]
     },
+    training_courses:{
+      type:Array,
+      default:[]
+    },
+    
+
  
 
 
