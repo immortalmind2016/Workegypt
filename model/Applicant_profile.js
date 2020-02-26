@@ -163,7 +163,50 @@ const Applicant_profile=new Schema({
     user:{
         type:Schema.Types.ObjectId,
         ref:"User"
-    }
+    },
+    //update
+    nationality:{
+      type:String
+    },
+    marital_status :{
+      type:String
+    },
+    number_of_dependents:{
+      type:String
+    },
+    military_status :{
+      type:String
+    },
+    driving_license:{
+      type:String
+    },
+    your_contact_info:{
+      type:Object,
+      default:{
+        mobile_number:"",
+        alternative:""
+      }
+    },
+    minimum_salary:{
+      type:String
+    },
+    hide_salary:{
+      type:Boolean,
+      default:false
+    },
+    current_career_level:{
+      type:String
+    },
+    current_education_level:{
+      type:String
+    },
+    what_would_like_to_work:{
+      type:Array,
+      default:[]
+    },
+ 
+
+
    
 
 
