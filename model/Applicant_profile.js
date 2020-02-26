@@ -178,7 +178,8 @@ const Applicant_profile=new Schema({
       type:String
     },
     driving_license:{
-      type:String
+      type:Boolean,
+      default:false
     },
     your_contact_info:{
       type:Object,
