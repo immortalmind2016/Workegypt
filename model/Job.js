@@ -16,12 +16,10 @@ const Job=new Schema({
     level:String,
     language:String,
     salary:String,
-    type:String, 
+    type:String,
+    
     video:String,
-    hide_salary:{
-        type:Boolean,
-        default:false
-    },
+    
     created_date:{
     type:Date,
 
@@ -80,7 +78,29 @@ const Job=new Schema({
     company:{
         type:Schema.Types.ObjectId,
         ref:"Company_profile"
-    }
+    },
+    //UPDATE
+    job_type:String, //job or internship
+    location:String,
+    city:String,
+    Area:String,
+    career_level:String,
+    years_of_experience:String,
+    salary_range:{
+        type:Object,
+        default:
+            {
+                from:"",
+                to:"",
+            }
+    },
+    number_of_vacancies:Number,
+    job_role:String,
+    
+    hide_salary:{
+        type:Boolean,
+        default:false
+    },
     
 })
 
