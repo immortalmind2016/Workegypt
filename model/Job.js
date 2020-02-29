@@ -17,12 +17,9 @@ const Job=new Schema({
     language:String,
     salary:String,
     type:String,
-    
     video:String,
-    
     created_date:{
     type:Date,
-
     default:Date.now()
     },
     working_hours:{
