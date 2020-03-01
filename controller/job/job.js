@@ -127,6 +127,7 @@ const getJob=async(req,res,err)=>{
             salary_range:1,
             number_of_vacancies:1,
             job_role:1,
+            Area:1,
             hide_salary:1,
             quiz_length:{$size:"$quiz"},
             applicantsNo:{$size:"$applicants"},
