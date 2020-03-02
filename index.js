@@ -53,9 +53,11 @@ app.use("/api/applicant/", applicant)
 
 app.use("/api/payment/", payment)
 app.use("/api/admin/", admin)
+app.use("/*",(req,res,err)=>{
+     res.sendFile(__dirname+"/public/index.html")
+   })
 
-
-const PORT = 5000
+const PORT = 80
 app.listen(PORT, () => {
      console.log(`listining on port number ${PORT}`)
 })
