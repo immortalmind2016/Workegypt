@@ -152,7 +152,20 @@ const Applicant_profile=new Schema({
               { title: `Co byś zrobił, gdybyś wygrał na loterii?`, link: "" }
             ],
             br: [],
-            du: []
+            du: [
+              { title: "Vertel eens iets over uzelf.", link: "" },
+              {
+                title: "Wat zijn uw sterke kanten? Wat zijn uw zwakke kanten?",
+                link: ""
+              },
+              { title: "Wat hebt u tot nu toe bereikt?", link: "" },
+              {
+                title:
+                  "Wat is de moeilijkste situatie die u op uw werk heeft meegemaakt ? of leven?",
+                link: ""
+              },
+              { title: "Wat zijn uw toekomstdoelen?", link: "" }
+            ],
           }
           
     },
