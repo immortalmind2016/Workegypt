@@ -126,11 +126,14 @@ const addVisitor=(req,res,err)=>{
         res.sendStatus(200)
     })
 }
-
+const getTests=(req,res,err)=>{
+    
+}
 module.exports={
     getWebSiteAnalysis,
     addVisitor,
-    getAnalysis
+    getAnalysis,
+    getTests
  
 
 }
