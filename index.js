@@ -56,7 +56,7 @@ app.use("/api/admin/", admin)
 app.use("/*",(req,res,err)=>{
      res.sendFile(__dirname+"/public/index.html")
    })
-
+console.log("TEST")
 const PORT = 80
 app.listen(PORT, () => {
      console.log(`listining on port number ${PORT}`)
