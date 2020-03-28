@@ -4,7 +4,7 @@ Policies.pdf
 codes.js
 public/images/.
 public/images/.
-/public/uploads/images/applicant/
-/public/uploads/images/company/
-/public/uploads/videos/applicant/
-/public/uploads/videos/company/
+/public/uploads/images/applicant/*
+/public/uploads/images/company/*
+/public/uploads/videos/applicant/*
+/public/uploads/videos/company/*
