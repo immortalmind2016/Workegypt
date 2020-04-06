@@ -11,7 +11,7 @@ const Post=new Schema({
        type:String
    },
    text:{
-       type:string,
+       type:String,
        default:""
    }
    

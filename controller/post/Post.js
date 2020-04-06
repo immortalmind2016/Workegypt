@@ -64,6 +64,6 @@ const getMorePosts=(req,res,err)=>{
 }
 
 module.exports={
-    uploadPost,editPost,deletePost,going,getPost,getPosts,getMorePosts
+    uploadPost,editPost,deletePost,getPost,getPosts,getMorePosts
 
 }
