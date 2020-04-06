@@ -15,6 +15,8 @@ const company = require("./routes/company")
 const payment = require("./routes/payment")
 const applicant = require("./routes/applicant")
 const admin = require("./routes/admin")
+const post = require("./routes/post")
+const event = require("./routes/event")
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -23,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.use(function (req, res, next) {
-     var allowedOrigins = ["http://ae435531.ngrok.io",'http://localhost:5000',"http://4a011676.ngrok.io/", "http://93f52e7f.ngrok.io", 'http://5d845a7f.ngrok.io', "http://490ea9cb.ngrok.io", 'http://127.0.0.1:3000',"http://localhost:3001", "http://localhost:3000", "http://5945f4bd.ngrok.io", "http://42249189.ngrok.io"];
+     var allowedOrigins = ["https://8fib4t1ccaof.loclx.io","https://25.24.10.197:3000/","https://25.24.10.197:3000","http://7oltshuotddi.loclx.io","http://cb6ac17b.ngrok.io","http://ae435531.ngrok.io",'http://localhost:5000',"http://4a011676.ngrok.io/", "http://93f52e7f.ngrok.io", 'http://5d845a7f.ngrok.io', "http://490ea9cb.ngrok.io", 'http://127.0.0.1:3000',"http://localhost:3001", "http://localhost:3000", "http://5945f4bd.ngrok.io", "http://42249189.ngrok.io","http://localhost:3001"];
      var origin = req.headers.origin;
      if (allowedOrigins.indexOf(origin) > -1) {
           //res.setHeader('Access-Control-Allow-Origin', origin);
@@ -53,11 +55,15 @@ app.use("/api/applicant/", applicant)
 
 app.use("/api/payment/", payment)
 app.use("/api/admin/", admin)
+
+app.use("/api/post/", post)
+app.use("/api/event/", event)
+
 app.use("/*",(req,res,err)=>{
      res.sendFile(__dirname+"/public/index.html")
    })
 console.log("TEST")
-const PORT = 80
+const PORT = 800
 app.listen(PORT, () => {
      console.log(`listining on port number ${PORT}`)
 })
