@@ -12,7 +12,8 @@ const uploadPost=(req,res,err)=>{
 }
 const editPost=(req,res,err)=>{
     try{
-        Post.findOneAndUpdate({_id:req.params.id},{...req.body.data},{new:true},(err,post)=>{
+        
+        Post.updateOne({_id:req.params.id},{...req.body.data},(err,post)=>{
             res.json({post})
         })
     }catch(e){

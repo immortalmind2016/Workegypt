@@ -66,7 +66,7 @@ const getMoreEvents=(req,res,err)=>{
 const going=(req,res,err)=>{
    
     try{
-        Event.findOneAndUpdate({_id:req.body.data.id},{$inc:{"going_counter":1}},{new:true},(err,event)=>{
+        Event.updateOne({_id:req.body.data.id},{$inc:{"going_counter":1}},(err,event)=>{
             res.json({event})
         })
     
