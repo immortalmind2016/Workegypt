@@ -13,7 +13,11 @@ const Post=new Schema({
    text:{
        type:String,
        default:""
-   }
+   },
+   created_date:{
+    type:Date,
+    default:Date.now()
+    },
    
 
 })

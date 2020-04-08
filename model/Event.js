@@ -24,7 +24,11 @@ const Event=new Schema({
    going_counter:{
        type:Number,
        default:0
-   }
+   },
+   created_date:{
+    type:Date,
+    default:Date.now()
+    },
 
    /*
      title,
