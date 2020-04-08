@@ -41,11 +41,11 @@ const getPost=(req,res,err)=>{
  
 }
 const getPosts=(req,res,err)=>{
-  
+    
     try{
-        Post.find({},(err,posts),(err,posts)=>{
+        Post.find({},(err,posts)=>{
             res.json({posts})
-        }).size(50)
+        }).limit(50)
     
     }catch(e){
         return res.status(500).json({error:e})
@@ -56,7 +56,8 @@ const getMorePosts=(req,res,err)=>{
     try{
         Post.find({},(err,posts),(err,posts)=>{
             res.json({posts})
-        }).skip(req.params.skip).size(50)
+        }).skip(req.params.skip).limit(50)
+        
     
     }catch(e){
         return res.status(500).json({error:e})
