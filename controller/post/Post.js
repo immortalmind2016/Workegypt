@@ -53,11 +53,11 @@ const getPosts=(req,res,err)=>{
     }
 }
 const getMorePosts=(req,res,err)=>{
-   
+
     try{
-        Post.find({},(err,posts),(err,posts)=>{
+        Post.find({},(err,posts)=>{
             res.json({posts})
-        }).skip(req.params.skip).limit(50)
+        },{skip:5,limit:5})
         
     
     }catch(e){

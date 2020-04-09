@@ -45,7 +45,7 @@ const getEvents=(req,res,err)=>{
     try{
         Event.find({},(err,events)=>{
             res.json({events})
-        }).size(50)
+        }).limit(50)
     
     }catch(e){
         return res.status(500).json({error:e})
@@ -56,7 +56,7 @@ const getMoreEvents=(req,res,err)=>{
     try{
         Event.find({},(err,events)=>{
             res.json({events})
-        }).skip(req.params.skip).size(50)
+        },{skip:5,limit:5})
     
     }catch(e){
         return res.status(500).json({error:e})
