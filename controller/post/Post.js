@@ -57,7 +57,7 @@ const getMorePosts=(req,res,err)=>{
     try{
         Post.find({},(err,posts)=>{
             res.json({posts})
-        },{skip:5,limit:5})
+        }).skip(Number.parseInt(req.params.skip)).limit(5)
         
     
     }catch(e){

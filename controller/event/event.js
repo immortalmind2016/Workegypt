@@ -56,7 +56,7 @@ const getMoreEvents=(req,res,err)=>{
     try{
         Event.find({},(err,events)=>{
             res.json({events})
-        },{skip:5,limit:5})
+        }).skip(Number.parseInt(req.params.skip)).limit(5)
     
     }catch(e){
         return res.status(500).json({error:e})
