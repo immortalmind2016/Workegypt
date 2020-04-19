@@ -125,9 +125,7 @@ module.exports = (io) => {
 
 
     function Disconnect() {
-        if (clients > 0) {
-            clients--
-        }
+     
         // this.to(io.sockets.manager.roomClients[socket.id]).emit("AnotherClose")
     }/*
 setInterval(()=>{

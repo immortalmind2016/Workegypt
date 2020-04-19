@@ -30,10 +30,12 @@ const io=require("socket.io")(http,{
 reconnect: true,
 
 rejectUnauthorized : false
-})
-io.origins('*:*') 
-require("./services/socket")(io)
 
+})
+
+io.origins('*:*') 
+
+require("./services/socket")(io)
 app.use(function (req, res, next) {
      var allowedOrigins = ["https://8fib4t1ccaof.loclx.io","https://25.24.10.197:3000/","https://25.24.10.197:3000","http://7oltshuotddi.loclx.io","http://cb6ac17b.ngrok.io","http://ae435531.ngrok.io",'http://localhost:5000',"http://4a011676.ngrok.io/", "http://93f52e7f.ngrok.io", 'http://5d845a7f.ngrok.io', "http://490ea9cb.ngrok.io", 'http://127.0.0.1:3000',"http://localhost:3001", "http://localhost:3000", "http://5945f4bd.ngrok.io", "http://42249189.ngrok.io","http://localhost:3001"];
      var origin = req.headers.origin;
