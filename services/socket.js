@@ -25,6 +25,9 @@ module.exports = (io) => {
             this.to(applicantId).emit("ReceiveCall", ({ companyId, companyName, companyImg }))
             console.log("CALL USER ", applicantId, companyName, companyImg)
         })
+
+
+        
         socket.on("CheckOnline", function ({ applicantId, companyId }) {
             console.log("APPLOICANT ID ", applicantId, companyId)
 

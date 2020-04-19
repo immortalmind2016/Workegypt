@@ -31,6 +31,7 @@ reconnect: true,
 
 rejectUnauthorized : false
 })
+io.origins('*:*') 
 require("./services/socket")(io)
 
 app.use(function (req, res, next) {
