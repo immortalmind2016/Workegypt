@@ -87,8 +87,8 @@ module.exports = (io) => {
             },
                 {
                     upsert: true,
-                    new: true,
-                    runValidators: true
+                    new: true
+           
                 })
             new Message({
                 conversation:conv._id,
