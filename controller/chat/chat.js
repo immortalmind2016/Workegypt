@@ -14,8 +14,8 @@ const getConversation=async(req,res,err)=>{
 }
 const getConversations=async(req,res,err)=>{
   console.log(req.user)
-  const messages = await Message.find({$or:[{applicant:req.user._id},{company:req.user._id}]})
-  res.json({messages})
+  const conversations = await Conversation.find({$or:[{applicant:req.user._id},{company:req.user._id}]})
+  res.json({conversations})
 }
 const createConversation=async(req,res,err)=>{
     const applicant=await Applicant_profile.findOne({user:req.params.withid})
