@@ -106,6 +106,7 @@ module.exports = (io) => {
                 },
                 text
             }).save((err,message)=>{
+                
                 this.to(to_).emit("NewMessage",message)
 
             })

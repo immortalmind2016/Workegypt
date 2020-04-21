@@ -1,8 +1,11 @@
 const Router=require("express").Router()
-const {getConversation}=require("../controller/chat/chat")
+const {getConversation,getConversations,createConversation}=require("../controller/chat/chat")
 const passport=require("../services/jwtPassport")
 
 Router.get("/:id",getConversation)
 
+Router.get("/",getConversations) //get my conversations
+
+Router.post("/:withid",createConversation)
 
 module.exports=Router;
