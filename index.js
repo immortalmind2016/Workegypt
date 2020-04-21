@@ -17,6 +17,7 @@ const applicant = require("./routes/applicant")
 const admin = require("./routes/admin")
 const post = require("./routes/post")
 const event = require("./routes/event")
+const chat = require("./routes/chat")
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -70,6 +71,7 @@ app.use("/api/admin/", admin)
 
 app.use("/api/post/", post)
 app.use("/api/event/", event)
+app.use("/api/chat/", chat)
 
 app.use("/*",(req,res,err)=>{
      res.sendFile(__dirname+"/public/index.html")
