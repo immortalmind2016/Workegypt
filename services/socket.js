@@ -73,8 +73,9 @@ module.exports = (io) => {
 
         //chat
 
-        socket.on("message", async ({ text, from, to, type }) => {
+        socket.on("message", async function({ text, from, to, type }){
             console.log(from,to)
+            const to_=to
             from=mongoose.Types.ObjectId(from)
             to=mongoose.Types.ObjectId(to)
             const conv = await Conversation.findOneAndUpdate({ $or: [{ applicant:  from, company: to }, { applicant: to, company: from }] }, {
@@ -105,7 +106,7 @@ module.exports = (io) => {
                 },
                 text
             }).save((err,message)=>{
-                socket.emit("NewMessage",message)
+                this.to(to_).emit("NewMessage",message)
 
             })
 
