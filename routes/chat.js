@@ -6,6 +6,6 @@ Router.get("/:id",getConversation)
 
 Router.get("/",getConversations) //get my conversations
 
-Router.post("/:withid",createConversation)
+Router.post("/:withid",passport.authenticate('jwt', { session: false }),createConversation)
 
 module.exports=Router;

@@ -1,4 +1,4 @@
-getConversation
+
 
 
 const Message=require("../../model/Message")
@@ -15,7 +15,7 @@ const getConversation=async(req,res,err)=>{
 const getConversations=async(req,res,err)=>{
   const messages = await Message.find({$or:[{applicant:req.user._id},{company:req.user._id}]})
   res.json({messages})
-}
+}g
 const createConversation=async(req,res,err)=>{
     const applicant=await Applicant_profile.findOne({user:req.params.withid})
     const company=await Company_profile.findOne({user:req.params.withid})
