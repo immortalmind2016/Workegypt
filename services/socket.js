@@ -90,7 +90,7 @@ module.exports = (io) => {
                 {
                     upsert: true,
                     new: true,
-                  
+                  strict:false
              
                 })
             new Message({
