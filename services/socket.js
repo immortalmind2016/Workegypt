@@ -84,7 +84,7 @@ module.exports = (io) => {
                     company: type ? from : to,
 
                 },
-                text
+                
 
             },
                 {
@@ -103,6 +103,7 @@ module.exports = (io) => {
               
 
                 },
+                text
             }).save((err,message)=>{
                 socket.emit("NewMessage",message)
 
