@@ -4,7 +4,7 @@ const passport=require("../services/jwtPassport")
 
 Router.get("/:id",getConversation)
 
-Router.get("/",getConversations) //get my conversations
+Router.get("/",passport.authenticate('jwt', { session: false }),getConversations) //get my conversations
 
 Router.post("/:withid",passport.authenticate('jwt', { session: false }),createConversation)
 
