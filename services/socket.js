@@ -1,7 +1,7 @@
 
 const Message = require("../model/Message")
 const Conversation = require("../model/Conversation")
-
+const mongoose=require("mongoose")
 module.exports = (io) => {
 
     io.origins('*:*')
@@ -73,9 +73,11 @@ module.exports = (io) => {
 
         //chat
 
-        socket.on("messsage", async ({ text, from, to, type }) => {
-       
-            const conv = await Conversation.findOneAndUpdate({ $or: [{ applicant: from, company: to }, { applicant: to, company: from }] }, {
+        socket.on("message", async ({ text, from, to, type }) => {
+            console.log(from,to)
+            from=mongoose.Types.ObjectId(from)
+            to=mongoose.Types.ObjectId(to)
+            const conv = await Conversation.findOneAndUpdate({ $or: [{ applicant:  from, company: to }, { applicant: to, company: from }] }, {
                 info: {
 
                     applicant: type ? to : from,
@@ -87,8 +89,9 @@ module.exports = (io) => {
             },
                 {
                     upsert: true,
-                    new: true
-           
+                    new: true,
+                  
+             
                 })
             new Message({
                 conversation:conv._id,
