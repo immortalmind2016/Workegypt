@@ -17,12 +17,15 @@ const fields="name"
 }
 const getConversations=async(req,res,err)=>{
   console.log("CONVESSS ",req.user)
+  const fields="name"
+  const applicant=await Applicant_profile.findOne({_id:req.params.id},"image").populate("user", fields)
+
   const conversations=await Conversation.aggregate([
     {$match:{$or:[{"info.applicant":req.user._id},{"info.company":req.user._id}]}},
     {
       $lookup: {
-        from: Applicant_profile.collection.name,
-        localField: "info.applicant",
+        from:applicant?Applicant_profile.collection.name:Company_profile.collection.name,
+        localField: applicant?"info.applicant":"info.company",
         foreignField: "user",
         as: "user_profile"
       }
@@ -30,7 +33,7 @@ const getConversations=async(req,res,err)=>{
     {
       $lookup: {
         from: User.collection.name,
-        localField: "info.applicant",
+        localField: applicant?"info.applicant":"info.company",
         foreignField: "_id",
         as: "user"
       }
