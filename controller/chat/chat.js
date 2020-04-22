@@ -5,19 +5,53 @@ const Message=require("../../model/Message")
 const Conversation=require("../../model/Conversation")
 const Applicant_profile=require("../../model/Applicant_profile")
 const Company_profile=require("../../model/Company_profile")
+const User=require("mongoose").model("User")
 
 const getConversation=async(req,res,err)=>{
-
+const fields="name"
   const messages = await Message.find({$or:[{from:req.params.id,to:req.params.id},{to:req.params.id,from:req.params.id}]})
-  const applicant=await Applicant_profile.findOne({_id:req.params.id}).populate("user")
-  const company=await Company_profile.findOne({_id:req.params.id}).populate("user")
-  res.json({messages,user_info:applicant?applicant:company})
-  
+  const applicant=await Applicant_profile.findOne({_id:req.params.id},"image").populate("user", fields)
+  const company=await Company_profile.findOne({_id:req.params.id},"image").populate("user",fields )
+  res.json({messages,user_profile:applicant?applicant:company})
+
 }
 const getConversations=async(req,res,err)=>{
+  console.log("CONVESSS ",req.user)
+  const conversations=await Conversation.aggregate([
+    {$match:{$or:[{"info.applicant":req.user._id},{"info.company":req.user._id}]}},
+    {
+      $lookup: {
+        from: Applicant_profile.collection.name,
+        localField: "info.applicant",
+        foreignField: "user",
+        as: "user_profile"
+      }
+    },
+    {
+      $lookup: {
+        from: User.collection.name,
+        localField: "info.applicant",
+        foreignField: "_id",
+        as: "user"
+      }
+    },
+    {$unwind: '$user'},
+    {$unwind: '$user_profile'},
 
+    {$project:{
+      info:1,
+      "user_profile.image":1,
+   
+      "user_profile._id":1,
+      "user.name":1,
 
-  const conversations = await Conversation.find({$or:[{applicant:req.user._id},{company:req.user._id}]})
+      "user._id":1
+    }}
+  ])
+  
+  
+    
+//  const conversations = await Conversation.find({$or:[{applicant:req.user._id},{company:req.user._id}]})
 
   res.json({conversations})
 }
