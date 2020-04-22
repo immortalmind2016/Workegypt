@@ -29,6 +29,8 @@ const createConversation=async(req,res,err)=>{
 
       }
       
+      }).save((err,conversation)=>{
+        res.json(conversation)
       })
     }else if(applicant){
       new Conversation({
@@ -38,6 +40,8 @@ const createConversation=async(req,res,err)=>{
           applicant: applicant._id
 
       }
+      }).save((err,conversation)=>{
+        res.json(conversation)
       })
     }
 }
