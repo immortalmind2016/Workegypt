@@ -2,7 +2,7 @@ const Router=require("express").Router()
 const {getConversation,getConversations,createConversation}=require("../controller/chat/chat")
 const passport=require("../services/jwtPassport")
 
-Router.get("/:id",getConversation)
+Router.get("/:id",passport.authenticate('jwt', { session: false }),getConversation)
 
 Router.get("/",passport.authenticate('jwt', { session: false }),getConversations) //get my conversations
 
