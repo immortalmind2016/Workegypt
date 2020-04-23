@@ -9,13 +9,18 @@ const User=require("mongoose").model("User")
 
 const getConversation=async(req,res,err)=>{
 const fields="name"
-  const messages = await Message.find({$or:[{from:req.params.id,to:req.params.id},{to:req.params.id,from:req.params.id}]})
+  const messages = await Message.find({$or:[{"info.from":req.params.id,"info.to":req.params.id},{"info.to":req.params.id,"info.from":req.params.id}]})
   const applicant=await Applicant_profile.findOne({user:req.params.id},"image").populate("user", fields)
   const company=await Company_profile.findOne({user:req.params.id},"image").populate("user",fields )
 
   res.json({messages,user_profile:applicant?applicant:company})
 
 }
+
+
+
+
+
 const getConversations=async(req,res,err)=>{
   console.log("CONVESSS ",req.user)
   const fields="name"
@@ -25,8 +30,8 @@ const getConversations=async(req,res,err)=>{
     {$match:{$or:[{"info.applicant":req.user._id},{"info.company":req.user._id}]}},
     {
       $lookup: {
-        from:applicant?Applicant_profile.collection.name:Company_profile.collection.name,
-        localField: applicant?"info.applicant":"info.company",
+        from:!applicant?Applicant_profile.collection.name:Company_profile.collection.name,
+        localField: !applicant?"info.applicant":"info.company",
         foreignField: "user",
         as: "user_profile"
       }
@@ -34,7 +39,7 @@ const getConversations=async(req,res,err)=>{
     {
       $lookup: {
         from: User.collection.name,
-        localField: applicant?"info.applicant":"info.company",
+        localField: !applicant?"info.applicant":"info.company",
         foreignField: "_id",
         as: "user"
       }
@@ -51,7 +56,7 @@ const getConversations=async(req,res,err)=>{
 
       "user._id":1
     }}
-  ])
+  ]).sort({_id:-1})
   
   
     

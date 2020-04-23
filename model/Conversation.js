@@ -15,7 +15,11 @@ const Conversation=new Schema({
         }
     },
     create_date:{
-        type:String,
+        type:Date,
+        default:Date.now()
+    },
+    last_update:{
+        type:Date,
         default:Date.now()
     }
     
