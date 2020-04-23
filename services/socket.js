@@ -78,7 +78,7 @@ module.exports = (io) => {
             const to_=to
             from=mongoose.Types.ObjectId(from)
             to=mongoose.Types.ObjectId(to)
-            const conv_=await Conversation.findOne({_id:conv._id})
+
             
             const conv = await Conversation.findOneAndUpdate({ $or: [{ applicant:  from, company: to }, { applicant: to, company: from }] }, {
                 info: {
