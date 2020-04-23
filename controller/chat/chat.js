@@ -9,7 +9,7 @@ const User=require("mongoose").model("User")
 
 const getConversation=async(req,res,err)=>{
 const fields="name"
-  const messages = await Message.find({$or:[{"info.from":req.params.id,"info.to":req.params.id},{"info.to":req.params.id,"info.from":req.params.id}]})
+  const messages = await Message.find({$or:[{"info.from":req.params.id,"info.to":req.user._id},{"info.to":req.params.id,"info.from":req.user._id}]})
   const applicant=await Applicant_profile.findOne({user:req.params.id},"image").populate("user", fields)
   const company=await Company_profile.findOne({user:req.params.id},"image").populate("user",fields )
 
