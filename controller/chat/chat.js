@@ -14,8 +14,11 @@ console.log(req.user)
   const messages = await Message.find({$or:[{"info.from":req.params.id,"info.to":req.user._id},{"info.to":req.params.id,"info.from":req.user._id}]})
   const applicant=await Applicant_profile.findOne({user:req.params.id},"image").populate("user", fields)
   const company=await Company_profile.findOne({user:req.params.id},"image").populate("user",fields )
+  let _id=null
+  if(messages.length>0)
+    _id=messages[0].conversation
   console.log(company)
-  res.json({messages,user_profile:applicant?applicant:company})
+  res.json({messages,user_profile:applicant?applicant:company,_id})
 
 }
 
@@ -26,7 +29,7 @@ console.log(req.user)
 const getConversations=async(req,res,err)=>{
   console.log("CONVESSS ",req.user)
   const fields="name"
-  const applicant=await Applicant_profile.findOne({_id:req.params.id},"image").populate("user", fields)
+  const applicant=await Applicant_profile.findOne({user:req.user._id},"image").populate("user", fields)
 
   const conversations=await Conversation.aggregate([
     {$match:{$or:[{"info.applicant":req.user._id},{"info.company":req.user._id}]}},
