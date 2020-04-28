@@ -6,7 +6,7 @@ const Conversation=require("../../model/Conversation")
 const Applicant_profile=require("../../model/Applicant_profile")
 const Company_profile=require("../../model/Company_profile")
 const User=require("mongoose").model("User")
-
+const mongoose=require("mongoose")
 const getConversation=async(req,res,err)=>{
 const fields="name"
 console.log(req.user)
@@ -22,7 +22,85 @@ console.log(req.user)
 
 }
 
+const getConversationById=async(req,res,err)=>{
+  const fields="name"
+  const applicant=await Applicant_profile.findOne({user:req.params.uid},"image").populate("user", fields)
+console.log("APPLICANT ",applicant)
+  const conversations1=await Conversation.aggregate([
+    {$match:{_id:mongoose.Types.ObjectId(req.params.id)}},
+    {
+      $lookup: {
+        from:!applicant?Applicant_profile.collection.name:Company_profile.collection.name,
+        localField: !applicant?"info.applicant":"info.company",
+        foreignField: "user",
+        as: "user_profile"
+      }
+    },
+    {
+      $lookup: {
+        from: User.collection.name,
+        localField: !applicant?"info.applicant":"info.company",
+        foreignField: "_id",
+        as: "user"
+      }
+    },
+    {$unwind: '$user'},
+    {$unwind: '$user_profile'},
 
+    {$project:{
+      info:1,
+      "user_profile.image":1,
+   
+      "user_profile._id":1,
+      "user.name":1,
+
+      "user._id":1
+    }}
+  ]).sort({_id:-1})
+  
+  const conversations2=await Conversation.aggregate([
+    {$match:{_id:mongoose.Types.ObjectId(req.params.id)}},
+    {
+      $lookup: {
+        from:applicant?Applicant_profile.collection.name:Company_profile.collection.name,
+        localField: applicant?"info.applicant":"info.company",
+        foreignField: "user",
+        as: "user_profile"
+      }
+    },
+    {
+      $lookup: {
+        from: User.collection.name,
+        localField: applicant?"info.applicant":"info.company",
+        foreignField: "_id",
+        as: "user"
+      }
+    },
+    {$unwind: '$user'},
+    {$unwind: '$user_profile'},
+
+    {$project:{
+      info:1,
+      "user_profile.image":1,
+   
+      "user_profile._id":1,
+      "user.name":1,
+
+      "user._id":1
+    }}
+  ]).sort({_id:-1})
+  
+  const messages = await Message.find({_id:req.params.id})
+//  const conversations = await Conversation.find({$or:[{applicant:req.user._id},{company:req.user._id}]})
+  if(messages.length>1){
+    conversations1=[]
+    conversations2=[]
+  }
+  
+  res.json({to:conversations1,from:conversations2})
+    
+  
+  }
 
 
 
@@ -100,6 +178,7 @@ const createConversation=async(req,res,err)=>{
 module.exports={
     getConversation,
     getConversations,
-    createConversation
+    createConversation,
+    getConversationById
     
 }

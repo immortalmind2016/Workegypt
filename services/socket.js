@@ -2,6 +2,7 @@
 const Message = require("../model/Message")
 const Conversation = require("../model/Conversation")
 const mongoose=require("mongoose")
+const axios=require("axios")
 module.exports = (io) => {
 
     io.origins('*:*')
@@ -78,9 +79,8 @@ module.exports = (io) => {
             const to_=to
             from=mongoose.Types.ObjectId(from)
             to=mongoose.Types.ObjectId(to)
-
-            
-            const conv = await Conversation.findOneAndUpdate({ $or: [{ applicant:  from, company: to }, { applicant: to, company: from }] }, {
+            console.log(from , to ,"CONVERSATION")
+            const conv = await Conversation.findOneAndUpdate({ $or: [{ "info.applicant": from, "info.company": to }, { "info.applicant": to, "info.company": from }] }, {
                 info: {
 
                     applicant: type ? to : from,
@@ -95,7 +95,11 @@ module.exports = (io) => {
                     new: true,
                   strict:false
              
-        })
+
+                  
+            })
+
+
       
 
 
@@ -110,9 +114,18 @@ module.exports = (io) => {
 
                 },
                 text
-            }).save((err,message)=>{
+            }).save(async (err,message)=>{
+                
+              const response= await axios.get(`http://localhost:800/api/chat/conversation/${conv._id}/${to}/${from}`)
+                    console.log(response.data ,"RESPONSE")
+                    const conversation=response.data
+                    if(conversation){
+                        socket.emit("NewMessage",{message,conversation:conversation.from[0]})
+                        this.to(to_).emit("NewMessage",{message,conversation:conversation.to[0]})
+                    }
+                
 
-                this.to(to_).emit("NewMessage",message)
+                
 
             })
 

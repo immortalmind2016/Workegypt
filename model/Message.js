@@ -27,10 +27,9 @@ const Message=new Schema({
     text:{
         type:String
     },
-    create_date:{
-        type:String,
-        default:Date.now()
-    }
+    created_date:
+    {type: Date, default: Date.now}
+    
     
     
     
