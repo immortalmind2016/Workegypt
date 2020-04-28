@@ -1,4 +1,4 @@
 module.exports={
-    url:"http://workegypt.net"
+    url:"http://localhost:800"
 
 }

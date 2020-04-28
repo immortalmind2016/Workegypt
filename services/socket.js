@@ -3,6 +3,7 @@ const Message = require("../model/Message")
 const Conversation = require("../model/Conversation")
 const mongoose=require("mongoose")
 const axios=require("axios")
+const {url}=require=("../config.js")
 module.exports = (io) => {
 
     io.origins('*:*')
@@ -116,7 +117,7 @@ module.exports = (io) => {
                 text
             }).save(async (err,message)=>{
                 
-              const response= await axios.get(`http://localhost:800/api/chat/conversation/${conv._id}/${to}/${from}`)
+              const response= await axios.get(`${url}/api/chat/conversation/${conv._id}/${to}/${from}`)
                     console.log(response.data ,"RESPONSE")
                     const conversation=response.data
                     if(conversation){
