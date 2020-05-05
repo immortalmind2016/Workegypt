@@ -50,9 +50,13 @@ module.exports = (io) => {
 
         })
         socket.on("NewClient", function ({ userid, type }) {
+
+            
             socket.join(userid, () => {
 
                 console.log("JOINED", userid, type)
+
+                
             })
 
             /* if(type){
@@ -62,6 +66,33 @@ module.exports = (io) => {
 
 
         })
+        socket.on("NewClientMobile", function ({ userid, type }) {
+
+            let exist = io.sockets.adapter.rooms[userid]
+     
+     
+
+            if (!exist) {
+                socket.join(userid, () => {
+
+                    console.log("JOINED", userid, type)
+    
+                    
+                })
+
+            }
+
+            
+
+            /* if(type){
+            //for this socketس
+            this.to(userid).emit("CreatePeer",userid)
+            }*/
+
+
+        })
+
+        
         //company start to create peer
         socket.on("CreatePeer", function ({ userId, applicantId }) {
             console.log("creatPeer", userId, applicantId)
