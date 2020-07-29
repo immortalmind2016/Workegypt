@@ -4,6 +4,7 @@ const mongoose=require("mongoose")
 const Company_profile=require("../../model/Company_profile")
 const Applicant_profile=require("../../model/Applicant_profile")
 
+const Company_applicant=require("../../model/Company_applicant")
 
 const getCompanyJobs=async(req,res,err)=>{
     const jobs=await Job.aggregate([
@@ -164,11 +165,81 @@ const editApplicantStatus=async(req,res,err)=>{
        }    
 
  }
+
+
+ const openContact=async(req,res,err)=>{
+    const applicant=req.body.data.id
+    const companyProfile = await Company_profile.findOneAndUpdate({user:req.user._id,"subscribe.count":{$gte:1}},{$inc:{"subscribe.count":parseInt(-1)}},()=>{})
+    if(companyProfile){
+ 
+        new Company_applicant({
+            applicant,
+            company:req.user._id
+        }).save(()=>{
+            res.sendStatus(200)
+        })
+    }else{
+        res.sendStatus(404).json({error:"not found"})
+    }
+   
+ }
+ const getProfiles=async(req,res,err)=>{
+
+        let size=25,
+        skip=req.params.skip*size
+       const profiles=await Applicant_profile.find({},["image"]).populate("user",["name","job_title","live_in","age"]).limit(size).skip(skip)
+   
+        res.json({profiles})
+ }
+ const opened=async(req,res,err)=>{
+    const applicant=req.params.id
+    const companyApp = await Company_applicant.findOne({company:req.user._id,applicant:req.params.id})
+    console.log(applicant,companyApp)
+    if(companyApp){
+ 
+        res.sendStatus(200)
+    }else{
+        res.sendStatus(404)
+    }
+   
+ }
+ const subscribe=async(req,res,err)=>{
+     const {type}=req.body.data
+     const plans={
+         gold:30,
+         prem:20,
+         sil:10
+     }
+    try{
+    Company_profile.findOneAndUpdate({user:req.user._id},{
+        subscribe:{ count:plans[type],
+            type
+        }
+        },{new:true},(err,doc)=>{
+            if(!doc){
+                return res.sendStatus(404)
+            }
+            else {
+                return res.json({done:true})
+            }
+        })
+       
+    
+       }catch(err){
+        return res.json({error:err})
+    
+       }    
+
+ }
 module.exports={
     getCompanyJobs,
     jobApplicants,
     editApplicantStatus,
     applyForJob,
-    cancelJob
+    cancelJob,
+    openContact,
+    subscribe,
+    opened,
+    getProfiles
 
 }

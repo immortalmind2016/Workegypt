@@ -36,6 +36,16 @@ const Company_profile=new Schema({
     user:{
         type:Schema.Types.ObjectId,
         ref:"User"
+    },
+    subscribe:{
+      type:Object,
+      default:{
+        count:{
+          type:Number,
+          default:0
+        },
+        plan:null
+      }
     }
     
 })

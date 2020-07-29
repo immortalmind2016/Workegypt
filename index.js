@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 mongoose.connect("mongodb+srv://mohammed:1112@vidjot-pgfzx.mongodb.net/workEg?retryWrites=true&w=majority", { useUnifiedTopology: true, useNewUrlParser: true })
+
+//
 const express = require("express");
 const bodyParser = require("body-parser")
 const app = express()

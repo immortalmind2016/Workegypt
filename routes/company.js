@@ -1,5 +1,5 @@
 const Router=require("express").Router()
-const {getCompanyJobs,jobApplicants,editApplicantStatus,applyForJob,cancelJob}=require("../controller/company/company")
+const {getCompanyJobs,jobApplicants,editApplicantStatus,applyForJob,cancelJob,openContact,opened,subscribe,getProfiles}=require("../controller/company/company")
 const passport=require("../services/jwtPassport")
 
 /*
@@ -37,5 +37,9 @@ Router.post("/apply-job/:jobid",passport.authenticate('jwt', { session: false })
 //for job cancelling 
 Router.delete("/cancel-job/:jobid/",passport.authenticate('jwt', { session: false }),cancelJob)
 
+Router.post("/open-contact/",passport.authenticate('jwt', { session: false }),openContact)
+Router.get("/opened/:id",passport.authenticate('jwt', { session: false }),opened)
 
+Router.post("/subscribe/",passport.authenticate('jwt', { session: false }),subscribe)
+Router.get("/profiles/:skip",passport.authenticate('jwt', { session: false }),getProfiles)
 module.exports=Router;

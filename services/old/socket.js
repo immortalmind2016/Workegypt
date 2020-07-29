@@ -3,7 +3,7 @@ const Message = require("../model/Message")
 const Conversation = require("../model/Conversation")
 const mongoose=require("mongoose")
 const axios=require("axios")
-const {url}=require=("../config.js")
+const {url}=require("../config.js")
 let connectedPeers = new Map()
 
 module.exports = (io) => {
@@ -11,56 +11,53 @@ module.exports = (io) => {
     io.origins('*:*')
     io.on("connection", (socket) => {
         connectedPeers.set(socket.id,socket)
-        socket.on('OfferOrAnswer',function (data) {
-      
-
-            // send to the other peer(s) if any
-         console.log("OFFER ",data.payload.userId)
+socket.on('OfferOrAnswer', (data) => {
+    // send to the other peer(s) if any
+   
 
    
-         this.to(data.payload.userId).emit('OfferOrAnswer',{sdp:data.payload.sdp,userId:data.payload.userId,companyId:data.payload.companyId})
-            /*for (const [socketID, socket] of connectedPeers.entries()) {
-            
-            // don't send to self
-           // console.log(socketID , data.socketID)
-            if (socketID !== data.socketID) {
-             //   console.log(socketID, data.payload.type)
-         
-                socket.emit('OfferOrAnswer', data.payload.sdp)
-            }
-            }*/
-        })
-        
-
-        socket.on('candidate',function(data) {
-            console.log("Caditate ",data.payload.userId)
-
-            // send candidate to the other peer(s) if any
+    
+    for (const [socketID, socket] of connectedPeers.entries()) {
       
-            //    console.log(socketID, data.payload)
-            io.to(data.payload.userId).emit('candidate', data.payload.candidate)
-           
-            
-        })
+      // don't send to self
+      console.log(socketID , data.socketID)
+      if (socketID !== data.socketID) {
+        console.log(socketID, data.payload.type)
+        socket.emit('OfferOrAnswer', data.payload)
+      }
+    }
+  })
+  
+
+  socket.on('candidate', (data) => {
+    console.log("Caditate")
+
+    // send candidate to the other peer(s) if any
+    for (const [socketID, socket] of connectedPeers.entries()) {
+      // don't send to self
+      if (socketID !== data.socketID) {
+        console.log(socketID, data.payload)
+        socket.emit('candidate', data.payload)
+      }
+    }
+  })
         console.log("NEW CLIENT")
         socket.on("cancel", function ({ applicantId }) {
-            io.to(applicantId).emit("cancel")
+            this.to(applicantId).emit("cancel")
 
 
         })
-        socket.on("reject", function ({ companyId ,myId}) {
+        socket.on("reject", function ({ companyId }) {
             console.log("REJECTED ", companyId)
-            io.to(companyId).emit("rejected", ({ companyId }))
-            io.to(myId).emit("HideCalling")
+            this.to(companyId).emit("rejected", ({ companyId }))
+
         })
-        socket.on("accept", function ({ companyId ,myId}) {
-            console.log("ACCEPTED")
-            io.to(myId).emit("HideCalling")
-            io.to(companyId).emit("accepted", ({ companyId }))
+        socket.on("accept", function ({ companyId }) {
+            this.to(companyId).emit("accepted", ({ companyId }))
 
         })
         socket.on("CallUser", function ({ applicantId, companyId, companyName, companyImg }) {
-            io.to(applicantId).emit("ReceiveCall", ({ companyId, companyName, companyImg }))
+            this.to(applicantId).emit("ReceiveCall", ({ companyId, companyName, companyImg }))
             console.log("CALL USER ", applicantId, companyName, companyImg)
         })
 
@@ -184,13 +181,17 @@ module.exports = (io) => {
                 text
             }).save(async (err,message)=>{
                 
-              const response= await axios.get(`${url}/api/chat/conversation/${conv._id}/${to}/${from}`)
-                    console.log(response.data ,"RESPONSE")
-                    const conversation=response.data
-                    if(conversation){
-                        socket.emit("NewMessage",{message,conversation:conversation.from[0]})
-                        this.to(to_).emit("NewMessage",{message,conversation:conversation.to[0]})
-                    }
+              try{
+                const response= await axios.get(`${url}/api/chat/conversation/${conv._id}/${to}/${from}`)
+                console.log(response.data ,"RESPONSE")
+                const conversation=response.data
+                if(conversation){
+                    socket.emit("NewMessage",{message,conversation:conversation.from[0]})
+                    this.to(to_).emit("NewMessage",{message,conversation:conversation.to[0]})
+                }
+              }catch(e){
+ console.log("ERRRO ",e)
+              }
                 
 
                 
