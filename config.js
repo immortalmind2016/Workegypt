@@ -1,4 +1,4 @@
 module.exports={
-    url:""
+    url:"https://workegypt.herokuapp.com/"
 
 }
