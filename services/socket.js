@@ -184,14 +184,18 @@ module.exports = (io) => {
                 text
             }).save(async (err,message)=>{
                 
-              const response= await axios.get(`${url}api/chat/conversation/${conv._id}/${to}/${from}`)
-                    console.log(response.data ,"RESPONSE")
-                    const conversation=response.data
-                    if(conversation){
-                        socket.emit("NewMessage",{message,conversation:conversation.from[0]})
-                        this.to(to_).emit("NewMessage",{message,conversation:conversation.to[0]})
-                    }
-                
+            try{
+                const response= await axios.get(`${url}api/chat/conversation/${conv._id}/${to}/${from}`)
+                console.log(response.data ,"RESPONSE")
+                const conversation=response.data
+                if(conversation){
+                    socket.emit("NewMessage",{message,conversation:conversation.from[0]})
+                    this.to(to_).emit("NewMessage",{message,conversation:conversation.to[0]})
+                }
+            
+            }catch(e){
+
+            }
 
                 
 
