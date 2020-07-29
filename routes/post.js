@@ -1,5 +1,5 @@
 const Router=require("express").Router()
-const {uploadPost,editPost,deletePost,getMorePosts,getPosts}=require("../controller/Post/Post")
+const {uploadPost,editPost,deletePost,getMorePosts,getPosts}=require("../controller/post/Post")
 const passport=require("../services/jwtPassport")
 
 Router.post("/",uploadPost)
