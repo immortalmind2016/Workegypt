@@ -1,4 +1,4 @@
 module.exports={
-    url:"http://localhost:800"
+    url:""
 
 }
