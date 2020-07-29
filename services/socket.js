@@ -184,7 +184,7 @@ module.exports = (io) => {
                 text
             }).save(async (err,message)=>{
                 
-              const response= await axios.get(`${url}/api/chat/conversation/${conv._id}/${to}/${from}`)
+              const response= await axios.get(`${url}api/chat/conversation/${conv._id}/${to}/${from}`)
                     console.log(response.data ,"RESPONSE")
                     const conversation=response.data
                     if(conversation){
