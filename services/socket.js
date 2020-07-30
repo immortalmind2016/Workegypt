@@ -194,7 +194,7 @@ module.exports = (io) => {
                 }
             
             }catch(e){
-
+                    console.log("ERROR ",e)
             }
 
                 
