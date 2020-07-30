@@ -208,8 +208,12 @@ const editApplicantStatus=async(req,res,err)=>{
      const plans={
          gold:30,
          prem:20,
-         sil:10
+         silver:10
      }
+    const plans_=Object.keys(plans)
+ 
+    if (plans_.indexOf(type)==-1)
+     return res.status(404).json({err:"Plan not found"})
     try{
     Company_profile.findOneAndUpdate({user:req.user._id},{
         subscribe:{ count:plans[type],
