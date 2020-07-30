@@ -3,7 +3,7 @@ const Message = require("../model/Message")
 const Conversation = require("../model/Conversation")
 const mongoose=require("mongoose")
 const axios=require("axios")
-const {url}=require=("../config.js")
+const {url}=require("../config.js")
 let connectedPeers = new Map()
 
 module.exports = (io) => {
