@@ -29,7 +29,7 @@ const deleteOrder=async(req,res,err)=>{
 }
 const subscribe=async(req,res,err)=>{
     console.log("subscribe")
-    const plan=req.body.data.plan
+    let plan=req.body.data.plan
     ,amount=0,
     limit=0
     

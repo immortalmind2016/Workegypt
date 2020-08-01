@@ -188,8 +188,8 @@ const editApplicantStatus=async(req,res,err)=>{
         let size=25,
         skip=req.params.skip*size
        const profiles=await Applicant_profile.find({},["image"]).populate("user",["name","job_title","live_in","age"]).limit(size).skip(skip)
-   
-        res.json({profiles})
+        const totalResults=await Applicant_profile.find({}).count()
+        res.json({profiles,totalResults})
  }
  const opened=async(req,res,err)=>{
     const applicant=req.params.id
