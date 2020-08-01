@@ -35,7 +35,17 @@ async function sendEmail({to,subject,from,text,html}) {
   let testAccount = await nodemailer.createTestAccount();
 
   let transporter = nodemailer.createTransport({
-    host: "mail.workegypt.net",
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: testAccount.user, // generated ethereal user
+      pass: testAccount.pass, // generated ethereal password
+    },
+  });
+    /* nodemailer.createTransport({
+    //WORK EGYPT CONFIG
+ host: "mail.workegypt.net",
     pool:true,
     name:"workegypt.net",
     sendmail: true ,
@@ -53,7 +63,7 @@ async function sendEmail({to,subject,from,text,html}) {
       pass: "0115120323" // generated ethereal password
     }
     
-  });
+  });*/
 
   // verify connection configuration
     transporter.verify(function(error, success) {

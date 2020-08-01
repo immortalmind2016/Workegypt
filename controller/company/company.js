@@ -183,12 +183,73 @@ const editApplicantStatus=async(req,res,err)=>{
     }
    
  }
+
  const getProfiles=async(req,res,err)=>{
 
-        let size=25,
+        let size=25;
+        let filters={}
+        let {
+            searchText,
+            searchBy,
+            country,
+            city,
+            language,
+            careerLvl,
+            educationLvl,
+            job_title,
+            
+        }=req.query
+      //  console.log(req.query)
+        if(country){
+            filters.country=country
+        }
+        if(city){
+          
+            filters.city=city
+        }
+      
+        if(careerLvl){
+    
+            filters.current_career_level=careerLvl
+        }
+        if(educationLvl){
+           
+            filters.current_education_level=educationLvl
+        }
+        if(job_title){
+      
+            filters.job_title=job_title
+        }
+       if(searchBy=="job_title"){
+  
+            filters["experience.title"]=new RegExp(`^${searchText}$`, 'i')
+        }
+        console.log(filters)
+        let totalResults;
         skip=req.params.skip*size
-       const profiles=await Applicant_profile.find({},["image"]).populate("user",["name","job_title","live_in","age"]).limit(size).skip(skip)
-        const totalResults=await Applicant_profile.find({}).count()
+        console.log({...filters,...(language&&{"languages":{$in:[language]}})})
+       let profiles=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"],(err,data)=>{
+           //GET TOTALRESULT 
+           totalResults=data.filter((p)=>p.user).length
+       }).populate({path:"user",select:["name","job_title","live_in","age"],...((searchBy=="name"&&searchText)&&{match:{"name":searchText}})}).limit(size).skip(skip)
+       profiles=profiles.filter((profile)=>{
+           //FILTER IF NAME
+        if(searchBy=="name"&&profile.user&&searchText){
+            console.log(profile.user.name.toLowerCase()==searchText.toLowerCase())
+            if( profile.user.name.toLowerCase()==searchText.toLowerCase())
+            return true
+            else false
+        }
+        else if(profile.user){
+            return true
+        }
+       }
+
+       
+       )
+   
+  //      const totalResults=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"]).populate("user",["name","job_title","live_in","age"]).count()
+        
         res.json({profiles,totalResults})
  }
  const opened=async(req,res,err)=>{

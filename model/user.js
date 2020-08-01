@@ -3,7 +3,8 @@ const Schema=mongoose.Schema
 const User=new Schema({
     name:{
         type:String,
-        required:true
+        required:true,
+        index:true
     },
     confirmation_token:{
             type:String
