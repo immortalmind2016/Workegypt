@@ -267,8 +267,8 @@ const getAllJobs=async(req,res,err)=>{
               } 
         
         });
-        const totalResults=await Job.find({...(searchText&&{name:searchText})})
-            res.json({...jobs,totalResults})
+        const totalResults=await Job.find({...(searchText&&{name:searchText})}).count()
+            res.json({jobs,totalResults})
 
         }else{
             res.sendStatus(404)
