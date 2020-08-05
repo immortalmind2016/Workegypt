@@ -5,7 +5,8 @@ const Schema=mongoose.Schema
 const Job=new Schema({
     title:{
        type:String,
-       default:""
+       default:"",
+      
     },
     desc:{
        type:String,

@@ -196,9 +196,14 @@ const getAllJobs=async(req,res,err)=>{
     const size=25
     const {searchText}=req.query
     const skip=req.params.skip*size
+  
 
     const jobs=await Job.aggregate([
-        {$match:{...(searchText&&{$contains:{title:new RegExp(`^${searchText}$`, 'i')}})}},
+        {$match:{...(searchText&&{title:{ $regex: searchText, $options: "i" }})}
+        
+        }
+            ,
+
         {$project:{
             title:1,
             desc:1,
@@ -267,7 +272,7 @@ const getAllJobs=async(req,res,err)=>{
               } 
         
         });
-        const totalResults=await Job.find({...(searchText&&{$contains:{title:new RegExp(`^${searchText}$`, 'i')}})}).count()
+        const totalResults=await Job.find({...(searchText&&{title:{ $regex: searchText, $options: "i" }})}).count()
             res.json({jobs,totalResults})
 
         }else{

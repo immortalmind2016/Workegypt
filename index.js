@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+
+
+//mongoose.connect("mongodb://immortalmind:0115120323a@ds036967.mlab.com:36967/test1", { useUnifiedTopology: true, useNewUrlParser: true })
 mongoose.connect("mongodb+srv://mohammed:1112@vidjot-pgfzx.mongodb.net/workEg?retryWrites=true&w=majority", { useUnifiedTopology: true, useNewUrlParser: true })
 
 //
