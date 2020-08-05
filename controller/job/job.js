@@ -193,7 +193,12 @@ const editJob=(req,res,err)=>{
    
 }
 const getAllJobs=async(req,res,err)=>{
+    const size=25
+    const {searchText}=req.query
+    const skip=req.params.skip*size
+
     const jobs=await Job.aggregate([
+        {$match:{...(searchText&&{name:searchText})}},
         {$project:{
             title:1,
             desc:1,
@@ -249,7 +254,7 @@ const getAllJobs=async(req,res,err)=>{
     
         }}
 
-    ]).sort({_id:1})
+    ]).sort({_id:1}).skip(skip).limit(size)
         console.log(err,jobs)
         if(jobs){
             await Job.populate(jobs, {
