@@ -21,7 +21,7 @@ mainDataShape:
 Router.post("/",passport.authenticate('jwt', { session: false }),createJob)
 Router.delete("/:jobid",passport.authenticate('jwt', { session: false }),deleteJob)
 Router.put("/:jobid",passport.authenticate('jwt', { session: false }),editJob)
-Router.get("/",getAllJobs)
+Router.get("/:skip",getAllJobs)
 Router.get("/:jobid",getJob)
 
 
