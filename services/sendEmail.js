@@ -35,13 +35,12 @@ async function sendEmail({to,subject,from,text,html}) {
   let testAccount = await nodemailer.createTestAccount();
 
   let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: testAccount.user, // generated ethereal user
-      pass: testAccount.pass, // generated ethereal password
-    },
+    service: 'gmail',
+  host: 'smtp.gmail.com',
+  auth: {
+    user: 'software.mohamedsalah@gmail.com',
+    pass: '0115120323'
+  }
   });
     /* nodemailer.createTransport({
     //WORK EGYPT CONFIG
