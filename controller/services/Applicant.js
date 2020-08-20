@@ -1,7 +1,7 @@
 var express = require('express')
 var {url}=require("../../config")
 const applicantUploadVideos=(req,res,err)=>{
-
+    console.log("RESQUEEEEEEEEEEEEEST")
     const file = req.file
     console.log(file)
     if (!file) {
