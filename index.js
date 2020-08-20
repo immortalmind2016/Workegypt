@@ -23,7 +23,7 @@ const admin = require("./routes/admin")
 const post = require("./routes/post")
 const event = require("./routes/event")
 const chat = require("./routes/chat")
-
+require("./init")
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(bodyParser.json())
@@ -86,3 +86,4 @@ const PORT = process.env.PORT||9000
 http.listen(PORT, () => {
      console.log(`listining on port number ${PORT}`)
 })
+
