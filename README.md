@@ -1,4 +1,4 @@
-# CONFIGURATION
+# WorkEgypt
 ## configuration
   url: your-website-url
 
