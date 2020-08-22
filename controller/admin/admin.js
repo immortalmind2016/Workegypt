@@ -5,7 +5,9 @@ const User=mongoose.model("User")
 const Company_profile=mongoose.model("Company_profile")
 const Applicant_profile=mongoose.model("Applicant_profile")
 
-const Analysis=require("../../model/Analysis")
+const Analysis=require("../../model/Analysis");
+const passport = require('passport');
+const config = require('../../config');
 
 
 
@@ -129,11 +131,24 @@ const addVisitor=(req,res,err)=>{
 const getTests=(req,res,err)=>{
     
 }
+const login=(req,res,err)=>{
+    const {username,password}=req.body.data;
+ 
+    const token=jwt.sign({username,password},"secret")
+    res.json({token:`Bearer  ${token}`})
+}
+const get=(req,res,err)=>{
+
+    res.json({username:config.username})
+    
+}
 module.exports={
     getWebSiteAnalysis,
     addVisitor,
     getAnalysis,
-    getTests
+    getTests,
+    login,
+    get
  
 
 }
