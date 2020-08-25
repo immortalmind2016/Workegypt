@@ -1,7 +1,11 @@
 
 var JwtStrategy = require('passport-jwt').Strategy,
 ExtractJwt = require('passport-jwt').ExtractJwt;
-passport=require("passport")
+const passport=require("passport").Passport
+let pass=new passport()
+
+
+
 var opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = 'secret';
@@ -17,7 +21,7 @@ bcrypt.hash(adminPassword, saltRounds, function(err, hash) {
     hashedAdminPassword=hash
 });
 
-module.exports=passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+module.exports=pass.use(new JwtStrategy(opts, function(jwt_payload, done) {
         console.log(jwt_payload)
 
     bcrypt.compare(jwt_payload.password, hashedAdminPassword, function(err, result) {
