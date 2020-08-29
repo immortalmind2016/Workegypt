@@ -67,7 +67,7 @@ const going=(req,res,err)=>{
    
     try{
         Event.updateOne({_id:req.body.data.id},{$inc:{"going_counter":1}},(err,event)=>{
-            res.json({event})
+            res.json({success:true})
         })
     
     }catch(e){
