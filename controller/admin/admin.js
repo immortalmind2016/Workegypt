@@ -10,6 +10,7 @@ const passport = require('passport');
 const config = require('../../config');
 const Post = require('../../model/Post');
 
+const Event = require('../../model/Event');
 
 
 
@@ -115,6 +116,10 @@ let events= Event.find({}).count()
 
 companies=await companies
 applicants=await applicants
+posts=await posts
+events=await events
+
+
 res.json({analysis:{jobs:jobs[0],companies,applicants,posts,events}})
  
  
