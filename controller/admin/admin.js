@@ -8,6 +8,7 @@ const Applicant_profile=mongoose.model("Applicant_profile")
 const Analysis=require("../../model/Analysis");
 const passport = require('passport');
 const config = require('../../config');
+const Post = require('../../model/Post');
 
 
 
@@ -20,10 +21,6 @@ const getWebSiteAnalysis=async(req,res,err)=>{
 { $project:
     {
       month: { $month: "$created_date" },
-
-   
-
-
  
     },
     
@@ -42,7 +39,7 @@ const getWebSiteAnalysis=async(req,res,err)=>{
     ],async(err,analysis)=>{
         console.log(analysis)
       let total= await User.find({}).count()
-       res.json({analysis:{per_month:analysis[0],total}})
+       res.json({analysis:{per_month:analysis[0],users,views:0}})
     });
   
  }
@@ -109,10 +106,16 @@ const getWebSiteAnalysis=async(req,res,err)=>{
         
 
     ])
-let companies=await Company_profile.find({}).count()
-let applicants=await Applicant_profile.find({}).count()
 
-res.json({analysis:{jobs:jobs[0],companies,applicants}})
+
+let companies= Company_profile.find({}).count()
+let applicants= Applicant_profile.find({}).count()
+let posts= Post.find({}).count()
+let events= Event.find({}).count()
+
+companies=await companies
+applicants=await applicants
+res.json({analysis:{jobs:jobs[0],companies,applicants,posts,events}})
  
  
  
