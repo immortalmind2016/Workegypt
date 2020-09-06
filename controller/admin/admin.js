@@ -16,7 +16,7 @@ const Event = require('../../model/Event');
 
 
 const getWebSiteAnalysis=async(req,res,err)=>{
-    Analysis.aggregate([
+    User.aggregate([
     
 
 { $project:
@@ -40,7 +40,7 @@ const getWebSiteAnalysis=async(req,res,err)=>{
     ],async(err,analysis)=>{
         console.log(analysis)
       let total= await User.find({}).count()
-       res.json({analysis:{per_month:analysis[0],users,views:0}})
+       res.json({analysis:{per_month:analysis,views:0,total}})
     });
   
  }
