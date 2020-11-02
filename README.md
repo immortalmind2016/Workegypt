@@ -14,3 +14,5 @@ every company can create it's own exam for every openining vacancies and job see
  
 ## DEMO
 > link: https://workegyptv2.herokuapp.com/
+## Using 
+Nodejs,reactjs,WebRTC,mongoose,mongodb,redux
