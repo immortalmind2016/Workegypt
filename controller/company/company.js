@@ -341,7 +341,7 @@ const editApplicantStatus=async(req,res,err)=>{
      return res.status(404).json({err:"Plan not found"})
     try{
     Company_profile.findOneAndUpdate({_id:companyProfileId},{
-        subscribe:{ count:plans[type],
+        subscribe:{ count:plans[type]?plans[type]:0,
             type
         }
         },{new:true},(err,doc)=>{
