@@ -40,11 +40,9 @@ const Company_profile=new Schema({
     subscribe:{
       type:Object,
       default:{
-        count:{
-          type:Number,
-          default:0
-        },
-        plan:null
+        count:Number
+          ,
+          type:null
       }
     }
     

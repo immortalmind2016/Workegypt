@@ -14,6 +14,8 @@ const signupUser=(req,res,err)=>{
         password,
         name,
         type,
+        ...(type&&{subscribe:{count:0,type:null}})
+        ,
         confirmation_token:randomstring.generate(7)
 
     })
