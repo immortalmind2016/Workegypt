@@ -271,22 +271,23 @@ const editApplicantStatus=async(req,res,err)=>{
     console.log(filters)
     let totalResults;
     skip=req.params.skip*size
-   let users=await User.find({type:true,...((searchBy=="name"&&searchText)&&{name: { $regex: 'e', $options: 'i'}})})
-
+   let users=await User.find({type:true,...((searchBy=="name"&&searchText)&&{name:{$regex:searchText}})})
+   console.log("USERS ",users)
    if(!users){
        return res.json({profiles:[],totalResults:0})
    }
-   console.log("USERS ",users)
    let usersIds=users.map((user)=>{
        return user._id
    })
+   console.log(usersIds)
    let profiles=await Company_profile.find({user:{$in:usersIds}},["image","subscribe"],(err,data)=>{
        //GET TOTALRESULT 
        totalResults=data.filter((p)=>p.user).length
    }).populate({path:"user",select:["name"]}).limit(size).skip(skip)
     profiles=profiles.filter((profile)=>{
        //FILTER IF NAME
-       console.log(profile)
+       return true
+    /*   console.log(profile)
 
     if(searchBy=="name"&&profile.user&&searchText){
         console.log(profile.user.name.toLowerCase()==searchText.toLowerCase())
@@ -296,7 +297,7 @@ const editApplicantStatus=async(req,res,err)=>{
     }
     else if(profile.user){
         return true
-    }
+    }*/
    }
 
    
