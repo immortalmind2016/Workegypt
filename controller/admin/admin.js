@@ -143,7 +143,7 @@ const login=(req,res,err)=>{
     const {username,password}=req.body.data;
  
     const token=jwt.sign({username,password},"secret")
-    res.json({token:`Bearer  ${token}`})
+    res.json({token:`Bearer ${token}`})
 }
 const get=(req,res,err)=>{
 
