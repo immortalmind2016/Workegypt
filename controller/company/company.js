@@ -4,7 +4,8 @@ const mongoose=require("mongoose")
 const Company_profile=require("../../model/Company_profile")
 const Applicant_profile=require("../../model/Applicant_profile")
 
-const Company_applicant=require("../../model/Company_applicant")
+const Company_applicant=require("../../model/Company_applicant");
+const User = require('../../model/user');
 
 const getCompanyJobs=async(req,res,err)=>{
     const jobs=await Job.aggregate([
@@ -260,28 +261,33 @@ const editApplicantStatus=async(req,res,err)=>{
     let {
         searchText,
         searchBy,
-       name
+       
         
     }=req.query
   //  console.log(req.query)
-    if(name){
-        filters.name=name
-    }
+   
+    console.log("REQ > QUERY ",req.query)
  
-   if(searchBy=="name"){
-
-        filters["name"]=new RegExp(`^${searchText}$`, 'i')
-    }
     console.log(filters)
     let totalResults;
     skip=req.params.skip*size
-   
-   let profiles=await Company_profile.find({...filters},["image","subscribe"],(err,data)=>{
+   let users=await User.find({type:true,...((searchBy=="name"&&searchText)&&{name: { $regex: 'e', $options: 'i'}})})
+
+   if(!users){
+       return res.json({profiles:[],totalResults:0})
+   }
+   console.log("USERS ",users)
+   let usersIds=users.map((user)=>{
+       return user._id
+   })
+   let profiles=await Company_profile.find({user:{$in:usersIds}},["image","subscribe"],(err,data)=>{
        //GET TOTALRESULT 
        totalResults=data.filter((p)=>p.user).length
-   }).populate({path:"user",select:["name"],...((searchBy=="name"&&searchText)&&{match:{"name":searchText}})}).limit(size).skip(skip)
-   profiles=profiles.filter((profile)=>{
+   }).populate({path:"user",select:["name"]}).limit(size).skip(skip)
+    profiles=profiles.filter((profile)=>{
        //FILTER IF NAME
+       console.log(profile)
+
     if(searchBy=="name"&&profile.user&&searchText){
         console.log(profile.user.name.toLowerCase()==searchText.toLowerCase())
         if( profile.user.name.toLowerCase()==searchText.toLowerCase())
