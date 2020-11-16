@@ -262,8 +262,10 @@ const editApplicantStatus=async(req,res,err)=>{
         searchText,
         searchBy,
        
-        
     }=req.query
+    if(searchBy=="plan"){
+        filters["subscribe.type"]={$regex:searchText}
+    }
   //  console.log(req.query)
    
     console.log("REQ > QUERY ",req.query)
@@ -271,16 +273,21 @@ const editApplicantStatus=async(req,res,err)=>{
     console.log(filters)
     let totalResults;
     skip=req.params.skip*size
-   let users=await User.find({type:true,...((searchBy=="name"&&searchText)&&{name:{$regex:searchText}})})
-   console.log("USERS ",users)
-   if(!users){
-       return res.json({profiles:[],totalResults:0})
-   }
-   let usersIds=users.map((user)=>{
-       return user._id
-   })
-   console.log(usersIds)
-   let profiles=await Company_profile.find({user:{$in:usersIds}},["image","subscribe"],(err,data)=>{
+    let usersIds=[]
+  if(searchBy=="name"){
+    let users=await User.find({type:true,...((searchBy=="name"&&searchText)&&{name:{$regex:searchText}})})
+    if(!users){
+        return res.json({profiles:[],totalResults:0})
+    }
+     usersIds=users.map((user)=>{
+        return user._id
+    })
+    console.log({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters})
+  }
+
+
+ 
+   let profiles=await Company_profile.find({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters},["image","subscribe"],(err,data)=>{
        //GET TOTALRESULT 
        totalResults=data.filter((p)=>p.user).length
    }).populate({path:"user",select:["name"]}).limit(size).skip(skip)
