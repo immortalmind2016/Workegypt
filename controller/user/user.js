@@ -84,7 +84,7 @@ const signinUser=(req,res,err)=>{
     User.findOne({email,password},(err,user)=>{
         if(user){
             let user_=user
-            let token= jwt.sign({...user_},"secret",{ expiresIn: '365d' })
+            let token= jwt.sign({...user_},"secret",{ expiresIn: 86400 })
 
             if(user.confirmed){
                 console.log("EMAIL CONFIRMED")

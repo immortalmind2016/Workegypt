@@ -23,13 +23,31 @@ return storage
 }
 
 var multer  = require('multer')
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
+const s3 = new aws.S3({ accessKeyId: "AKIA4WGI276NCEJHRNFD", secretAccessKey: "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", httpOptions: { timeout: 300000 } });
+
+function createStorageS3(){
+var storage = multerS3({
+    s3: s3,
+    bucket: 'merntask',
+    metadata: function (req, file, cb) {
+      cb(null, {fieldName: file.fieldname});
+    },
+    key: function (req, file, cb) {
+      cb(null, +Date.now()+"-"+file.originalname)
+    }
+  })
+
+return storage
+}
 
 
 
 
-var uploadVideo = multer({ storage: createStorage("public/uploads/videos/company") })
+var uploadVideo = multer({ storage: createStorageS3(),limits: { fileSize: 15000000 } })
 var uploadImage = multer({ storage: createStorage("public/uploads/images/company") })
-var uploadVideoA = multer({ storage: createStorage("public/uploads/videos/applicant") })
+var uploadVideoA = multer({ storage: createStorageS3(),limits: { fileSize: 1000 } })
 var uploadImageA = multer({ storage: createStorage("public/uploads/images/applicant") })
 
 var uploadCv = multer({ storage: createStorage("public/uploads/cvs/applicant") })

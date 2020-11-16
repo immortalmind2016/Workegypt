@@ -37,9 +37,10 @@ async function sendEmail({to,subject,from,text,html}) {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
   host: 'smtp.gmail.com',
+port: 465,
   auth: {
-    user: 'software.mohamedsalah@gmail.com',
-    pass: '0115120323'
+    user: 'ahmed2291996@gmail.com',
+    pass: '2291996echo'
   }
   });
     /* nodemailer.createTransport({

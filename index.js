@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
+// DB Config
+const db = require('./config/keys').mongoURI;
 
-
-//mongoose.connect("mongodb://immortalmind:0115120323a@ds036967.mlab.com:36967/test1", { useUnifiedTopology: true, useNewUrlParser: true })
-mongoose.connect("mongodb+srv://mohammed:1112@vidjot-pgfzx.mongodb.net/workEg?retryWrites=true&w=majority", { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose.connect("mongodb://immortalmind:0115120323a@ds036967.mlab.com:36967/test1", { useUnifiedTopology: true, useNewUrlParser: true })
+//mongoose.connect(db
+//"mongodb://localhost/workegypt"
+//, { useUnifiedTopology: true, useNewUrlParser: true })
 
 //
 const express = require("express");
@@ -78,12 +81,21 @@ app.use("/api/post/", post)
 app.use("/api/event/", event)
 app.use("/api/chat/", chat)
 
-app.use("/*",(req,res,err)=>{
-     res.sendFile(__dirname+"/public/index.html")
-   })
+// // Server static assets if in production
+// if (process.env.NODE_ENV === 'production') {
+//      // Set static folder
+      app.use(express.static('client/build'));
+   
+     app.get('*', (req, res) => {
+       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+     });
+//    }
+
+// app.use("/*",(req,res,err)=>{
+//      res.sendFile(__dirname+"/public/index.html")
+//    })
 console.log("TEST")
-const PORT = process.env.PORT||9000
+const PORT = process.env.PORT||5000
 http.listen(PORT, () => {
      console.log(`listining on port number ${PORT}`)
 })
-

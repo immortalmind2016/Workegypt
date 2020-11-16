@@ -204,7 +204,7 @@ const editApplicantStatus=async(req,res,err)=>{
             filters.country=country
         }
         if(city){
-          
+
             filters.city=city
         }
       
@@ -252,6 +252,56 @@ const editApplicantStatus=async(req,res,err)=>{
         
         res.json({profiles,totalResults})
  }
+
+
+ const getCompanies=async(req,res,err)=>{
+    let size=25;
+    let filters={}
+    let {
+        searchText,
+        searchBy,
+       name
+        
+    }=req.query
+  //  console.log(req.query)
+    if(name){
+        filters.name=name
+    }
+ 
+   if(searchBy=="name"){
+
+        filters["name"]=new RegExp(`^${searchText}$`, 'i')
+    }
+    console.log(filters)
+    let totalResults;
+    skip=req.params.skip*size
+   
+   let profiles=await Company_profile.find({...filters},["image","subscribe"],(err,data)=>{
+       //GET TOTALRESULT 
+       totalResults=data.filter((p)=>p.user).length
+   }).populate({path:"user",select:["name"],...((searchBy=="name"&&searchText)&&{match:{"name":searchText}})}).limit(size).skip(skip)
+   profiles=profiles.filter((profile)=>{
+       //FILTER IF NAME
+    if(searchBy=="name"&&profile.user&&searchText){
+        console.log(profile.user.name.toLowerCase()==searchText.toLowerCase())
+        if( profile.user.name.toLowerCase()==searchText.toLowerCase())
+        return true
+        else false
+    }
+    else if(profile.user){
+        return true
+    }
+   }
+
+   
+   )
+
+//      const totalResults=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"]).populate("user",["name","job_title","live_in","age"]).count()
+    
+    res.json({profiles,totalResults})
+}
+
+
  const opened=async(req,res,err)=>{
     const applicant=req.params.id
     const companyApp = await Company_applicant.findOne({company:req.user._id,applicant:req.params.id})
@@ -265,7 +315,7 @@ const editApplicantStatus=async(req,res,err)=>{
    
  }
  const subscribe=async(req,res,err)=>{
-     const {type}=req.body.data
+     const {type,companyProfileId}=req.body.data
      const plans={
          gold:30,
          prem:20,
@@ -276,7 +326,7 @@ const editApplicantStatus=async(req,res,err)=>{
     if (plans_.indexOf(type)==-1)
      return res.status(404).json({err:"Plan not found"})
     try{
-    Company_profile.findOneAndUpdate({user:req.user._id},{
+    Company_profile.findOneAndUpdate({_id:companyProfileId},{
         subscribe:{ count:plans[type],
             type
         }
@@ -305,6 +355,7 @@ module.exports={
     openContact,
     subscribe,
     opened,
-    getProfiles
+    getProfiles,
+    getCompanies
 
 }

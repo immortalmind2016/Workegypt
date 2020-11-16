@@ -18,7 +18,7 @@ const companyUploadVideos=(req,res,err)=>{
      return res.sendStatus(400)
     }
     console.log("FIOLEEEEE ",file)
-    res.json({link:`${url}/${file.destination.replace("public/","")}/${file.filename}`})
+    res.json({link:`${req.file.location}`})
 }
 module.exports={
     companyUploadVideos,
