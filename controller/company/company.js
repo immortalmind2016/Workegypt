@@ -169,72 +169,150 @@ const editApplicantStatus=async(req,res,err)=>{
 
 
  const openContact=async(req,res,err)=>{
-    const applicant=req.body.data.id
-    const companyProfile = await Company_profile.findOneAndUpdate({user:req.user._id,"subscribe.count":{$gte:1}},{$inc:{"subscribe.count":parseInt(-1)}},()=>{})
-    if(companyProfile){
- 
-        new Company_applicant({
-            applicant,
-            company:req.user._id
-        }).save(()=>{
-            res.sendStatus(200)
-        })
-    }else{
-        res.sendStatus(404).json({error:"not found"})
+    
+    try{
+        const applicant=req.body.data.id
+        const companyProfile = await Company_profile.findOneAndUpdate({user:req.user._id,"subscribe.count":{$gte:1}},{$inc:{"subscribe.count":parseInt(-1)}},()=>{})
+        if(companyProfile){
+     
+            new Company_applicant({
+                applicant,
+                company:req.user._id
+            }).save(()=>{
+                res.sendStatus(200)
+            })
+        }else{
+            res.sendStatus(404).json({error:"not found"})
+        }
+    }
+    catch(e){
+        console.log(e)
+        res.status(500).json({error:e})
     }
    
  }
 
  const getProfiles=async(req,res,err)=>{
 
+      
+        try{
+            let size=25;
+            let filters={}
+            let {
+                searchText,
+                searchBy,
+                country,
+                city,
+                language,
+                careerLvl,
+                educationLvl,
+                job_title,
+                
+            }=req.query
+          //  console.log(req.query)
+            if(country){
+                filters.country=country
+            }
+            if(city){
+    
+                filters.city=city
+            }
+          
+            if(careerLvl){
+        
+                filters.current_career_level=careerLvl
+            }
+            if(educationLvl){
+               
+                filters.current_education_level=educationLvl
+            }
+            if(job_title){
+          
+                filters.job_title=job_title
+            }
+           if(searchBy=="job_title"){
+      
+                filters["experience.title"]=new RegExp(`^${searchText}$`, 'i')
+            }
+            console.log(filters)
+            let totalResults;
+            skip=req.params.skip*size
+            console.log({...filters,...(language&&{"languages":{$in:[language]}})})
+           let profiles=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"],(err,data)=>{
+               //GET TOTALRESULT 
+               totalResults=data.filter((p)=>p.user).length
+           }).populate({path:"user",select:["name","job_title","live_in","age"],...((searchBy=="name"&&searchText)&&{match:{"name":searchText}})}).limit(size).skip(skip)
+           profiles=profiles.filter((profile)=>{
+               //FILTER IF NAME
+            if(searchBy=="name"&&profile.user&&searchText){
+                console.log(profile.user.name.toLowerCase()==searchText.toLowerCase())
+                if( profile.user.name.toLowerCase()==searchText.toLowerCase())
+                return true
+                else false
+            }
+            else if(profile.user){
+                return true
+            }
+           }
+    
+           
+           )
+       
+      //      const totalResults=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"]).populate("user",["name","job_title","live_in","age"]).count()
+            
+            res.json({profiles,totalResults})
+        }
+        catch(e){
+            console.log(e)
+            res.status(500).json({error:e})
+        }
+ }
+
+
+ const getCompanies=async(req,res,err)=>{
+    try{
         let size=25;
         let filters={}
         let {
             searchText,
             searchBy,
-            country,
-            city,
-            language,
-            careerLvl,
-            educationLvl,
-            job_title,
-            
-        }=req.query
-      //  console.log(req.query)
-        if(country){
-            filters.country=country
-        }
-        if(city){
-
-            filters.city=city
-        }
-      
-        if(careerLvl){
-    
-            filters.current_career_level=careerLvl
-        }
-        if(educationLvl){
            
-            filters.current_education_level=educationLvl
+        }=req.query
+        if(searchBy=="plan"){
+            filters["subscribe.type"]={$regex:searchText}
         }
-        if(job_title){
-      
-            filters.job_title=job_title
-        }
-       if(searchBy=="job_title"){
-  
-            filters["experience.title"]=new RegExp(`^${searchText}$`, 'i')
-        }
+      //  console.log(req.query)
+       
+        console.log("REQ > QUERY ",req.query)
+     
         console.log(filters)
         let totalResults;
         skip=req.params.skip*size
-        console.log({...filters,...(language&&{"languages":{$in:[language]}})})
-       let profiles=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"],(err,data)=>{
+        let usersIds=[]
+      if(searchBy=="name"){
+        let users=await User.find({type:true,...((searchBy=="name"&&searchText)&&{name:{$regex:searchText}})})
+        if(!users){
+            return res.json({profiles:[],totalResults:0})
+        }
+         usersIds=users.map((user)=>{
+            return user._id
+        })
+        console.log({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters})
+      }
+    
+       let profiles=await Company_profile.find({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters},["image","subscribe"],(err,data)=>{
            //GET TOTALRESULT 
            totalResults=data.filter((p)=>p.user).length
-       }).populate({path:"user",select:["name","job_title","live_in","age"],...((searchBy=="name"&&searchText)&&{match:{"name":searchText}})}).limit(size).skip(skip)
-       profiles=profiles.filter((profile)=>{
+       }).populate({path:"user",select:["name"]}).limit(size).skip(skip)
+       if(totalResults==25){
+        totalResults=await Company_profile.find({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters},["image","subscribe"]).count()
+            //GET TOTALRESULT 
+       }
+        profiles=profiles.filter((profile)=>{
            //FILTER IF NAME
+           return true
+        /*   console.log(profile)
+    
         if(searchBy=="name"&&profile.user&&searchText){
             console.log(profile.user.name.toLowerCase()==searchText.toLowerCase())
             if( profile.user.name.toLowerCase()==searchText.toLowerCase())
@@ -243,81 +321,20 @@ const editApplicantStatus=async(req,res,err)=>{
         }
         else if(profile.user){
             return true
-        }
+        }*/
        }
-
+    
        
        )
-   
-  //      const totalResults=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"]).populate("user",["name","job_title","live_in","age"]).count()
-        
-        res.json({profiles,totalResults})
- }
-
-
- const getCompanies=async(req,res,err)=>{
-    let size=25;
-    let filters={}
-    let {
-        searchText,
-        searchBy,
-       
-    }=req.query
-    if(searchBy=="plan"){
-        filters["subscribe.type"]={$regex:searchText}
-    }
-  //  console.log(req.query)
-   
-    console.log("REQ > QUERY ",req.query)
- 
-    console.log(filters)
-    let totalResults;
-    skip=req.params.skip*size
-    let usersIds=[]
-  if(searchBy=="name"){
-    let users=await User.find({type:true,...((searchBy=="name"&&searchText)&&{name:{$regex:searchText}})})
-    if(!users){
-        return res.json({profiles:[],totalResults:0})
-    }
-     usersIds=users.map((user)=>{
-        return user._id
-    })
-    console.log({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters})
-  }
-
-
- 
-   let profiles=await Company_profile.find({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters},["image","subscribe"],(err,data)=>{
-       //GET TOTALRESULT 
-       totalResults=data.filter((p)=>p.user).length
-   }).populate({path:"user",select:["name"]}).limit(size).skip(skip)
-   if(totalResults==25){
-    totalResults=await Company_profile.find({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters},["image","subscribe"]).count()
-        //GET TOTALRESULT 
-       
-   }
-    profiles=profiles.filter((profile)=>{
-       //FILTER IF NAME
-       return true
-    /*   console.log(profile)
-
-    if(searchBy=="name"&&profile.user&&searchText){
-        console.log(profile.user.name.toLowerCase()==searchText.toLowerCase())
-        if( profile.user.name.toLowerCase()==searchText.toLowerCase())
-        return true
-        else false
-    }
-    else if(profile.user){
-        return true
-    }*/
-   }
-
-   
-   )
-
-//      const totalResults=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"]).populate("user",["name","job_title","live_in","age"]).count()
     
-    res.json({profiles,totalResults,size})
+    //      const totalResults=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"]).populate("user",["name","job_title","live_in","age"]).count()
+        
+        res.json({profiles,totalResults,size})
+    } catch(e){
+        console.log(e)
+        res.status(500).json({message:e})
+    }
+    
 }
 
 
@@ -336,8 +353,8 @@ const editApplicantStatus=async(req,res,err)=>{
  const subscribe=async(req,res,err)=>{
      const {type,companyProfileId}=req.body.data
      const plans={
-         gold:30,
-         prem:20,
+         plat:30,
+         gold:20,
          silver:10
      }
     const plans_=Object.keys(plans)
