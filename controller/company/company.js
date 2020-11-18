@@ -291,6 +291,11 @@ const editApplicantStatus=async(req,res,err)=>{
        //GET TOTALRESULT 
        totalResults=data.filter((p)=>p.user).length
    }).populate({path:"user",select:["name"]}).limit(size).skip(skip)
+   if(totalResults==25){
+    totalResults=await Company_profile.find({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters},["image","subscribe"]).count()
+        //GET TOTALRESULT 
+       
+   }
     profiles=profiles.filter((profile)=>{
        //FILTER IF NAME
        return true
@@ -312,7 +317,7 @@ const editApplicantStatus=async(req,res,err)=>{
 
 //      const totalResults=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"]).populate("user",["name","job_title","live_in","age"]).count()
     
-    res.json({profiles,totalResults})
+    res.json({profiles,totalResults,size})
 }
 
 
