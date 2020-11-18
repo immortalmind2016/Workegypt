@@ -8,82 +8,89 @@ const Company_applicant=require("../../model/Company_applicant");
 const User = require('../../model/user');
 
 const getCompanyJobs=async(req,res,err)=>{
-    const jobs=await Job.aggregate([
-        {$match:{company:mongoose.Types.ObjectId(req.params.companyid)}},
-        {$project:{
-            title:1,
-            desc:1,
-            requirements:1,
-            experience:1,
-            level:1,
-            language:1,
-            salary:1,
-            type:1,
-            open:1,
-            draf:1,
-            job_type:1,
-            location:1,
-            city:1,
-            career_level:1,
-            years_of_experience:1,
-            salary_range:1,
-            number_of_vacancies:1,
-            job_role:1,
-            hide_salary:1,
-            quiz_length:{$size:"$quiz"},
-            created_date:1,
-            quiz_time:1,
-            company:1,
-            applicantsNo:{$size:"$applicants"},
-            rejected:{$size:{
-                $filter:{
-                    input:'$applicants',
-                    cond:{"$eq":["$$this.status","rejected"]}
-                }
-            }},
-            positions:1,
-            languages:1,
-            lang_score:1,
-            accepted:{$size:{
-                $filter:{
-                    input:'$applicants',
-                    cond:{"$eq":["$$this.status","accepted"]}
-                }
-            }},
-            oncontact:{$size:{
-                $filter:{
-                    input:'$applicants',
-                    cond:{"$eq":["$$this.status","oncontact"]}
-                }
-            }},
-            shortlisted:{$size:{
-                $filter:{
-                    input:'$applicants',
-                    cond:{"$eq":["$$this.status","shortlisted"]}
-                }
-            }}
-           
-    
-        }}
-
-    ])
-        console.log(err,jobs)
-        if(jobs){
-            await Job.populate(jobs, {
-                path:"company",
-            select:["image"],
-            populate: {
-                path: 'user',
-                model: 'User',
-                select:"name"
-              } 
+   
+    try{
+        const jobs=await Job.aggregate([
+            {$match:{company:mongoose.Types.ObjectId(req.params.companyid)}},
+            {$project:{
+                title:1,
+                desc:1,
+                requirements:1,
+                experience:1,
+                level:1,
+                language:1,
+                salary:1,
+                type:1,
+                open:1,
+                draf:1,
+                job_type:1,
+                location:1,
+                city:1,
+                career_level:1,
+                years_of_experience:1,
+                salary_range:1,
+                number_of_vacancies:1,
+                job_role:1,
+                hide_salary:1,
+                quiz_length:{$size:"$quiz"},
+                created_date:1,
+                quiz_time:1,
+                company:1,
+                applicantsNo:{$size:"$applicants"},
+                rejected:{$size:{
+                    $filter:{
+                        input:'$applicants',
+                        cond:{"$eq":["$$this.status","rejected"]}
+                    }
+                }},
+                positions:1,
+                languages:1,
+                lang_score:1,
+                accepted:{$size:{
+                    $filter:{
+                        input:'$applicants',
+                        cond:{"$eq":["$$this.status","accepted"]}
+                    }
+                }},
+                oncontact:{$size:{
+                    $filter:{
+                        input:'$applicants',
+                        cond:{"$eq":["$$this.status","oncontact"]}
+                    }
+                }},
+                shortlisted:{$size:{
+                    $filter:{
+                        input:'$applicants',
+                        cond:{"$eq":["$$this.status","shortlisted"]}
+                    }
+                }}
+               
         
-        });
-            res.json({jobs})
-
-        }else{
-            res.sendStatus(404)
-        }
+            }}
+    
+        ])
+            console.log(err,jobs)
+            if(jobs){
+                await Job.populate(jobs, {
+                    path:"company",
+                select:["image"],
+                populate: {
+                    path: 'user',
+                    model: 'User',
+                    select:"name"
+                  } 
+            
+            });
+                res.json({jobs})
+    
+            }else{
+                res.sendStatus(404)
+            }
+    }
+    catch(err){
+        return res.json({error:err})
+    
+    }   
  
 }
 const jobApplicants=async(req,res,err)=>{
@@ -304,7 +311,7 @@ const editApplicantStatus=async(req,res,err)=>{
            //GET TOTALRESULT 
            totalResults=data.filter((p)=>p.user).length
        }).populate({path:"user",select:["name"]}).limit(size).skip(skip)
-       if(totalResults==25){
+       if(totalResults==25||skip!=0){
         totalResults=await Company_profile.find({...(searchBy=="name"&&{user:{$in:usersIds}}),...filters},["image","subscribe"]).count()
             //GET TOTALRESULT 
        }
