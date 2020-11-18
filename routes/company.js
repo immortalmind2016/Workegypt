@@ -41,7 +41,7 @@ Router.delete("/cancel-job/:jobid/",passport.authenticate('jwt', { session: fals
 Router.post("/open-contact/",passport.authenticate('jwt', { session: false }),openContact)
 Router.get("/opened/:id",passport.authenticate('jwt', { session: false }),opened)
 
-Router.post("/subscribe/",passport.authenticate('jwt', { session: false }),subscribe)
+Router.post("/subscribe/",adminPassport.authenticate('jwt', { session: false }),subscribe)
 Router.get("/profiles/:skip",passport.authenticate('jwt', { session: false }),getProfiles)
 Router.get("/:skip",adminPassport.authenticate('jwt', { session: false }),getCompanies)
 
