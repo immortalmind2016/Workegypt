@@ -174,12 +174,14 @@ const editApplicantStatus=async(req,res,err)=>{
 
  }
 
-
+const moment=require('moment')
  const openContact=async(req,res,err)=>{
-    
+
     try{
+        const forDateCheck={"subscribe.endDate":{$lte:new Date()}}
+
         const applicant=req.body.data.id
-        const companyProfile = await Company_profile.findOneAndUpdate({user:req.user._id,"subscribe.count":{$gte:1}},{$inc:{"subscribe.count":parseInt(-1)}},()=>{})
+        const companyProfile = await Company_profile.findOneAndUpdate({user:req.user._id,"subscribe.count":{$gte:1},...forDateCheck},{$inc:{"subscribe.count":parseInt(-1)}},()=>{})
         if(companyProfile){
      
             new Company_applicant({
@@ -358,22 +360,27 @@ const editApplicantStatus=async(req,res,err)=>{
    
  }
  const subscribe=async(req,res,err)=>{
-     const {type,companyProfileId}=req.body.data
+     const {type,companyProfileId,period}=req.body.data
      const plans={
          plat:30,
          gold:20,
          silver:10
      }
-    const plans_=Object.keys(plans)
- 
-    if (plans_.indexOf(type)==-1)
+
+
+
+    if(!plans[type])
      return res.status(404).json({err:"Plan not found"})
     try{
+    let endDate=moment(new Date()).add(1,`${period==0?"month":"year"}`)
     Company_profile.findOneAndUpdate({_id:companyProfileId},{
         subscribe:{ count:plans[type]?plans[type]:0,
-            type
+            type,
+            endDate
+            ,period
         }
         },{new:true},(err,doc)=>{
+            console.log(doc)
             if(!doc){
                 return res.sendStatus(404)
             }

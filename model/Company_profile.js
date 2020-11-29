@@ -43,7 +43,10 @@ const Company_profile=new Schema({
         count:Number
           ,
           type:null
-      }
+      },   //0 for month , 1 for year
+      period:Number,
+  
+      endDate:Date
     }
     
 })

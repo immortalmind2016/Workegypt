@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 // DB Config
 const db = require('./config/keys').mongoURI;
 
-mongoose.connect("mongodb://immortalmind:0115120323a@ds036967.mlab.com:36967/test1", { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose.connect("mongodb://immortalmind:0115120323a@ds036967.mlab.com:36967/test1?retryWrites=false ", { useUnifiedTopology: true, useNewUrlParser: true })
 //mongoose.connect(db
 //"mongodb://localhost/workegypt"
 //, { useUnifiedTopology: true, useNewUrlParser: true })
