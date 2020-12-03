@@ -42,7 +42,7 @@ const Company_profile=new Schema({
       default:{
         count:Number
           ,
-          type:null
+          type:"none"
       },   //0 for month , 1 for year
       period:Number,
   
