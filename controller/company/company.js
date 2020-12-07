@@ -179,7 +179,7 @@ const moment=require('moment')
 
     try{
         const forDateCheck={"subscribe.endDate":{$lte:new Date()}}
-
+        
         const applicant=req.body.data.id
         const companyProfile = await Company_profile.findOneAndUpdate({user:req.user._id,"subscribe.count":{$gte:1},...forDateCheck},{$inc:{"subscribe.count":parseInt(-1)}},()=>{})
         if(companyProfile){

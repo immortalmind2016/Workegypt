@@ -40,7 +40,8 @@ const User=new Schema({
     },
     payment:{
         type:Object
-    }
+    },
+    pushNotificationToken:String
     
 
     

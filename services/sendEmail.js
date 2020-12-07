@@ -1,4 +1,3 @@
-
 "use strict";
 const nodemailer = require("nodemailer");
 /*
@@ -30,19 +29,19 @@ async function sendEmail({to,subject,from,text,html}) {
       });
 }*/
 
-async function sendEmail({to,subject,from,text,html}) {
- console.log("EMAILT TO ",to)
-  let testAccount = await nodemailer.createTestAccount();
+async function sendEmail({ to, subject, from, text, html }) {
+    console.log("EMAILT TO ", to);
+    let testAccount = await nodemailer.createTestAccount();
 
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-  host: 'smtp.gmail.com',
-port: 465,
-  auth: {
-    user: 'ahmed2291996@gmail.com',
-    pass: '2291996echo'
-  }
-  });
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        auth: {
+            user: "ahmed2291996@gmail.com",
+            pass: "2291996echo",
+        },
+    });
     /* nodemailer.createTransport({
     //WORK EGYPT CONFIG
  host: "mail.workegypt.net",
@@ -65,34 +64,32 @@ port: 465,
     
   });*/
 
-  // verify connection configuration
-    transporter.verify(function(error, success) {
+    // verify connection configuration
+    transporter.verify(function (error, success) {
         if (error) {
-        console.log(error);
+            console.log(error);
         } else {
-        console.log("Server is ready to take our messages");
+            console.log("Server is ready to take our messages");
         }
     });
 
-  // send mail with defined transport object
+    // send mail with defined transport object
 
     let info = await transporter.sendMail({
-        from, 
+        from,
         to,
         subject,
         text,
-        html
-      });
+        html,
+    });
 
-  
+    console.log("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-  // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    // Preview only available when sending through an Ethereal account
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
-module.exports={
-    sendEmail
-}
+module.exports = {
+    sendEmail,
+};
