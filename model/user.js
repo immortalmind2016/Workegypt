@@ -1,55 +1,48 @@
-const mongoose=require("mongoose")
-const Schema=mongoose.Schema
-const User=new Schema({
-    name:{
-        type:String,
-        required:true,
-        index:true
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const User = new Schema({
+    name: {
+        type: String,
+        required: true,
+        index: true,
     },
-    confirmation_token:{
-            type:String
-     
+    confirmation_token: {
+        type: String,
     },
-    
-    confirmed:{
-        type:Boolean,
-        default:false,
-    },
-    email:{
-        type:String,
-        required:true,
-        unique:true
-    },
-    password:{
-        type:String,
-        required:true
-    },      
-    created_date:{
-        type:Date,
-        default:Date.now()
-    },
-   
-    last_logout:{
-        type:Date,
-        default:null
-    },
-    type:Boolean,
-    new:{
-        type:Boolean,
-        default:true
-    },
-    payment:{
-        type:Object
-    },
-    pushNotificationToken:String
-    
 
-    
-   
+    confirmed: {
+        type: Boolean,
+        default: false,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    created_date: {
+        type: Date,
+        default: Date.now(),
+    },
 
+    last_logout: {
+        type: Date,
+        default: null,
+    },
+    type: Boolean,
+    new: {
+        type: Boolean,
+        default: true,
+    },
+    payment: {
+        type: Object,
+    },
+    FCM_token: {
+        type: String,
+    },
+});
 
-
-})
-
-
-module.exports=mongoose.model("User",User)
+module.exports = mongoose.model("User", User);
