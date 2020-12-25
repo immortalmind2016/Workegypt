@@ -39,7 +39,7 @@ const sendNotification = async (req, res, err) => {
                     ...(type == "url" && { url: req.body.url }),
                 },
                 ...{
-                    ...(type == "job" && { url: req.body.jobId }),
+                    ...(type == "job" && { job: req.body.jobId }),
                 },
             };
         });
