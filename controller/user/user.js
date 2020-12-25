@@ -271,10 +271,9 @@ const resendConfirmation = (req, res, err) => {
         // </div>
 
         //     `);
-        sendMessage(to, user.confirmation_token, user.name);
-
-        sendEmail({ to, subject, text, html, from })
+        sendMessage(to, user.confirmation_token, user.name)
             .then(() => {
+                console.log("EMAIL SENT RESEND TRUE");
                 res.sendStatus(200);
             })
             .catch((error) => {
