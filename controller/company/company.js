@@ -448,7 +448,7 @@ const subscribe = async (req, res, err) => {
         silver: process.env.SILVER,
         none: 0,
     };
-    console.log("SUBSCRIBE");
+    console.log("SUBSCRIBE ", plans[type]);
 
     if (!plans[type]) return res.status(404).json({ err: "Plan not found" });
     try {
