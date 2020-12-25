@@ -15,6 +15,7 @@ const Event = require("../../model/Event");
 const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
     try {
+        console.log(req.body);
         const { type, to, title, body } = req.body;
         let newNotification = {
             body,

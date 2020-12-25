@@ -450,7 +450,8 @@ const subscribe = async (req, res, err) => {
     };
     console.log("SUBSCRIBE ", plans[type]);
 
-    if (!plans[type]) return res.status(404).json({ err: "Plan not found" });
+    if (!Object.keys(planes).indexOf(planes) != -1)
+        return res.status(404).json({ err: "Plan not found" });
     try {
         let endDate = moment(new Date()).add(
             1,
