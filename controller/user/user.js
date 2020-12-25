@@ -77,26 +77,26 @@ const signupUser = (req, res, err) => {
             return res.sendStatus(500);
         }
         if (!err) {
-         const to = req.body.data.email,
-//                 from = "Workegypt <dev@workegypt.net>",
-//                 subject = "confirmation";
-//             (text = ""),
-//                 (html = `
-//     <div style="text-align: center;">
-//     <h3>you are welcome ${user.name}</h3>
-//     <h4>to confirm you email copy the following code</h4>
-//     <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
-//     ${user.confirmation_token}
-//     </div>
-//     <br>
-//     <span>thank you ! </span>
-// <script>
-    
-//     </script>
+            const to = req.body.data.email;
+            //                 from = "Workegypt <dev@workegypt.net>",
+            //                 subject = "confirmation";
+            //             (text = ""),
+            //                 (html = `
+            //     <div style="text-align: center;">
+            //     <h3>you are welcome ${user.name}</h3>
+            //     <h4>to confirm you email copy the following code</h4>
+            //     <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
+            //     ${user.confirmation_token}
+            //     </div>
+            //     <br>
+            //     <span>thank you ! </span>
+            // <script>
 
-// </div>
+            //     </script>
 
-//     `);*/
+            // </div>
+
+            //     `);*/
             try {
                 sendMessage(to, user.confirmation_token, name);
             } catch (e) {
@@ -232,9 +232,8 @@ const forgetPassword = (req, res, err) => {
             return res.json({ error: "user not found" });
         }
         console.log("SEND MAIL");
-        const to = req.body.data.email,
-            from = "Workegypt <dev@workegypt.net>",
-            subject = "forget password";
+        const to = req.body.data.email;
+        (from = "Workegypt <dev@workegypt.net>"), (subject = "forget password");
         (text = ""),
             (html = `
         <div style="text-align: center;">
