@@ -206,7 +206,7 @@ const applyForJob = async (req, res, err) => {
             console.log("COMPANY USER", company);
             let Noti = await Notification.create({
                 user: company.user,
-                type: "job",
+                notificationType: "job",
 
                 title: config.notifications.applyForJob.title,
                 body: config.notifications.applyForJob.body(
@@ -243,7 +243,7 @@ const cancelJob = async (req, res, err) => {
         });
         const Noti = await Notification.create({
             user: company.user,
-            type: "job",
+            notificationType: "job",
             title: config.notifications.cancelJob.title,
             body: config.notifications.cancelJob.body(job.title, req.user.name),
             job: job._id,
