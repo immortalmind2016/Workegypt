@@ -97,7 +97,11 @@ const signupUser = (req, res, err) => {
 </div>
 
     `);*/
-            sendMessage(to, user.confirmation_token, name);
+            try {
+                sendMessage(to, user.confirmation_token, name);
+            } catch (e) {
+                console.log(e);
+            }
             /*sendEmail({ to, subject, text, html, from })
                 .then(() => {
                     //res.sendStatus(200)
