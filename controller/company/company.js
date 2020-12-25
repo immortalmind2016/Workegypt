@@ -164,7 +164,7 @@ const editApplicantStatus = async (req, res, err) => {
 
         let Noti = await Notification.create({
             user: results[0].user,
-            type: "job",
+            notificationType: "job",
             job: results[1]._id,
             to: 0,
             title: `${config.notifications.editApplicantStatus.title} ${results[1].status}`,
