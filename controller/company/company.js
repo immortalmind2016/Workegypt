@@ -195,16 +195,22 @@ const applyForJob = async (req, res, err) => {
             { $push: { applicants: applicant } },
             { new: true }
         );
+
+        // sendSocketNotification(Noti);
+        res.sendStatus(200);
+        let company = await Company.findOne({ _id: job.company }).populate(
+            "user"
+        );
+        console.log("COMPANY USER", company);
         let Noti = await Notification.create({
-            user: req.user._id,
+            user: company._id,
             type: "job",
+
             title: config.notifications.applyForJob.title,
             body: config.notifications.applyForJob.body + " " + job.title,
             job: job._id,
             to: 1,
         });
-        // sendSocketNotification(Noti);
-        res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });
     }
