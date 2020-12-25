@@ -1,12 +1,17 @@
 var jwt = require("jsonwebtoken");
 const Job = require("../../model/Job");
 const mongoose = require("mongoose");
+const Notification = mongoose.model("Notification");
 const Company_profile = require("../../model/Company_profile");
 const Applicant_profile = require("../../model/Applicant_profile");
 const config = require("../../config");
 const Company_applicant = require("../../model/Company_applicant");
 const User = require("../../model/user");
 const { sendSocketNotification } = require("../../services/notifications");
+const moment = require("moment");
+const InterviewCode = require("../../model/InterviewCode");
+const cuid = require("cuid");
+var randomstring = require("randomstring");
 
 const getCompanyJobs = async (req, res, err) => {
     try {
@@ -233,7 +238,6 @@ const cancelJob = async (req, res, err) => {
     }
 };
 
-const moment = require("moment");
 const openContact = async (req, res, err) => {
     try {
         const forDateCheck = {
@@ -488,6 +492,42 @@ const subscribe = async (req, res, err) => {
         return res.json({ error: err });
     }
 };
+const generateInterviewCode = async (req, res, err) => {
+    let endDate = moment(new Date()).add(
+        process.env.INTERVIEW_CODE_LIEFTIME,
+        "hours"
+    );
+    try {
+        const result = await Promise.all([
+            InterviewCode.create({
+                code: randomstring.generate(9),
+                endDate,
+            }),
+            InterviewCode.findOneAndRemove({ endDate: { $lte: new Date() } }),
+        ]);
+
+        res.json({ code: result[0] });
+    } catch (e) {
+        res.status(501).json({ error: e });
+    }
+};
+const validateInterviewCode = async (req, res, err) => {
+    const { code } = req.body;
+    try {
+        const result = await Promise.all([
+            InterviewCode.findOne({
+                code,
+            }),
+            InterviewCode.findOneAndRemove({ endDate: { $lte: new Date() } }),
+        ]);
+        if (result[0]) return res.sendStatus(200);
+        else {
+            return res.sendStatus(404);
+        }
+    } catch (e) {
+        res.status(501).json({ error: e });
+    }
+};
 module.exports = {
     getCompanyJobs,
     jobApplicants,
@@ -499,4 +539,6 @@ module.exports = {
     opened,
     getProfiles,
     getCompanies,
+    generateInterviewCode,
+    validateInterviewCode,
 };
