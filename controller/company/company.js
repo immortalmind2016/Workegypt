@@ -197,7 +197,7 @@ const applyForJob = async (req, res, err) => {
         );
         // sendSocketNotification(Noti);
         try {
-            let company = await Company_applicant.findOne({
+            let company = await Company_profile.findOne({
                 _id: job.company,
             });
             console.log("COMPANY USER", company);
@@ -220,7 +220,7 @@ const applyForJob = async (req, res, err) => {
 };
 const cancelJob = async (req, res, err) => {
     try {
-        const applicantProfile = await Applicant_profile.findOne({
+        const applicantProfile = await Company_profile.findOne({
             user: req.user._id,
         });
         if (!applicantProfile) {
