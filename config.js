@@ -5,7 +5,8 @@ module.exports = {
     notifications: {
         applyForJob: {
             title: "Applicant applied",
-            body: "Check job title",
+            body: (title, name) =>
+                `New Application on ${title} job from user ${name}`,
         },
         editApplicantStatus: {
             title: "Job title ",
@@ -13,7 +14,8 @@ module.exports = {
         },
         cancelJob: {
             title: "Application cancelled",
-            body: "Check job title",
+            body: (title, name) =>
+                `Job Application ${title} was cancelled from user ${name}`,
         },
     },
 };
