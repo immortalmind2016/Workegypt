@@ -220,7 +220,7 @@ const applyForJob = async (req, res, err) => {
 };
 const cancelJob = async (req, res, err) => {
     try {
-        const applicantProfile = await Company_profile.findOne({
+        const applicantProfile = await Applicant_profile.findOne({
             user: req.user._id,
         });
         if (!applicantProfile) {
@@ -232,7 +232,7 @@ const cancelJob = async (req, res, err) => {
             { $pull: { applicants: { applicant: applicantProfile._id } } },
             { new: true }
         );
-        let company = await Company_applicant.findOne({
+        let company = await Company_profile.findOne({
             _id: job.company,
         });
         const Noti = await Notification.create({
