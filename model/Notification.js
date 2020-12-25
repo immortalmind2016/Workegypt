@@ -13,7 +13,10 @@ const Notification = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Job",
         },
-        title: String,
+        title: {
+            type: String,
+            default: "Notification",
+        },
         to: Number,
         isRead: {
             type: Boolean,
