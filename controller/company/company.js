@@ -145,7 +145,7 @@ const editApplicantStatus = async (req, res, err) => {
             return res.json({ error: "wrong access" });
         }
         let results = await Promise.all([
-            Applicant_profile.find({
+            Applicant_profile.findOne({
                 _id: req.params.applicantId,
             }),
 
