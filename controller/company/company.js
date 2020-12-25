@@ -3,7 +3,7 @@ const Job = require("../../model/Job");
 const mongoose = require("mongoose");
 const Company_profile = require("../../model/Company_profile");
 const Applicant_profile = require("../../model/Applicant_profile");
-
+const config = require("../../config");
 const Company_applicant = require("../../model/Company_applicant");
 const User = require("../../model/user");
 
@@ -136,18 +136,35 @@ const editApplicantStatus = async (req, res, err) => {
         if (!company) {
             return res.json({ error: "wrong access" });
         }
-        const job = await Job.findOneAndUpdate(
-            {
-                $and: [
-                    { _id: req.params.jobid },
-                    { company: company._id },
-                    { "applicants.applicant": req.params.applicantid },
-                ],
-            },
-            { $set: { "applicants.$.status": req.body.data.status } },
-            { new: true }
-        );
-        res.json({ job });
+        let results = Promise.all([
+            await Applicant_profile.find({
+                _id: req.params.applicantId,
+            }).lean(),
+
+            await Job.findOneAndUpdate(
+                {
+                    $and: [
+                        { _id: req.params.jobid },
+                        { company: company._id },
+                        { "applicants.applicant": req.params.applicantid },
+                    ],
+                },
+                { $set: { "applicants.$.status": req.body.data.status } },
+                { new: true }
+            ),
+        ]);
+
+        await Notification.insert({
+            user: results[0]._id,
+            type: "job",
+            job: results[1]._id,
+            title: `${config.notifications.editApplicantStatus.title} ${job.title}`,
+            body:
+                config.notifications.editApplicantStatus.body +
+                " " +
+                job.req.body.status,
+        });
+        res.json({ job: results[1] });
     } catch (err) {
         return res.json({ error: err });
     }
@@ -170,6 +187,13 @@ const applyForJob = async (req, res, err) => {
             { $push: { applicants: applicant } },
             { new: true }
         );
+        await Notification.insert({
+            user: req.user._id,
+            type: "job",
+            title: config.notifications.applyForJob.title,
+            body: config.notifications.applyForJob.body + " " + job.title,
+            job: job._id,
+        });
         res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });
@@ -189,6 +213,13 @@ const cancelJob = async (req, res, err) => {
             { $pull: { applicants: { applicant: applicantProfile._id } } },
             { new: true }
         );
+        await Notification.insert({
+            user: req.user._id,
+            type: "job",
+            title: config.notifications.cancelJob.title,
+            body: config.notifications.cancelJob.body + " " + job.title,
+            job: job._id,
+        });
         res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });

@@ -6,6 +6,7 @@ mongoose.connect(
     "mongodb+srv://immortalminda:immortalminda@cluster0.hutzo.mongodb.net/workegypt?retryWrites=true&w=majority",
     { useUnifiedTopology: true, useNewUrlParser: true }
 );
+require("./model/Notification");
 //mongoose.connect(db
 //"mongodb://localhost/workegypt"
 //, { useUnifiedTopology: true, useNewUrlParser: true })
