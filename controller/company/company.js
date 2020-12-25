@@ -446,6 +446,7 @@ const subscribe = async (req, res, err) => {
         plat: process.env.PLAT,
         gold: process.env.GOLD,
         silver: process.env.SILVER,
+        none: 0,
     };
     console.log("SUBSCRIBE");
 
