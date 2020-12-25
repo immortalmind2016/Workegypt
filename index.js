@@ -124,6 +124,5 @@ const PORT = process.env.PORT || 5000;
     await http.listen(PORT, () => {
         console.log(`listining on port number ${PORT}`);
     });
-    console.log(io);
     module.exports = { io };
 })();

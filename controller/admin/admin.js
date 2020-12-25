@@ -9,8 +9,7 @@ const Analysis = require("../../model/Analysis");
 const passport = require("passport");
 const config = require("../../config");
 const Post = require("../../model/Post");
-const { io } = require("../../index");
-console.log(io);
+
 const { broadCastNotification } = require("../../services/notifications");
 const Event = require("../../model/Event");
 const sendNotification = async (req, res, err) => {
@@ -30,7 +29,7 @@ const sendNotification = async (req, res, err) => {
             },
         };
         await Notification.create(newNotification);
-        broadCastNotification(io, newNotification);
+        broadCastNotification(await require("../../index"), newNotification);
         return res.sendStatus(200);
     } catch (e) {
         return res.status(501).json({ error: e.message });

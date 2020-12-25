@@ -235,26 +235,26 @@ const openContact = async (req, res, err) => {
         console.log("OPEN CONTACT", forDateCheck);
         const applicant = req.body.data.id;
 
-        const companyProfile = await Company_profile.findOneAndUpdate(
-            {
-                user: req.user._id,
-                "subscribe.count": { $gte: 1 },
-                ...forDateCheck,
-            },
-            { $inc: { "subscribe.count": parseInt(-1) } },
-            () => {}
-        );
+        const companyProfile = await Company_profile.findOne({
+            user: req.user._id,
+            "subscribe.count": { $gte: 1 },
+            ...forDateCheck,
+        });
         if (companyProfile) {
             new Company_applicant({
                 applicant,
                 company: req.user._id,
             }).save(() => {
+                companyProfile.subscribe.count =
+                    companyProfile.subscribe.count - 1;
+                companyProfile.save();
                 return res.sendStatus(200);
             });
         } else {
             try {
                 companyProfile.subscribe.count =
                     companyProfile.subscribe.count + 1;
+                companyProfile.save();
             } catch (e) {}
             return res.sendStatus(404).json({ error: "not found s" });
         }
