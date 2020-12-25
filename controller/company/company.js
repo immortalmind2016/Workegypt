@@ -171,7 +171,7 @@ const editApplicantStatus = async (req, res, err) => {
                 " " +
                 job.req.body.status,
         });
-        sendSocketNotification(to);
+        // sendSocketNotification(to);
         res.json({ job: results[1] });
     } catch (err) {
         return res.json({ error: err });
@@ -203,7 +203,7 @@ const applyForJob = async (req, res, err) => {
             job: job._id,
             to: 1,
         });
-        sendSocketNotification(Noti);
+        // sendSocketNotification(Noti);
         res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });
@@ -231,7 +231,7 @@ const cancelJob = async (req, res, err) => {
             job: job._id,
             to: 1,
         });
-        sendSocketNotification(Noti);
+        //sendSocketNotification(Noti);
         res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });
