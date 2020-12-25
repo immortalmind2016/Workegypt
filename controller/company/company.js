@@ -197,7 +197,7 @@ const applyForJob = async (req, res, err) => {
         );
 
         // sendSocketNotification(Noti);
-        res.sendStatus(200);
+
         let company = await Company.findOne({ _id: job.company }).populate(
             "user"
         );
@@ -211,6 +211,7 @@ const applyForJob = async (req, res, err) => {
             job: job._id,
             to: 1,
         });
+        res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });
     }
