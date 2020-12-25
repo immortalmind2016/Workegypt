@@ -16,22 +16,33 @@ const { broadCastNotification } = require("../../services/notifications");
 const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
     try {
-        const { type, to, title, body } = req.body;
-        let users = await User.find({ type: to }).lean();
-        console.log(users);
+        const { type, to, title, body, push } = req.body;
+
+        let users = await User.find({
+            ...{ ...(type == "2" ? {} : { type: to }) },
+        }).lean();
+        if (push) {
+            pushMessage();
+            return res.sendStatus(200);
+        }
         let notificationId = cuid();
         notifications = users.map((user) => {
             return {
                 body,
                 title,
-                type,
+                notificationType: type,
                 notificationId,
                 to,
+
                 user: user._id,
                 ...{
-                    ...(type == "url"
-                        ? { url: req.body.url }
-                        : { job: req.body.jobId }),
+                    ...(type == "url" && { url: req.body.url }),
+                },
+                ...{
+                    ...(type == "url" && { url: req.body.url }),
+                },
+                ...{
+                    ...(type == "url" && { url: req.body.url }),
                 },
             };
         });

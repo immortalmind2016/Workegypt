@@ -3,4 +3,8 @@ const broadCastNotification = (data) => {
     console.log(data);
     io.to(`user-type-${data.to}`).emit(data);
 };
-module.exports = { broadCastNotification };
+const sendSocketNotification = (data) => {
+    const { io } = require("../index");
+    io.to(data.user).emit(data);
+};
+module.exports = { broadCastNotification, sendSocketNotification };

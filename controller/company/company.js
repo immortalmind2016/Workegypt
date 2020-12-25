@@ -6,6 +6,7 @@ const Applicant_profile = require("../../model/Applicant_profile");
 const config = require("../../config");
 const Company_applicant = require("../../model/Company_applicant");
 const User = require("../../model/user");
+const { sendSocketNotification } = require("../../services/notifications");
 
 const getCompanyJobs = async (req, res, err) => {
     try {
@@ -154,16 +155,18 @@ const editApplicantStatus = async (req, res, err) => {
             ),
         ]);
 
-        await Notification.insert({
+        let Noti = await Notification.insert({
             user: results[0]._id,
             type: "job",
             job: results[1]._id,
+            to: 0,
             title: `${config.notifications.editApplicantStatus.title} ${job.title}`,
             body:
                 config.notifications.editApplicantStatus.body +
                 " " +
                 job.req.body.status,
         });
+        sendSocketNotification(to);
         res.json({ job: results[1] });
     } catch (err) {
         return res.json({ error: err });
@@ -187,13 +190,15 @@ const applyForJob = async (req, res, err) => {
             { $push: { applicants: applicant } },
             { new: true }
         );
-        await Notification.insert({
+        let Noti = await Notification.insert({
             user: req.user._id,
             type: "job",
             title: config.notifications.applyForJob.title,
             body: config.notifications.applyForJob.body + " " + job.title,
             job: job._id,
+            to: 1,
         });
+        sendSocketNotification(Noti);
         res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });
@@ -213,13 +218,15 @@ const cancelJob = async (req, res, err) => {
             { $pull: { applicants: { applicant: applicantProfile._id } } },
             { new: true }
         );
-        await Notification.insert({
+        const Noti = await Notification.insert({
             user: req.user._id,
             type: "job",
             title: config.notifications.cancelJob.title,
             body: config.notifications.cancelJob.body + " " + job.title,
             job: job._id,
+            to: 1,
         });
+        sendSocketNotification(Noti);
         res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });

@@ -1,6 +1,6 @@
 // Node.js
 var admin = require("firebase-admin");
-var serviceAccount = require("./workegypt-6ee8f-firebase-adminsdk-0qzhv-51886110f6.json");
+var serviceAccount = require("././workegypt-6ee8f-firebase-adminsdk-0qzhv-51886110f6.json");
 
 require("dotenv").config();
 
@@ -8,6 +8,21 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
 
+const subscribeToTopic = (token, topic) => {
+    var registrationTokens = [token];
+
+    return admin.messaging().subscribeToTopic(registrationTokens, topic);
+    /* .then(function (response) {
+            // See the MessagingTopicManagementResponse reference documentation
+            // for the contents of response.
+            console.log("Successfully subscribed to topic:", response);
+        })
+        .catch(function (error) {
+            console.log("Error subscribing to topic:", error);
+        });*/
+};
+
+module.exports = { subscribeToTopic };
 // ownerId - who owns the picture someone liked
 // userId - id of the user who liked the picture
 // picture - metadata about the picture
