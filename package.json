@@ -17,6 +17,8 @@
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "concurrently": "^5.3.0",
+    "cuid": "^2.1.8",
+    "dotenv": "^8.2.0",
     "expo-server-sdk": "^3.6.0",
     "express": "^4.17.1",
     "firebase-admin": "^9.4.2",
@@ -31,8 +33,7 @@
     "randomstring": "^1.1.5",
     "serve": "^11.3.2",
     "shelljs": "^0.8.4",
-    "socket.io": "^2.3.0",
-    "dotenv": "^8.2.0"
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"

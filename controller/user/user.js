@@ -7,11 +7,43 @@ const Notification = require("../../model/Notification");
 
 var randomstring = require("randomstring");
 const getNotifications = async (req, res, err) => {
+    const { page } = req.params;
+    const limit = 10;
+    const skip = page * limit;
+    const results = await Promise.all([
+        Notification.find({
+            user: req.user._id,
+            isRead: false,
+        })
+            .skip(skip)
+            .limit(limit),
+        Notification.find({
+            user: req.user._id,
+            isRead: false,
+        }).count(),
+    ]);
+
     res.json({
-        notifications: await Notification.find({
-            $or: [{ user: req.user._id }, { type: 0 }],
-        }),
+        notifications: results[0],
+        totalCount: results[1],
     });
+};
+const setReadNotification = async (req, res, err) => {
+    await Notification.findOneAndUpdate(
+        {
+            ...{
+                ...(req.body.notificationId
+                    ? { notificationId: req.body.notificationId }
+                    : { _id: req.body._id }),
+            },
+            user: req.user._id,
+            isRead: false,
+        },
+        {
+            isRead: true,
+        }
+    );
+    return res.sendStatus(200);
 };
 const signupUser = (req, res, err) => {
     console.log("SING UYP");
@@ -258,4 +290,5 @@ module.exports = {
     forgetPassword,
     resendConfirmation,
     getNotifications,
+    setReadNotification,
 };

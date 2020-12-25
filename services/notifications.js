@@ -1,7 +1,6 @@
-const broadCastNotification = (io, data) => {
-    const { type, to, body, title, url, job } = data;
-    io.broadcast
-        .to(`user-type-${to}`)
-        .emit({ type, to, body, title, url, job });
+const broadCastNotification = (data) => {
+    const { io } = require("../index");
+    console.log(data);
+    io.to(`user-type-${data.to}`).emit(data);
 };
 module.exports = { broadCastNotification };

@@ -136,12 +136,12 @@ const editApplicantStatus = async (req, res, err) => {
         if (!company) {
             return res.json({ error: "wrong access" });
         }
-        let results = Promise.all([
-            await Applicant_profile.find({
+        let results = await Promise.all([
+            Applicant_profile.find({
                 _id: req.params.applicantId,
             }).lean(),
 
-            await Job.findOneAndUpdate(
+            Job.findOneAndUpdate(
                 {
                     $and: [
                         { _id: req.params.jobid },

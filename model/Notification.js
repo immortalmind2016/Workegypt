@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Notification = new Schema(
     {
+        notificationId: String,
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
@@ -14,7 +15,10 @@ const Notification = new Schema(
         },
         title: String,
         to: Number,
-
+        isRead: {
+            type: Boolean,
+            default: false,
+        },
         body: {
             type: String,
             default: "Check your notification",

@@ -5,34 +5,52 @@ const User = mongoose.model("User");
 const Company_profile = mongoose.model("Company_profile");
 const Applicant_profile = mongoose.model("Applicant_profile");
 const Notification = mongoose.model("Notification");
+
 const Analysis = require("../../model/Analysis");
 const passport = require("passport");
 const config = require("../../config");
 const Post = require("../../model/Post");
-
-const { broadCastNotification } = require("../../services/notifications");
+const cuid = require("cuid");
 const Event = require("../../model/Event");
+const { broadCastNotification } = require("../../services/notifications");
 const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
     try {
-        console.log(req.body);
         const { type, to, title, body } = req.body;
-        let newNotification = {
+        let users = await User.find({ type: to }).lean();
+        console.log(users);
+        let notificationId = cuid();
+        notifications = users.map((user) => {
+            return {
+                body,
+                title,
+                type,
+                notificationId,
+                to,
+                user: user._id,
+                ...{
+                    ...(type == "url"
+                        ? { url: req.body.url }
+                        : { job: req.body.jobId }),
+                },
+            };
+        });
+        const nots = await Notification.insertMany(notifications);
+        broadCastNotification({
             body,
             title,
             type,
+            notificationId,
             to,
-            user: null,
             ...{
                 ...(type == "url"
                     ? { url: req.body.url }
                     : { job: req.body.jobId }),
             },
-        };
-        await Notification.create(newNotification);
-        broadCastNotification(await require("../../index"), newNotification);
+        });
         return res.sendStatus(200);
     } catch (e) {
+        console.log(e);
         return res.status(501).json({ error: e.message });
     }
 };
@@ -152,10 +170,8 @@ const addVisitor = (req, res, err) => {
 const getTests = (req, res, err) => {};
 const login = (req, res, err) => {
     const { username, password } = req.body.data;
-    console.log(process.env.PASSWORD);
-    if (username != process.env.USER_NAME || password != process.env.PASSWORD) {
+    if (username != process.env.USER_NAME || password != process.env.PASSWORD)
         return res.status(401).json({ error: "Wrong user !" });
-    }
     const token = jwt.sign({ username, password }, "secret");
     res.json({ token: `Bearer ${token}` });
 };

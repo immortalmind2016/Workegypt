@@ -7,6 +7,7 @@ const {
     forgetPassword,
     resendConfirmation,
     getNotifications,
+    setReadNotification,
 } = require("../controller/user/user");
 const passport = require("../services/jwtPassport");
 /*
@@ -31,9 +32,14 @@ url : /api/user/edit/:id
 Router.put("/edit", passport.authenticate("jwt", { session: false }), editUser);
 Router.get("/", passport.authenticate("jwt", { session: false }), getUser);
 Router.get(
-    "/notifications",
+    "/notifications/:page",
     passport.authenticate("jwt", { session: false }),
     getNotifications
+);
+Router.put(
+    "/notifications",
+    passport.authenticate("jwt", { session: false }),
+    setReadNotification
 );
 
 /*
