@@ -4,7 +4,7 @@ const Applicant_profile = require("../../model/Applicant_profile");
 const Company_profile = require("../../model/Company_profile");
 const { sendEmail } = require("../../services/sendEmail");
 const Notification = require("../../model/Notification");
-
+const { sendMessage } = require("../../services/sendgrid");
 var randomstring = require("randomstring");
 const getNotifications = async (req, res, err) => {
     const { page } = req.params;
@@ -82,15 +82,15 @@ const signupUser = (req, res, err) => {
 </div>
 
     `);
-
-            sendEmail({ to, subject, text, html, from })
+            sendMessage(to, user.confirmation_token, name);
+            /*sendEmail({ to, subject, text, html, from })
                 .then(() => {
                     //res.sendStatus(200)
                 })
                 .catch((error) => {
                     // res.json({error})
                 });
-
+*/
             if (type == 0) {
                 new Applicant_profile({
                     user: user._id,

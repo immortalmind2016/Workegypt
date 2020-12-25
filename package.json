@@ -12,6 +12,7 @@
     "prod": "pm2 startOrReload prod-ecosystem.json --env production"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.4.0",
     "aws-sdk": "^2.767.0",
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
