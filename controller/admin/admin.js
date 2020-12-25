@@ -13,18 +13,33 @@ const Post = require("../../model/Post");
 const cuid = require("cuid");
 const Event = require("../../model/Event");
 const { broadCastNotification } = require("../../services/notifications");
+const { sendPushNotification } = require("../../services/fcm");
 const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
     try {
         const { type, to, title, body, push } = req.body;
-
+        if (push) {
+            sendPushNotification(req.body, to)
+                .send(message)
+                .then((response) => {
+                    // Response is a message ID string.
+                    console.log(
+                        "sendPushNotification/ Successfully sent message:",
+                        response
+                    );
+                })
+                .catch((error) => {
+                    console.log(
+                        "sendPushNotification/ Error sending message:",
+                        error
+                    );
+                });
+            return res.sendStatus(200);
+        }
         let users = await User.find({
             ...{ ...(type == "2" ? {} : { type: to }) },
         }).lean();
-        if (push) {
-            pushMessage();
-            return res.sendStatus(200);
-        }
+
         let notificationId = cuid();
         notifications = users.map((user) => {
             return {
@@ -47,7 +62,7 @@ const sendNotification = async (req, res, err) => {
         broadCastNotification({
             body,
             title,
-            type,
+            notificationType: type,
             notificationId,
             to,
             ...{

@@ -45,13 +45,28 @@ const setReadNotification = async (req, res, err) => {
     );
     return res.sendStatus(200);
 };
+const { subscribeToTopic } = require("../../services/fcm");
+
 const signupUser = (req, res, err) => {
     console.log("SING UYP");
-    const { email, password, name, type } = req.body.data;
+    const { email, password, name, type, FCM_token } = req.body.data;
+    if (FCM_token) {
+        subscribeToTopic(FCM_token, type)
+            .then(function (response) {
+                // See the MessagingTopicManagementResponse reference documentation
+                // for the contents of response.
+                console.log("Successfully subscribed to topic:", response);
+            })
+            .catch(function (error) {
+                console.log("Error subscribing to topic:", error);
+            });
+        subscribeToTopic(FCM_token, 2);
+    }
     let newUser = new User({
         email,
         password,
         name,
+        FCM_token,
         type,
         ...(type && { subscribe: { count: 0, type: "none" }, period: null }),
         confirmation_token: randomstring.generate(7),
