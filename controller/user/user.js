@@ -251,7 +251,7 @@ const resendConfirmation = (req, res, err) => {
             res.status(404).json({ error: "user not found", code: "#100" });
         }
         console.log("SEND MAIL");
-        //     const to = req.body.data.email,
+        const to = req.body.data.email;
         //         from = "Workegypt <dev@workegypt.net>",
         //         subject = "confirmation";
         //     (text = ""),
