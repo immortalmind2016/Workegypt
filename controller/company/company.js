@@ -228,12 +228,14 @@ const cancelJob = async (req, res, err) => {
 
 const moment = require("moment");
 const openContact = async (req, res, err) => {
+    return res.status(404);
     try {
         const forDateCheck = {
             "subscribe.endDate": { $gte: new Date().getTime() },
         };
         console.log("OPEN CONTACT", forDateCheck);
         const applicant = req.body.data.id;
+
         const companyProfile = await Company_profile.findOneAndUpdate(
             {
                 user: req.user._id,
