@@ -252,6 +252,10 @@ const openContact = async (req, res, err) => {
                 return res.sendStatus(200);
             });
         } else {
+            try {
+                companyProfile.subscribe.count =
+                    companyProfile.subscribe.count + 1;
+            } catch (e) {}
             return res.sendStatus(404).json({ error: "not found s" });
         }
     } catch (e) {
@@ -439,9 +443,9 @@ const opened = async (req, res, err) => {
 const subscribe = async (req, res, err) => {
     const { type, companyProfileId, period } = req.body.data;
     const plans = {
-        plat: 30,
-        gold: 20,
-        silver: 10,
+        plat: process.env.PLAT,
+        gold: process.env.GOLD,
+        silver: process.env.SILVER,
     };
     console.log("SUBSCRIBE");
 

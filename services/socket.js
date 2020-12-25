@@ -6,12 +6,7 @@ const { url } = require("../config.js");
 const Applicant_profile = require("../model/Applicant_profile");
 const Company_profile = require("../model/Company_profile");
 let connectedPeers = new Map();
-const broadCastNotification = (data) => {
-    const { type, to, body, title, url, job } = data;
-    socket.broadcast
-        .to(`user-type-${to}`)
-        .emit("message to all other users in channel");
-};
+
 module.exports = (io) => {
     io.origins("*:*");
     io.on("connection", (socket) => {
@@ -89,6 +84,9 @@ module.exports = (io) => {
             }
         });
         socket.on("NewClient", function ({ userid, type }) {
+            socket.join(`user-type-${type}`, () => {
+                console.log(`user-type-${type}`, userid, type);
+            });
             socket.join(userid, () => {
                 console.log("JOINED", userid, type);
             });

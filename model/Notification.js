@@ -12,6 +12,9 @@ const Notification = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Job",
         },
+        title: String,
+        to: Number,
+
         body: {
             type: String,
             default: "Check your notification",

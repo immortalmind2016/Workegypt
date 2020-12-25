@@ -5,21 +5,23 @@ const User = mongoose.model("User");
 const Company_profile = mongoose.model("Company_profile");
 const Applicant_profile = mongoose.model("Applicant_profile");
 const Notification = mongoose.model("Notification");
-
 const Analysis = require("../../model/Analysis");
 const passport = require("passport");
 const config = require("../../config");
 const Post = require("../../model/Post");
-
+const { io } = require("../../index");
+console.log(io);
+const { broadCastNotification } = require("../../services/notifications");
 const Event = require("../../model/Event");
 const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
     try {
         const { type, to, title, body } = req.body;
-        notifications = {
+        let newNotification = {
             body,
             title,
             type,
+            to,
             user: null,
             ...{
                 ...(type == "url"
@@ -27,7 +29,8 @@ const sendNotification = async (req, res, err) => {
                     : { job: req.body.jobId }),
             },
         };
-        await Notification.insert(notification);
+        await Notification.create(newNotification);
+        broadCastNotification(io, newNotification);
         return res.sendStatus(200);
     } catch (e) {
         return res.status(501).json({ error: e.message });

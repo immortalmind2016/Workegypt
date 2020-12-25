@@ -37,17 +37,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const http = require("http").Server(app);
+
 const io = require("socket.io")(http, {
     secure: true,
-
     reconnect: true,
-
     rejectUnauthorized: false,
 });
 
 io.origins("*:*");
 
-require("./services/socket")(io);
 app.use(function (req, res, next) {
     var allowedOrigins = [
         "https://8fib4t1ccaof.loclx.io",
@@ -122,6 +120,10 @@ app.get("*", (req, res) => {
 //    })
 console.log("TEST");
 const PORT = process.env.PORT || 5000;
-http.listen(PORT, () => {
-    console.log(`listining on port number ${PORT}`);
-});
+(async () => {
+    await http.listen(PORT, () => {
+        console.log(`listining on port number ${PORT}`);
+    });
+    console.log(io);
+    module.exports = { io };
+})();
