@@ -11,8 +11,63 @@ module.exports = (io) => {
     io.origins("*:*");
     io.on("connection", (socket) => {
         connectedPeers.set(socket.id, socket);
+        socket.on("OfferOrAnswer", function (data) {
+            // send to the other peer(s) if any
+            console.log("OFFER ", data.payload.userId);
 
+            this.to(data.payload.userId).emit("OfferOrAnswer", {
+                sdp: data.payload.sdp,
+                userId: data.payload.userId,
+                companyId: data.payload.companyId,
+            });
+            /*for (const [socketID, socket] of connectedPeers.entries()) {
+            
+            // don't send to self
+           // console.log(socketID , data.socketID)
+            if (socketID !== data.socketID) {
+             //   console.log(socketID, data.payload.type)
+         
+                socket.emit('OfferOrAnswer', data.payload.sdp)
+            }
+            }*/
+        });
+
+        socket.on("candidate", function (data) {
+            console.log("Caditate ", data.payload.userId);
+
+            // send candidate to the other peer(s) if any
+
+            //    console.log(socketID, data.payload)
+            io.to(data.payload.userId).emit(
+                "candidate",
+                data.payload.candidate
+            );
+        });
         console.log("NEW CLIENT");
+        socket.on("cancel", function ({ applicantId }) {
+            io.to(applicantId).emit("cancel");
+        });
+        socket.on("reject", function ({ companyId, myId }) {
+            console.log("REJECTED ", companyId);
+            io.to(companyId).emit("rejected", { companyId });
+            io.to(myId).emit("HideCalling");
+        });
+        socket.on("accept", function ({ companyId, myId }) {
+            console.log("ACCEPTED");
+            io.to(myId).emit("HideCalling");
+            io.to(companyId).emit("accepted", { companyId });
+        });
+        socket.on(
+            "CallUser",
+            function ({ applicantId, companyId, companyName, companyImg }) {
+                io.to(applicantId).emit("ReceiveCall", {
+                    companyId,
+                    companyName,
+                    companyImg,
+                });
+                console.log("CALL USER ", applicantId, companyName, companyImg);
+            }
+        );
 
         socket.on("CheckOnline", function ({ applicantId, companyId }) {
             console.log("APPLOICANT ID ", applicantId, companyId);
@@ -55,6 +110,16 @@ module.exports = (io) => {
             this.to(userid).emit("CreatePeer",userid)
             }*/
         });
+
+        //company start to create peer
+        socket.on("CreatePeer", function ({ userId, applicantId }) {
+            console.log("creatPeer", userId, applicantId);
+            this.to(userId).emit("CreatePeer", applicantId);
+            this.to(applicantId).emit("CreatePeer", userId);
+        });
+        socket.on("Offer", SendOffer);
+        socket.on("Answer", SendAnswer);
+        socket.on("disconnect", Disconnect);
 
         //chat
 
