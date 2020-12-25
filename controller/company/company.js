@@ -206,7 +206,10 @@ const applyForJob = async (req, res, err) => {
                 type: "job",
 
                 title: config.notifications.applyForJob.title,
-                body: config.notifications.applyForJob.body(job.title, name),
+                body: config.notifications.applyForJob.body(
+                    job.title,
+                    req.user.name
+                ),
                 job: job._id,
                 to: 1,
             });
@@ -239,7 +242,7 @@ const cancelJob = async (req, res, err) => {
             user: company.user,
             type: "job",
             title: config.notifications.cancelJob.title,
-            body: config.notifications.cancelJob.body(job.title, name),
+            body: config.notifications.cancelJob.body(job.title, req.user.name),
             job: job._id,
             to: 1,
         });
