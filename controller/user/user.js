@@ -62,7 +62,7 @@ const signupUser = (req, res, err) => {
             return res.sendStatus(500);
         }
         if (!err) {
-            const to = req.body.data.email,
+            /* const to = req.body.data.email,
                 from = "Workegypt <dev@workegypt.net>",
                 subject = "confirmation";
             (text = ""),
@@ -81,7 +81,7 @@ const signupUser = (req, res, err) => {
 
 </div>
 
-    `);
+    `);*/
             sendMessage(to, user.confirmation_token, name);
             /*sendEmail({ to, subject, text, html, from })
                 .then(() => {
@@ -251,26 +251,27 @@ const resendConfirmation = (req, res, err) => {
             res.status(404).json({ error: "user not found", code: "#100" });
         }
         console.log("SEND MAIL");
-        const to = req.body.data.email,
-            from = "Workegypt <dev@workegypt.net>",
-            subject = "confirmation";
-        (text = ""),
-            (html = `
-        <div style="text-align: center;">
-        <h3>you are welcome ${user.name}</h3>
-        <h4>to confirm you email copy the following code</h4>
-        <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
-        ${user.confirmation_token}
-        </div>
-        <br>
-        <span>thank you ! </span>
-    <script>
-        
-        </script>
-    
-    </div>
-    
-        `);
+        //     const to = req.body.data.email,
+        //         from = "Workegypt <dev@workegypt.net>",
+        //         subject = "confirmation";
+        //     (text = ""),
+        //         (html = `
+        //     <div style="text-align: center;">
+        //     <h3>you are welcome ${user.name}</h3>
+        //     <h4>to confirm you email copy the following code</h4>
+        //     <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
+        //     ${user.confirmation_token}
+        //     </div>
+        //     <br>
+        //     <span>thank you ! </span>
+        // <script>
+
+        //     </script>
+
+        // </div>
+
+        //     `);
+        sendMessage(to, user.confirmation_token, user.name);
 
         sendEmail({ to, subject, text, html, from })
             .then(() => {
