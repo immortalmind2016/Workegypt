@@ -22,7 +22,7 @@ const sendNotification = async (req, res, err) => {
             return {
                 body,
                 title,
-                type,
+                ...{ ...(type == "2" ? {} : { type }) },
                 user: user._id,
                 ...{
                     ...(type == "url"
