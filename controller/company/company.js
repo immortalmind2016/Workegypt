@@ -146,7 +146,7 @@ const editApplicantStatus = async (req, res, err) => {
         }
         let results = await Promise.all([
             Applicant_profile.findOne({
-                _id: req.params.applicantId,
+                _id: req.params.applicantid,
             }),
             Job.findOneAndUpdate(
                 {
@@ -160,13 +160,7 @@ const editApplicantStatus = async (req, res, err) => {
                 { new: true }
             ),
         ]);
-        console.log(
-            "EDIT JOB STATUS ",
-            results,
-            await Applicant_profile.findOne({
-                _id: req.params.applicantId,
-            })
-        );
+
         let Noti = await Notification.create({
             user: results[0].user,
             notificationType: "job",
