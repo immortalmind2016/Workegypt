@@ -160,13 +160,16 @@ const editApplicantStatus = async (req, res, err) => {
             ),
         ]);
 
-        let Noti = await Notification.insert({
+        let Noti = await Notification.create({
             user: results[0]._id,
             type: "job",
             job: results[1]._id,
             to: 0,
             title: `test`,
-            body: `test`,
+            body:
+                config.notifications.editApplicantStatus.body +
+                " " +
+                job.req.body.status,
         });
         // sendSocketNotification(to);
         res.json({ job: results[1] });
@@ -192,7 +195,7 @@ const applyForJob = async (req, res, err) => {
             { $push: { applicants: applicant } },
             { new: true }
         );
-        let Noti = await Notification.insert({
+        let Noti = await Notification.create({
             user: req.user._id,
             type: "job",
             title: config.notifications.applyForJob.title,
@@ -220,7 +223,7 @@ const cancelJob = async (req, res, err) => {
             { $pull: { applicants: { applicant: applicantProfile._id } } },
             { new: true }
         );
-        const Noti = await Notification.insert({
+        const Noti = await Notification.create({
             user: req.user._id,
             type: "job",
             title: config.notifications.cancelJob.title,
