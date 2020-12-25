@@ -16,22 +16,18 @@ const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
     try {
         const { type, to, title, body } = req.body;
-        let users = await User.find({ type: to }).lean();
-        console.log(users);
-        notifications = users.map((user) => {
-            return {
-                body,
-                title,
-                ...{ ...(type == "2" ? {} : { type }) },
-                user: user._id,
-                ...{
-                    ...(type == "url"
-                        ? { url: req.body.url }
-                        : { job: req.body.jobId }),
-                },
-            };
-        });
-        await Notification.insertMany(notifications);
+        notifications = {
+            body,
+            title,
+            type,
+            user: null,
+            ...{
+                ...(type == "url"
+                    ? { url: req.body.url }
+                    : { job: req.body.jobId }),
+            },
+        };
+        await Notification.insert(notification);
         return res.sendStatus(200);
     } catch (e) {
         return res.status(501).json({ error: e.message });
