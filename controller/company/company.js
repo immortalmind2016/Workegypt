@@ -101,6 +101,8 @@ const getCompanyJobs = async (req, res, err) => {
             res.sendStatus(404);
         }
     } catch (err) {
+        console.log("EDIT JOB ERROR ", err);
+
         return res.json({ error: err });
     }
 };
@@ -174,6 +176,7 @@ const editApplicantStatus = async (req, res, err) => {
         // sendSocketNotification(to);
         res.json({ job: results[1] });
     } catch (err) {
+        console.log("CANCEL JOB ERROR ", err);
         return res.json({ error: err.message });
     }
 };
