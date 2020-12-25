@@ -161,7 +161,7 @@ const editApplicantStatus = async (req, res, err) => {
         ]);
 
         let Noti = await Notification.create({
-            user: results[0]._id,
+            user: results[0].user,
             type: "job",
             job: results[1]._id,
             to: 0,
@@ -197,12 +197,12 @@ const applyForJob = async (req, res, err) => {
         );
         // sendSocketNotification(Noti);
         try {
-            let company = await Company.findOne({ _id: job.company }).populate(
-                "user"
-            );
+            let company = await Company_applicant.findOne({
+                _id: job.company,
+            });
             console.log("COMPANY USER", company);
             let Noti = await Notification.create({
-                user: company._id,
+                user: company.user,
                 type: "job",
 
                 title: config.notifications.applyForJob.title,
@@ -232,8 +232,11 @@ const cancelJob = async (req, res, err) => {
             { $pull: { applicants: { applicant: applicantProfile._id } } },
             { new: true }
         );
+        let company = await Company_applicant.findOne({
+            _id: job.company,
+        });
         const Noti = await Notification.create({
-            user: req.user._id,
+            user: company.user,
             type: "job",
             title: config.notifications.cancelJob.title,
             body: config.notifications.cancelJob.body + " " + job.title,
