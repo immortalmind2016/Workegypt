@@ -165,11 +165,11 @@ const editApplicantStatus = async (req, res, err) => {
             type: "job",
             job: results[1]._id,
             to: 0,
-            title: `test`,
+            title: `${config.notifications.editApplicantStatus.title} ${results[1].status}`,
             body:
                 config.notifications.editApplicantStatus.body +
                 " " +
-                results[1].req.body.status,
+                job.req.body.status,
         });
         // sendSocketNotification(to);
         res.json({ job: results[1] });
