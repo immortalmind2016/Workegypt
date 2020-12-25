@@ -228,7 +228,6 @@ const cancelJob = async (req, res, err) => {
 
 const moment = require("moment");
 const openContact = async (req, res, err) => {
-    return res.sendStatus(404);
     try {
         const forDateCheck = {
             "subscribe.endDate": { $gte: new Date().getTime() },
