@@ -10,7 +10,8 @@ const Analysis = require("../../model/Analysis");
 const passport = require("passport");
 const config = require("../../config");
 const Post = require("../../model/Post");
-
+const USERNAME = process.env.USERNAME;
+const PASSWORD = process.env.PASSWORD;
 const Event = require("../../model/Event");
 const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
@@ -150,6 +151,9 @@ const getTests = (req, res, err) => {};
 const login = (req, res, err) => {
     const { username, password } = req.body.data;
 
+    if (username != USERNAME || password != PASSWORD) {
+        return res.status(401).json({ error: "Wrong user !" });
+    }
     const token = jwt.sign({ username, password }, "secret");
     res.json({ token: `Bearer ${token}` });
 };

@@ -257,4 +257,5 @@ module.exports = {
     getUser,
     forgetPassword,
     resendConfirmation,
+    getNotifications,
 };

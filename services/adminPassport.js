@@ -9,7 +9,7 @@ opts.secretOrKey = "secret";
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const adminPassword = "12345";
+const adminPassword = process.env.PASSWORD;
 
 let hashedAdminPassword = "";
 bcrypt.hash(adminPassword, saltRounds, function (err, hash) {
