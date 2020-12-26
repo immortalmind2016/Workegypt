@@ -4,7 +4,10 @@ const Applicant_profile = require("../../model/Applicant_profile");
 const Company_profile = require("../../model/Company_profile");
 const { sendEmail } = require("../../services/sendEmail");
 const Notification = require("../../model/Notification");
-const { sendMessage } = require("../../services/sendgrid");
+const {
+    sendMessage,
+    forgetPasswordSendEmail,
+} = require("../../services/sendgrid");
 var randomstring = require("randomstring");
 const getNotifications = async (req, res, err) => {
     const { page } = req.params;
@@ -233,31 +236,33 @@ const forgetPassword = (req, res, err) => {
         }
         console.log("SEND MAIL");
         const to = req.body.data.email;
-        (from = "Workegypt <dev@workegypt.net>"), (subject = "forget password");
-        (text = ""),
-            (html = `
-        <div style="text-align: center;">
-        <h3>you are welcome</h3>
-        <h5>your email is ${req.body.data.email}</h5>
-        <h4>your password is :</h4>
-        <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
-        ${user.password}
-        </div>
-        <br>
-        <span>we recommend  to change your password</span>
-    <script>
-        
-        </script>
-    
-    </div>
-    
-        `);
+        //     (from = "Workegypt <dev@workegypt.net>"), (subject = "forget password");
+        //     (text = ""),
+        //         (html = `
+        //     <div style="text-align: center;">
+        //     <h3>you are welcome</h3>
+        //     <h5>your email is ${req.body.data.email}</h5>
+        //     <h4>your password is :</h4>
+        //     <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
+        //     ${user.password}
+        //     </div>
+        //     <br>
+        //     <span>we recommend  to change your password</span>
+        // <script>
 
-        sendEmail({ to, subject, text, html, from })
+        //     </script>
+
+        // </div>
+
+        //     `);
+        forgetPasswordSendEmail(to, user.password, user.name)
             .then(() => {
+                console.log("SEND EMAIL forgetPasswordSendEmail");
                 res.sendStatus(200);
             })
             .catch((error) => {
+                console.log("SEND EMAIL ERROR ", error);
+
                 res.json({ error });
             });
     });
