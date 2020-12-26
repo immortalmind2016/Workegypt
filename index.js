@@ -45,7 +45,7 @@ const io = require("socket.io")(http, {
 });
 
 io.origins("*:*");
-
+require("./services/socket")(io);
 app.use(function (req, res, next) {
     var allowedOrigins = [
         "https://8fib4t1ccaof.loclx.io",
