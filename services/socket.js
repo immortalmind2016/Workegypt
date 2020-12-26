@@ -30,7 +30,10 @@ module.exports = (io) => {
         });
         socket.on("NewClient", function ({ userid, type }) {
             socket.join(`user-type-${type}`, () => {
-                console.log(`user-type-${type}`, userid, type);
+                console.log(`user-type-${type ? 1 : 0}`, userid, type);
+            });
+            socket.join(`user-type-2`, () => {
+                console.log(`user-type-2`, userid, type);
             });
             socket.join(userid, () => {
                 console.log("JOINED", userid, type);
