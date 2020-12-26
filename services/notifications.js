@@ -1,7 +1,7 @@
 const broadCastNotification = (data) => {
     const { io } = require("../index");
     console.log(data);
-    io.to(`user-type-${data.to}`).emit(data);
+    io.to(`user-type-${data.to}`).emit("notification", data);
 };
 const sendSocketNotification = (data) => {
     const { io } = require("../index");
