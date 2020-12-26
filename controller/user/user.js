@@ -51,7 +51,7 @@ const signupUser = (req, res, err) => {
     console.log("SING UYP");
     const { email, password, name, type, FCM_token } = req.body.data;
     if (FCM_token) {
-        subscribeToTopic(FCM_token, type)
+        subscribeToTopic(FCM_token, type ? 1 : 0)
             .then(function (response) {
                 // See the MessagingTopicManagementResponse reference documentation
                 // for the contents of response.

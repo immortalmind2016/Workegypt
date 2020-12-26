@@ -29,8 +29,7 @@ const sendPushNotification = (data, topic) => {
     };
 
     // Send a message to devices subscribed to the provided topic.
-    return admin.messaging();
-    // .send(message)
+    return admin.messaging().send(message);
     // .then((response) => {
     //     // Response is a message ID string.
     //     console.log("Successfully sent message:", response);

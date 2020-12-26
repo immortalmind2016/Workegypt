@@ -37,7 +37,8 @@ const sendNotification = async (req, res, err) => {
             return res.sendStatus(200);
         }
         let users = await User.find({
-            ...{ ...(type == "2" ? {} : { type: to }) },
+            ...{ ...(type == 0 && { type }) },
+            ...{ ...(type == 1 && { type }) },
         }).lean();
 
         let notificationId = cuid();
@@ -48,7 +49,6 @@ const sendNotification = async (req, res, err) => {
                 notificationType: type,
                 notificationId,
                 to,
-
                 user: user._id,
                 ...{
                     ...(type == "url" && { url: req.body.url }),
@@ -59,6 +59,13 @@ const sendNotification = async (req, res, err) => {
             };
         });
         const nots = await Notification.insertMany(notifications);
+        //sendPushNotification.then((response) => {
+        //     // Response is a message ID string.
+        //     console.log("Successfully sent message:", response);
+        // })
+        // .catch((error) => {
+        //     console.log("Error sending message:", error);
+        // });
         broadCastNotification({
             body,
             title,
