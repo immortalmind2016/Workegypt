@@ -29,7 +29,7 @@ module.exports = (io) => {
             }
         });
         socket.on("NewClient", function ({ userid, type }) {
-            socket.join(`user-type-${type}`, () => {
+            socket.join(`user-type-${type ? 1 : 0}`, () => {
                 console.log(`user-type-${type ? 1 : 0}`, userid, type);
             });
             socket.join(`user-type-2`, () => {
