@@ -172,7 +172,7 @@ const editApplicantStatus = async (req, res, err) => {
                 " " +
                 req.body.data.status,
         });
-        // sendSocketNotification(to);
+        sendSocketNotification(Noti);
         res.json({ job: results[1] });
     } catch (err) {
         console.log("CANCEL JOB ERROR ", err);
@@ -197,7 +197,6 @@ const applyForJob = async (req, res, err) => {
             { $push: { applicants: applicant } },
             { new: true }
         );
-        // sendSocketNotification(Noti);
         try {
             let company = await Company_profile.findOne({
                 _id: job.company,
@@ -215,6 +214,7 @@ const applyForJob = async (req, res, err) => {
                 job: job._id,
                 to: 1,
             });
+            sendSocketNotification(Noti);
         } catch (e) {
             console.log("ERROR APPLY ", e);
         }
@@ -248,7 +248,7 @@ const cancelJob = async (req, res, err) => {
             job: job._id,
             to: 1,
         });
-        //sendSocketNotification(Noti);
+        sendSocketNotification(Noti);
         res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });
