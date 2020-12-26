@@ -96,7 +96,7 @@ Router.get(
     passport.authenticate("jwt", { session: false }),
     generateInterviewCode
 );
-Router.get(
+Router.post(
     "/interview-code/validate",
     passport.authenticate("jwt", { session: false }),
     validateInterviewCode
