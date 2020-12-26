@@ -392,7 +392,9 @@ const getCompanies = async (req, res, err) => {
             let users = await User.find({
                 type: true,
                 ...(searchBy == "name" &&
-                    searchText && { name: { $regex: searchText } }),
+                    searchText && {
+                        name: { $regex: searchText, $options: "i" },
+                    }),
             });
             if (!users) {
                 return res.json({ profiles: [], totalResults: 0 });
