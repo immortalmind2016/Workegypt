@@ -140,7 +140,7 @@ const signinUser = (req, res, err) => {
         if (user) {
             let user_ = user;
             
-            let token = jwt.sign({ ...user_,password:null }, "secret", { expiresIn: 86400 });
+            let token = jwt.sign({ ...user_,password:null }, "secret", { expiresIn: '365d' });
 
             if (user.confirmed) {
                 console.log("EMAIL CONFIRMED");
