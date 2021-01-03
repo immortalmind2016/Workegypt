@@ -28,7 +28,6 @@ const sendNotification = async (req, res, err) => {
                       type
                   }
             }, to)
-                .send(message)
                 .then((response) => {
                     // Response is a message ID string.
                     console.log(
