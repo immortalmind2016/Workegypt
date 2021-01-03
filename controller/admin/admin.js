@@ -18,7 +18,7 @@ const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
     try {
         const { type, to, title, body, push } = req.body;
-        if (push) {
+      
             sendPushNotification({
                 "notification": {
                     title,
@@ -42,8 +42,8 @@ const sendNotification = async (req, res, err) => {
                         error
                     );
                 });
-            return res.sendStatus(200);
-        }
+           
+    
         let users = await User.find({
             ...{ ...(type == 0 && { type }) },
             ...{ ...(type == 1 && { type }) },
