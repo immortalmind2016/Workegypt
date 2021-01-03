@@ -12,6 +12,7 @@ const moment = require("moment");
 const InterviewCode = require("../../model/InterviewCode");
 const cuid = require("cuid");
 var randomstring = require("randomstring");
+const { sendPushNotificationToUser } = require("../../services/fcm");
 
 const getCompanyJobs = async (req, res, err) => {
     try {
@@ -147,7 +148,7 @@ const editApplicantStatus = async (req, res, err) => {
         let results = await Promise.all([
             Applicant_profile.findOne({
                 _id: req.params.applicantid,
-            }),
+            }).populate("user","FCM_token"),
             Job.findOneAndUpdate(
                 {
                     $and: [
@@ -160,9 +161,9 @@ const editApplicantStatus = async (req, res, err) => {
                 { new: true }
             ),
         ]);
-
+        console.log("SEND NOTIFICATIONM")
         let Noti = await Notification.create({
-            user: results[0].user,
+            user: results[0].user._id,
             notificationType: "job",
             job: results[1]._id,
             to: 0,
@@ -173,6 +174,32 @@ const editApplicantStatus = async (req, res, err) => {
                 req.body.data.status,
         });
         sendSocketNotification(Noti);
+        sendPushNotificationToUser({
+            "notification":{
+                title: `${config.notifications.editApplicantStatus.title} ${results[1].title}`,
+                body:
+                config.notifications.editApplicantStatus.body +
+                " " +
+                req.body.data.status,
+               
+            },
+            data:{
+                type:"job"
+            }
+        },results[0].user.FCM_token)
+        .then((response) => {
+            // Response is a message ID string.
+            console.log(
+                "sendPushNotification/ Successfully sent message:",
+                response
+            );
+        })
+        .catch((error) => {
+            console.log(
+                "sendPushNotification/ Error sending message:",
+                error
+            );
+        });
         res.json({ job: results[1] });
     } catch (err) {
         console.log("CANCEL JOB ERROR ", err);
@@ -200,10 +227,10 @@ const applyForJob = async (req, res, err) => {
         try {
             let company = await Company_profile.findOne({
                 _id: job.company,
-            });
+            }).populate("user","FCM_token");
             console.log("COMPANY USER", company);
             let Noti = await Notification.create({
-                user: company.user,
+                user: company.user._id,
                 notificationType: "job",
 
                 title: config.notifications.applyForJob.title,
@@ -215,6 +242,33 @@ const applyForJob = async (req, res, err) => {
                 to: 1,
             });
             sendSocketNotification(Noti);
+            sendPushNotificationToUser({
+                "notification":{
+                    title: `${config.notifications.editApplicantStatus.title} ${results[1].title}`,
+                    body:
+                    config.notifications.editApplicantStatus.body +
+                    " " +
+                    req.body.data.status,
+                  
+                }
+                ,
+                data:{
+                    type:"job"
+                }
+            },company.user.FCM_token)
+            .then((response) => {
+                // Response is a message ID string.
+                console.log(
+                    "sendPushNotification/ Successfully sent message:",
+                    response
+                );
+            })
+            .catch((error) => {
+                console.log(
+                    "sendPushNotification/ Error sending message:",
+                    error
+                );
+            });
         } catch (e) {
             console.log("ERROR APPLY ", e);
         }
@@ -239,9 +293,9 @@ const cancelJob = async (req, res, err) => {
         );
         let company = await Company_profile.findOne({
             _id: job.company,
-        });
+        }).populate("user","FCM_token");
         const Noti = await Notification.create({
-            user: company.user,
+            user: company.user._id,
             notificationType: "job",
             title: config.notifications.cancelJob.title,
             body: config.notifications.cancelJob.body(job.title, req.user.name),
@@ -249,6 +303,32 @@ const cancelJob = async (req, res, err) => {
             to: 1,
         });
         sendSocketNotification(Noti);
+        sendPushNotificationToUser({
+            "notification":{
+                title: `${config.notifications.editApplicantStatus.title} ${results[1].title}`,
+                body:
+                config.notifications.editApplicantStatus.body +
+                " " +
+                req.body.data.status,
+              
+            },
+            data:{
+                type:"job"
+            }
+        },company.user.FCM_token)
+        .then((response) => {
+            // Response is a message ID string.
+            console.log(
+                "sendPushNotification/ Successfully sent message:",
+                response
+            );
+        })
+        .catch((error) => {
+            console.log(
+                "sendPushNotification/ Error sending message:",
+                error
+            );
+        });
         res.sendStatus(200);
     } catch (err) {
         return res.json({ error: err });
@@ -485,7 +565,8 @@ const subscribe = async (req, res, err) => {
     try {
         let endDate = moment(new Date()).add(
             1,
-            `${period == 0 ? "month" : "year"}`
+            "M"
+           // `${period == 0 ? "month" : "year"}`
         );
         Company_profile.findOneAndUpdate(
             { _id: companyProfileId },

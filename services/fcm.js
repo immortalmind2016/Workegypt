@@ -8,6 +8,20 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
 
+const sendPushNotificationToUser=(data,token)=>{
+    // This registration token comes from the client FCM SDKs.
+var registrationToken = 'YOUR_REGISTRATION_TOKEN';
+
+var message = {
+  ...data,
+  token
+};
+
+// Send a message to the device corresponding to the provided
+// registration token.
+return admin.messaging().send(message)
+
+}
 const subscribeToTopic = (token, topic) => {
     var registrationTokens = [token];
 
@@ -45,4 +59,6 @@ const sendPushNotification = (data, topic) => {
 module.exports = {
     sendPushNotification,
     subscribeToTopic,
+    sendPushNotificationToUser
+
 };
