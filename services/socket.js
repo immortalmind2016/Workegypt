@@ -46,7 +46,12 @@ module.exports = (io) => {
         });
         socket.on("NewClientMobile", function ({ userid, type }) {
             let exist = io.sockets.adapter.rooms[userid];
-
+            socket.join(`user-type-${type ? 1 : 0}`, () => {
+                console.log(`user-type-${type ? 1 : 0}`, userid, type);
+            });
+            socket.join(`user-type-2`, () => {
+                console.log(`user-type-2`, userid, type);
+            });
             if (!exist) {
                 socket.join(userid, () => {
                     console.log("JOINED", userid, type);
