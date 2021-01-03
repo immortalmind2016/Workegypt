@@ -192,8 +192,10 @@ const signinUser = (req, res, err) => {
         }*/
     });
 };
+
 const getUser = (req, res, err) => {
         let type=req.user.type
+        let FCM_token=req.user.FCM_token
         if(req.user.FCM_token)
         subscribeToTopic(FCM_token, type ? 1 : 0)
         .then(function (response) {
