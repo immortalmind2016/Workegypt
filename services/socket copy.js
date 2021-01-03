@@ -103,7 +103,9 @@ socket.on('OfferOrAnswer', (data) => {
 
             let exist = io.sockets.adapter.rooms[userid]
      
-     
+            socket.join(`user-type-${type}`, () => {
+                console.log(`user-type-${type}`, userid, type);
+            });
 
             if (!exist) {
                 socket.join(userid, () => {

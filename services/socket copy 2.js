@@ -97,7 +97,7 @@ module.exports = (io) => {
             }*/
         });
         socket.on("NewClientMobile", function ({ userid, type }) {
-
+            console.log("")
             let exist = io.sockets.adapter.rooms[userid];
             socket.join(`user-type-${type}`, () => {
                 console.log(`user-type-${type}`, userid, type);
