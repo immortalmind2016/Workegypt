@@ -19,7 +19,15 @@ const sendNotification = async (req, res, err) => {
     try {
         const { type, to, title, body, push } = req.body;
         if (push) {
-            sendPushNotification(req.body, to)
+            sendPushNotification({
+                "notification": {
+                    title,
+                    body
+                  },
+                  "data":{
+                      type
+                  }
+            }, to)
                 .send(message)
                 .then((response) => {
                     // Response is a message ID string.

@@ -22,9 +22,12 @@ const subscribeToTopic = (token, topic) => {
         });*/
 };
 
+// Send a message to devices subscribed to the provided topic.
+
 const sendPushNotification = (data, topic) => {
+
     var message = {
-        data,
+        ...data,
         topic,
     };
 
