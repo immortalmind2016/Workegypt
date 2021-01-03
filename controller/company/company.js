@@ -340,15 +340,24 @@ const openContact = async (req, res, err) => {
         const forDateCheck = {
             "subscribe.endDate": { $gte: new Date().getTime() },
         };
+        
+        //moment(GREATER ONE ).diff(moment(LESS ONE)) must be +ve
+
         console.log("OPEN CONTACT", forDateCheck);
         const applicant = req.body.data.id;
 
         const companyProfile = await Company_profile.findOne({
             user: req.user._id,
             "subscribe.count": { $gte: 1 },
-            ...forDateCheck,
         });
+        
         if (companyProfile) {
+            console.log(companyProfile)
+        console.log(moment(companyProfile.subscribe.endDate).diff(moment())) // 86400000)
+        if(companyProfile)
+        if(moment(companyProfile.subscribe.endDate).diff(moment())<=0){
+            return res.status(404).json({error:"ERROR NOT FOUND G"})
+        }
             new Company_applicant({
                 applicant,
                 company: req.user._id,
@@ -563,16 +572,17 @@ const subscribe = async (req, res, err) => {
     if (Object.keys(plans).indexOf(type) == -1)
         return res.status(404).json({ err: "Plan not found" });
     try {
-        let endDate = moment(new Date()).add(
+        let endDate = moment().add(
             1,
             "M"
            // `${period == 0 ? "month" : "year"}`
         );
+        
         Company_profile.findOneAndUpdate(
             { _id: companyProfileId },
             {
                 subscribe: {
-                    count: plans[type] ? plans[type] : 0,
+                    count: plans[type] ? Number(plans[type]) : 0,
                     type,
                     endDate,
                     period,
