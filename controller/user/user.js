@@ -58,12 +58,13 @@ const signupUser = (req, res, err) => {
             .then(function (response) {
                 // See the MessagingTopicManagementResponse reference documentation
                 // for the contents of response.
+                subscribeToTopic(FCM_token, "2");
+
                 console.log("Successfully subscribed to topic:", response);
             })
             .catch(function (error) {
                 console.log("Error subscribing to topic:", error);
             });
-        subscribeToTopic(FCM_token, "2");
     }
     let newUser = new User({
         email,
@@ -199,6 +200,8 @@ const getUser = (req, res, err) => {
         if(req.user.FCM_token)
         subscribeToTopic(FCM_token, type ? "1" : "0")
         .then(function (response) {
+            subscribeToTopic(FCM_token, "2");
+
             // See the MessagingTopicManagementResponse reference documentation
             // for the contents of response.
             console.log("Successfully subscribed to topic:", response);
@@ -206,7 +209,6 @@ const getUser = (req, res, err) => {
         .catch(function (error) {
             console.log("Error sbscribing to topic:", error);
         });
-    subscribeToTopic(FCM_token, "2");
     if (!req.user.type)
         Applicant_profile.findOne({ user: req.user._id }, (err, profile) => {
             if (profile) {
