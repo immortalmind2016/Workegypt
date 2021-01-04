@@ -49,6 +49,7 @@ console.log("APPLICANT ",applicant)
 
     {$project:{
       info:1,
+      isRead:1,
       "user_profile.image":1,
    
       "user_profile._id":1,
@@ -81,6 +82,7 @@ console.log("APPLICANT ",applicant)
 
     {$project:{
       info:1,
+      isRead:1,
       "user_profile.image":1,
    
       "user_profile._id":1,
@@ -190,5 +192,5 @@ module.exports={
     createConversation,
     getConversationById,
     editConversation
-    
+
 }
