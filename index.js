@@ -76,7 +76,7 @@ app.use(function (req, res, next) {
 
     res.setHeader(
         "Access-Control-Allow-Methods",
-        "POST, GET,DELETE,PUT,OPTIONS"
+        "POST, GET,DELETE,PUT,OPTIONS,PATCH"
     );
     res.setHeader("Access-Control-Max-Age", "3600");
     res.setHeader(
