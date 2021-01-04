@@ -175,10 +175,20 @@ const createConversation=async(req,res,err)=>{
       })
     }
 }
+const editConversation=(req,res,err)=>{
+try{
+ const conversation= await Conversation.findOneAndUpdate({_id:req.params.id},{...req.body},{new:true})
+ res.json({conversation})
+}catch(e){
+  res.status(500).json({error:"error"})
+}
+
+}
 module.exports={
     getConversation,
     getConversations,
     createConversation,
-    getConversationById
+    getConversationById,
+    editConversation
     
 }

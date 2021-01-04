@@ -3,6 +3,10 @@
 const mongoose=require("mongoose")
 const Schema=mongoose.Schema
 const Conversation=new Schema({
+    isRead:{
+        type:Boolean,
+        default:false
+    },
     info:{
 
         applicant:{ 
