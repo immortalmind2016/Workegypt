@@ -139,7 +139,7 @@ const getConversations=async(req,res,err)=>{
 
       "user._id":1
     }}
-  ]).sort({_id:-1})
+  ]).sort({date: -1})
   
   
     

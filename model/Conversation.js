@@ -28,7 +28,7 @@ const Conversation=new Schema({
     }
     
     
-})
+},{timestamps:true})
 
 
 module.exports=mongoose.model("Conversation",Conversation)

@@ -81,7 +81,7 @@ module.exports = (io) => {
                         { "info.applicant": to, "info.company": from },
                     ],
                 },
-                {
+                {  isRead:false,
                     info: {
                         applicant: type ? to : from,
                         company: type ? from : to,
