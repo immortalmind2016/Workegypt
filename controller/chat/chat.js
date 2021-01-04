@@ -134,6 +134,7 @@ const getConversations=async(req,res,err)=>{
 
     {$project:{
       info:1,
+      isRead:1,
       "user_profile.image":1,
    
       "user_profile._id":1,
