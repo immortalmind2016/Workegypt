@@ -68,6 +68,7 @@ module.exports = (io) => {
 
         socket.on("message", async function ({ text, from, to, type }) {
             console.log(from, to);
+            
             const to_ = to;
             from = mongoose.Types.ObjectId(from);
             to = mongoose.Types.ObjectId(to);
@@ -116,29 +117,41 @@ module.exports = (io) => {
                             message,
                             conversation: conversation.to[0],
                         });
+                            
                         const result = type
                             ? await Applicant_profile.findOne(
                                   { _id: to },
                                   "user"
-                              ).populate("user", "pushNotificationToken")
+                              ).populate("user", "FCM_token")
                             : await Company_profile(
                                   { _id: from },
                                   "user"
-                              ).populate("user", "pushNotificationToken");
-                        let token = result
-                            ? result.user.pushNotificationToken
-                                ? result.user.pushNotificationToken
-                                : null
-                            : null;
-                        if (token) {
-                            pushMessage(
-                                {
-                                    sound: "default",
-                                    body: "This is a test notification",
-                                    data: { withSome: "data" },
+                              ).populate("user", "FCM_token");
+                            
+                        if (result) {
+                            let FCM_token =result.user.FCM_token
+                         try{
+                            sendPushNotificationToUser({
+                                "notification":{
+                                    title: `${config.notifications.checkNewMessage.title}`,
+                                    body:
+                                    config.notifications.checkNewMessage.body
                                 },
-                                [result.user.pushNotificationToken]
-                            );
+                                data:{
+                                    type:"info"
+                                }
+                            },FCM_token)
+                         }catch(e){
+                             console.log("ERROR IN SEND PUSH NOTIFICATION CONVERSATION")
+                         }
+                            // pushMessage(
+                            //     {
+                            //         sound: "default",
+                            //         body: "This is a test notification",
+                            //         data: { withSome: "data" },
+                            //     },
+                            //     [result.user.pushNotificationToken]
+                            // );
                         }
                     }
                 } catch (e) {

@@ -3,6 +3,10 @@ module.exports = {
     url: "https://workegyptv2.herokuapp.com/",
     username: "admin",
     notifications: {
+        checkNewMessage:{
+            title: "Conversations",
+            body: `Check your new messages`
+        },
         applyForJob: {
             title: "Applicant applied",
             body: (title, name) =>
