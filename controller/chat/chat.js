@@ -175,7 +175,7 @@ const createConversation=async(req,res,err)=>{
       })
     }
 }
-const editConversation=(req,res,err)=>{
+const editConversation=async(req,res,err)=>{
 try{
  const conversation= await Conversation.findOneAndUpdate({_id:req.params.id},{...req.body},{new:true})
  res.json({conversation})
