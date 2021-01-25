@@ -323,6 +323,10 @@ const resendConfirmation = (req, res, err) => {
             });
     });
 };
+const resetPassword=(req,res,err)=>{
+    const {token,newPassword}=req.body
+    
+}
 module.exports = {
     signinUser,
     signupUser,
@@ -332,4 +336,5 @@ module.exports = {
     resendConfirmation,
     getNotifications,
     setReadNotification,
+    resetPassword
 };

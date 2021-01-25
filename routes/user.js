@@ -8,6 +8,7 @@ const {
     resendConfirmation,
     getNotifications,
     setReadNotification,
+    resetPassword
 } = require("../controller/user/user");
 const passport = require("../services/jwtPassport");
 /*
@@ -51,6 +52,15 @@ expected data shape
 }
 */
 Router.post("/forget-password", forgetPassword);
+/*
+expected data shape
+{
+    data:{
+        email:""
+    }
+}
+*/
+Router.post("/reset-password", resetPassword);
 /*
 expected data shape
 {
