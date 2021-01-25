@@ -52,7 +52,7 @@ User.pre("save", async function (next) {
     try {
   
     try{
-        jwt.decode(this.password)
+       await jwt.decode(this.password)
     }catch(e){
         console.log("PASSWORD MODIFIED")
         this.salt = await bcrypt.genSalt();
