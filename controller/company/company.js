@@ -415,6 +415,25 @@ const getProfiles = async (req, res, err) => {
         if (searchBy == "job_title") {
             filters["experience.title"] = new RegExp(`^${searchText}$`, "i");
         }
+        if (searchBy == "name") {
+            let users = await User.find({
+                type: true,
+                ...(searchBy == "name" &&
+                    searchText && {
+                        name: { $regex: searchText, $options: "i" },
+                    }),
+            });
+            if (!users) {
+                return res.json({ profiles: [], totalResults: 0 });
+            }
+            usersIds = users.map((user) => {
+                return user._id;
+            });
+            console.log({
+                ...(searchBy == "name" && { user: { $in: usersIds } }),
+                ...filters,
+            });
+        }
         console.log(filters);
         let totalResults;
         skip = req.params.skip * size;
@@ -423,7 +442,7 @@ const getProfiles = async (req, res, err) => {
             ...(language && { languages: { $in: [language] } }),
         });
         let profiles = await Applicant_profile.find(
-            { ...filters, ...(language && { "languages.title": language }) },
+            {...(searchBy == "name" && { user: { $in: usersIds } }),...filters, ...(language && { "languages.title": language }) },
             ["image"],
             (err, data) => {
                 //GET TOTALRESULT
