@@ -25,13 +25,13 @@ const sendMessage = async (to, code, name) => {
     };
     return sgMail.send(msg);
 };
-const forgetPasswordSendEmail = async (to, password, name) => {
+const forgetPasswordSendEmail = async (to, link, name) => {
     const msg = {
         to,
         from: "immortal.mind2016@gmail.com", // Use the email address or domain you verified above
         template_id: templateIds.forget.en,
         dynamic_template_data: {
-            password,
+            link,
             name,
         },
     };

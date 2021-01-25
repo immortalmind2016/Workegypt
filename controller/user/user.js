@@ -78,7 +78,8 @@ const signupUser = (req, res, err) => {
 
     newUser.save((err, user) => {
         if (err) {
-            return res.sendStatus(500);
+            
+            return res.status(500).json({err:err.message});
         }
         if (!err) {
             const to = req.body.data.email;
@@ -137,8 +138,15 @@ const signinUser = (req, res, err) => {
     const { email, password } = req.body.data;
     console.log(req.body.data);
 
-    User.findOne({ email, password }, (err, user) => {
-        if (user) {
+    User.findOne({ email },async (err, user) => {
+        console.log(await user.checkPassword(password),"CHECK PASSWORD ",password)
+        if(!user||!await user.checkPassword(password))
+        {
+            return res
+            .status(404)
+            .json({ error: "wrong email or password", code: "#2" });
+        }
+       
             let user_ = user;
             
             let token = jwt.sign({ ...user_,password:null }, "secret", { expiresIn: '365d' });
@@ -177,11 +185,7 @@ const signinUser = (req, res, err) => {
                     });
                 }
             }
-        } else {
-            return res
-                .status(404)
-                .json({ error: "wrong email or password", code: "#2" });
-        }
+     
 
         /*  if(user){
          let user_=user
@@ -273,7 +277,9 @@ const forgetPassword = (req, res, err) => {
         // </div>
 
         //     `);
-        forgetPasswordSendEmail(to, user.password, user.name)
+ 
+        let link=`${process.env.ROOT_URL}/reset?token=${jwt.sign({id:user._id,type:"reset_password"},process.env.JWT_RESETPASSWORD_SECRET, { expiresIn: '7d' })}`
+        forgetPasswordSendEmail(to,link, user.name)
             .then(() => {
                 console.log("SEND EMAIL forgetPasswordSendEmail");
                 res.sendStatus(200);
@@ -323,8 +329,16 @@ const resendConfirmation = (req, res, err) => {
             });
     });
 };
-const resetPassword=(req,res,err)=>{
+const resetPassword=async (req,res,err)=>{
     const {token,newPassword}=req.body
+    const data=jwt.verify(token,process.env.JWT_RESETPASSWORD_SECRET)
+    try{
+        await User.findOneAndUpdate({_id:data.id},{password:newPassword})
+        res.json({success:true})
+    }catch(e){
+        console.log(e)
+        res.json({error:e})
+    }
     
 }
 module.exports = {
