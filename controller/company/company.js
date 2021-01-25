@@ -410,10 +410,11 @@ const getProfiles = async (req, res, err) => {
             filters.current_education_level = educationLvl;
         }
         if (job_title) {
-            filters.job_title = job_title;
+            filters.job_title = searchText;
         }
-        if (searchBy == "job_title") {
-            filters["experience.title"] = new RegExp(`^${searchText}$`, "i");
+        if (searchBy == "jobTitle") {
+            filters.job_title = { $regex: searchText, $options: "i" };
+           // filters["experience.title"] = { $regex: searchText, $options: "i" };
         }
 
         if (searchBy == "name") {
