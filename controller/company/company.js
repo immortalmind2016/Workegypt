@@ -455,9 +455,8 @@ const getProfiles = async (req, res, err) => {
         )
             .populate({
                 path: "user",
-                select: ["name", "job_title", "live_in", "age"],
-                ...(searchBy == "name" &&
-                    searchText && { match: { name: searchText } }),
+                select: ["name", "job_title", "live_in", "age"]
+       
             })
             .limit(size)
             .skip(skip);
