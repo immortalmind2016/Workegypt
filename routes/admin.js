@@ -6,6 +6,7 @@ const {
     getTests,
     login,
     sendNotification,
+    websiteMode
 } = require("../controller/admin/admin");
 const adminPassport = require("../services/adminPassport");
 const bcrypt = require("bcrypt");
@@ -29,5 +30,5 @@ Router.post(
 Router.post("/", login);
 
 Router.post("/add-visitor/", addVisitor);
-
+Router.post("/website-mode",websiteMode)
 module.exports = Router;

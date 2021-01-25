@@ -5,6 +5,7 @@ const User = mongoose.model("User");
 const Company_profile = mongoose.model("Company_profile");
 const Applicant_profile = mongoose.model("Applicant_profile");
 const Notification = mongoose.model("Notification");
+var fs = require('fs');
 
 const Analysis = require("../../model/Analysis");
 const passport = require("passport");
@@ -18,7 +19,7 @@ const sendNotification = async (req, res, err) => {
     //to 0 User , 1 Company , 2 all
     try {
         const { type, to, title, body, push } = req.body;
-      
+
             sendPushNotification({
                 "notification": {
                     title,
@@ -215,6 +216,12 @@ const login = (req, res, err) => {
 const get = (req, res, err) => {
     res.json({ username: config.username });
 };
+const path=require('path')
+const websiteMode=async (req,res,err)=>{
+    await fs.writeFileSync( path.resolve(__dirname,"..","..","admin.json"),`{"websiteMode":"${req.body.mode}"}`,"utf8")
+    res.json({success:true})
+}
+
 module.exports = {
     getWebSiteAnalysis,
     addVisitor,
@@ -222,5 +229,6 @@ module.exports = {
     getTests,
     login,
     get,
+websiteMode,
     sendNotification,
 };

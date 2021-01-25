@@ -20,7 +20,7 @@ bcrypt.hash(adminPassword, saltRounds, function (err, hash) {
 module.exports = pass.use(
     new JwtStrategy(opts, function (jwt_payload, done) {
         console.log(jwt_payload);
-
+        console.log("LOGIN ADMIN")
         bcrypt.compare(
             jwt_payload.password,
             hashedAdminPassword,

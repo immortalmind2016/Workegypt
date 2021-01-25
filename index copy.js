@@ -16,7 +16,7 @@ require("./model/Notification");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-
+app.use(express.static("public"));
 const path = require("path");
 const passport = require("./services/jwtPassport");
 require("dotenv").config();
@@ -110,18 +110,14 @@ app.use("/api/chat/", chat);
 // // Server static assets if in production
 // if (process.env.NODE_ENV === 'production') {
 //      // Set static folder
-app.use((req,res,next)=>{
+app.use(express.static("client/build"));
 
+app.get("*", (req, res) => {
     let data=fs.readFileSync("./admin.json",{encoding:"utf-8"})
     let jsonData=JSON.parse(data)
-    if(jsonData.websiteMode=="on")
+    if(jsonData.websiteMode)
     return res.sendFile(path.resolve(__dirname, "public", "maintainance.html"));
-    next()
-})
-app.use(express.static("public"));
-app.get("*", (req, res) => {
-
-    return res.sendFile(path.resolve(__dirname, "public", "index.html"));
+    return res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 //    }
 
