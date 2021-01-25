@@ -333,7 +333,10 @@ const resetPassword=async (req,res,err)=>{
     const {token,newPassword}=req.body
     const data=jwt.verify(token,process.env.JWT_RESETPASSWORD_SECRET)
     try{
-        await User.findOneAndUpdate({_id:data.id},{password:newPassword})
+        let user=await User.findOne({_id:data.id})
+        console.log(user , "USER")
+        user.password=newPassword
+        user.save()
         res.json({success:true})
     }catch(e){
         console.log(e)

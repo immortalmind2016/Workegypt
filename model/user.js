@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const jwt=require("jsonwebtoken")
 const bcrypt=require("bcrypt")
 const User = new Schema({
     name: {
@@ -48,11 +49,16 @@ const User = new Schema({
 
 User.pre("save", async function (next) {
     console.log("PRE SAVE password",this.isModified("password"))
-     if(this.isModified("password"))
     try {
+  
+    try{
+        jwt.decode(this.password)
+    }catch(e){
         console.log("PASSWORD MODIFIED")
-      this.salt = await bcrypt.genSalt();
-      this.password = await bcrypt.hash(this.password, this.salt);
+        this.salt = await bcrypt.genSalt();
+        this.password = await bcrypt.hash(this.password, this.salt);
+    }
+   
     } catch (e) {
       next(e);
     }
