@@ -415,9 +415,11 @@ const getProfiles = async (req, res, err) => {
         if (searchBy == "job_title") {
             filters["experience.title"] = new RegExp(`^${searchText}$`, "i");
         }
+
         if (searchBy == "name") {
+            console.log("BY NAME")
             let users = await User.find({
-                type: true,
+                type: false,
                 ...(searchBy == "name" &&
                     searchText && {
                         name: { $regex: searchText, $options: "i" },
@@ -429,23 +431,25 @@ const getProfiles = async (req, res, err) => {
             usersIds = users.map((user) => {
                 return user._id;
             });
-            console.log({
+            console.log("CONSOLE",{
                 ...(searchBy == "name" && { user: { $in: usersIds } }),
                 ...filters,
             });
         }
-        console.log(filters);
+        console.log("FILTERS ",filters);
         let totalResults;
         skip = req.params.skip * size;
-        console.log({
-            ...filters,
-            ...(language && { languages: { $in: [language] } }),
-        });
+        console.log("FILTER QUERY",{...(searchBy == "name" && { user: { $in: usersIds } })
+        ,...filters,
+         ...(language && { "languages.title": language }) },);
         let profiles = await Applicant_profile.find(
-            {...(searchBy == "name" && { user: { $in: usersIds } }),...filters, ...(language && { "languages.title": language }) },
-            ["image"],
+            {...(searchBy == "name" && { user: { $in: usersIds } })
+            ,...filters,
+             ...(language && { "languages.title": language }) },
+            ["image","user"],
             (err, data) => {
                 //GET TOTALRESULT
+                console.log(data)
                 totalResults = data.filter((p) => p.user).length;
             }
         )
@@ -457,19 +461,19 @@ const getProfiles = async (req, res, err) => {
             })
             .limit(size)
             .skip(skip);
-        profiles = profiles.filter((profile) => {
-            //FILTER IF NAME
-            if (searchBy == "name" && profile.user && searchText) {
-                console.log(
-                    profile.user.name.toLowerCase() == searchText.toLowerCase()
-                );
-                if (profile.user.name.toLowerCase() == searchText.toLowerCase())
-                    return true;
-                else false;
-            } else if (profile.user) {
-                return true;
-            }
-        });
+        // profiles = profiles.filter((profile) => {
+        //     //FILTER IF NAME
+        //     if (searchBy == "name" && profile.user && searchText) {
+        //         console.log(
+        //             profile.user.name.toLowerCase() == searchText.toLowerCase()
+        //         );
+        //         if (profile.user.name.toLowerCase() == searchText.toLowerCase())
+        //             return true;
+        //         else false;
+        //     } else if (profile.user) {
+        //         return true;
+        //     }
+        // });
 
         //      const totalResults=await Applicant_profile.find({...filters,...(language&&{"languages.title":language})},["image"]).populate("user",["name","job_title","live_in","age"]).count()
 
