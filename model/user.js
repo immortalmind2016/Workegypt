@@ -50,15 +50,9 @@ const User = new Schema({
 User.pre("save", async function (next) {
     console.log("PRE SAVE password",this.isModified("password"))
     try {
-  
-    try{
-       await jwt.decode(this.password)
-    }catch(e){
-        console.log("PASSWORD MODIFIED")
-        this.salt = await bcrypt.genSalt();
-        this.password = await bcrypt.hash(this.password, this.salt);
-    }
    
+      this.salt = await bcrypt.genSalt();
+      this.password = await bcrypt.hash(this.password, this.salt);
     } catch (e) {
       next(e);
     }
