@@ -1,0 +1,23 @@
+.popup-call{
+   /* width: 500px;
+    height: 500px;
+    box-shadow:1px 1px 1px gray;
+    margin:auto;
+    z-index: 99999999;
+    position: fixed;
+    background-color: white;
+    text-align:  center;*/
+    z-index: 99999999;
+    position: fixed;
+
+}
+
+.incoming-call__img{
+    margin: 20px auto;
+    width:130px;
+    max-width: 130px;
+    display: block;
+    padding:10px;
+    border:1px solid gray;
+    border-radius: 100%;
+}

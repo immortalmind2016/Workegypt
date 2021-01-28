@@ -1,0 +1,26 @@
+.pagination_container {
+  background: #f00;
+}
+.pagination_pages {
+  margin-left: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.pageLinkClass {
+  text-decoration: none;
+  color: #333;
+  padding: 5px 8px;
+}
+.pagination_active_link {
+  background-color: $light-blue;
+  color: #fff;
+  border-radius: 5px;
+}
+.pagination_next,
+.pagination_prev {
+}
+.prev_next_link {
+  cursor: pointer;
+  margin: 0 10px;
+}

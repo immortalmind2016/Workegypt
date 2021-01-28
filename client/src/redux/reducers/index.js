@@ -1,0 +1,11 @@
+export { default as auth } from "./authReducer";
+export { default as user } from "./userReducer";
+export { default as profile } from "./profileReducer";
+export { default as job } from "./jobReducer";
+export { default as filters } from "./filtersReducers";
+export { default as blog } from "./blogReducer";
+export { default as event } from "./eventsReducer";
+export { default as chat } from "./chatReducer";
+export { default as admin } from "./adminReducer";
+export { default as interview } from "./interviewReducer";
+export { default as notf } from "./notificationReducer";

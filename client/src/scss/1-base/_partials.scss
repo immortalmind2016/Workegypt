@@ -1,0 +1,39 @@
+/* center flex content */
+%flx-cnt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+%info-pill {
+  @extend %flx-cnt;
+  padding: 0.3rem 1rem;
+  border-radius: $radius-sm;
+  color: #fff;
+  margin-right: 1rem;
+  font-size: 1.2rem;
+
+  .pill-delete {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    background: #fff;
+    border: 0.1rem solid #ddd;
+    z-index: 10;
+    cursor: pointer;
+    color: #333;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    opacity: 0;
+    transition: 0.3s ease;
+  }
+  &:hover {
+    .pill-delete {
+      opacity: 1;
+      transition: 0.3s ease;
+    }
+  }
+}

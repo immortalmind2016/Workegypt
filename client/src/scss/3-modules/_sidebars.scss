@@ -1,0 +1,44 @@
+.sidebar {
+  height: 100vh;
+  position: fixed;
+  padding-top: $navbar-height;
+  top: 0;
+  bottom: 0;
+}
+.admin-analysis {
+  .analysis-sidebar {
+    padding-top: $navbar-height + 2rem;
+    width: $sidebar-width;
+    background-color: #555;
+
+    a {
+      text-decoration: none;
+      border-radius: 1rem;
+      color: #ddd;
+      display: block;
+      width: 7rem;
+      margin: auto;
+      &:hover {
+        background: #333;
+        color: #fff;
+      }
+      &.active {
+        background: #333;
+        color: #fff;
+      }
+    }
+    ul li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+
+      i {
+        font-size: 2.2rem;
+      }
+    }
+  }
+}

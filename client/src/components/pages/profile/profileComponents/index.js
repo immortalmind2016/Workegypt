@@ -1,0 +1,10 @@
+export { default as Brief } from "./Brief";
+export { default as Education } from "./Education";
+export { default as Experience } from "./Experience";
+export { default as Training } from "./Training";
+export { default as Certificate } from "./Certificate";
+export { default as ExtraInfo } from "./ExtraInfo";
+export { default as Languages } from "./Languages";
+export { default as QuestionBox } from "./QuestionBox";
+export { default as Skills } from "./Skills";
+export { default as LanguagesRating } from "./LanguagesRating";

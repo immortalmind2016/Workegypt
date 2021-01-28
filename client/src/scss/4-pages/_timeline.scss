@@ -1,0 +1,73 @@
+.timeline {
+  margin: 8rem 0;
+  .post {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border: solid 0.05rem $medium-gray;
+    border-radius: 2rem;
+    justify-content: space-between;
+    padding: 1rem;
+    @include media("md") {
+      padding: 3rem;
+    }
+
+    margin-bottom: 2rem;
+
+    &__header {
+      margin-bottom: 1rem;
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+
+      &__icon {
+        margin-bottom: 1rem;
+        @media (max-width: 992px) {
+          margin-bottom: 2rem;
+        }
+      }
+      &__text {
+        padding: 1rem 0 0 1.5rem;
+      }
+      span {
+        font-size: 1.2rem;
+      }
+    }
+    p {
+      margin: 0rem 0 1rem 0;
+      font-size: 1.3rem;
+    }
+    video {
+      margin: 1rem 0;
+    }
+    .apply-btn {
+      margin: 2rem auto 0 auto;
+      border-radius: 1rem;
+      font-weight: 500;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+  .right-widget__title {
+    color: #fff;
+    background-color: $dark-gray;
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: 0.2rem;
+    max-width: 30rem;
+    margin: $margin-md auto;
+  }
+  .info-card-row {
+    margin: auto;
+    margin-bottom: $margin-lg;
+    @include media("md") {
+      width: 85% !important;
+    }
+    @include media("lg") {
+      width: 100% !important;
+    }
+  }
+}

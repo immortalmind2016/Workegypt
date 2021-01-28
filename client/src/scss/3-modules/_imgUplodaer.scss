@@ -1,0 +1,9 @@
+.image-uploader {
+  opacity: 0.8;
+  transition: 0.3s ease;
+  font-size: 2rem;
+  &:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}

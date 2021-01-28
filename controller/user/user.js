@@ -1,4 +1,5 @@
 var jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
 const User = require("../../model/user");
 const Applicant_profile = require("../../model/Applicant_profile");
 const Company_profile = require("../../model/Company_profile");
@@ -134,60 +135,50 @@ const signupUser = (req, res, err) => {
     });
 };
 
-const signinUser = (req, res, err) => {
-    const { email, password } = req.body.data;
-    console.log(req.body.data);
+const signinUser=(req,res,err)=>{
+    const  {email,password}=req.body.data;
+    console.log(req.body.data)
 
-    User.findOne({ email },async (err, user) => {
-        console.log(await user.checkPassword(password),"CHECK PASSWORD ",password)
-        if(!user||!await user.checkPassword(password))
-        {
-            return res
-            .status(404)
-            .json({ error: "wrong email or password", code: "#2" });
-        }
-       
-            let user_ = user;
+        User.findOne({ email }).then(user => {
+        if(user){
+        // Check Password
+        bcrypt.compare(password, user.password).then(isMatch => {
+            if (isMatch) {
+
+            let user_=user
+            let token= jwt.sign({...user_},"secret",{ expiresIn: 86400 })
+        
+            if(user.confirmed){
+                console.log("EMAIL CONFIRMED")
+                    res.json({token:"Bearer "+token,name:user.name,type:user.type})
+            }else{
+
+                let confirmation_token=req.body.data.confirmation_token
+                if(!req.body.data.confirmation_token){
+                    return res.status(401).json({error:"confirm your email",code:"#0"})
+                }
+                if(confirmation_token==user.confirmation_token){
+                    console.log("EMAIL CONFIRMATION_TOKEN  EQUAL INCOMING")
+                        
+                        user.confirmed=true;
+                       
+                        res.json({token:"Bearer "+token,name:user.name,type:user.type})
+                        user.save()
+                    }else{
+                        console.log("EMAIL CONFIRMATION_TOKEN  EQUAL INCOMING")
+
+                        res.status(401).json({error:"wrong confirmation code",code:"#1"})
+                    }
+
+                }
             
-            let token = jwt.sign({ ...user_,password:null }, "secret", { expiresIn: '365d' });
+            }else{
+                return res.status(404).json(   {error:"wrong email or password",code:"#2"})
 
-            if (user.confirmed) {
-                console.log("EMAIL CONFIRMED");
-                res.json({
-                    token: "Bearer " + token,
-                    name: user.name,
-                    type: user.type,
-                });
-            } else {
-                let confirmation_token = req.body.data.confirmation_token;
-                if (!req.body.data.confirmation_token) {
-                    return res
-                        .status(401)
-                        .json({ error: "confirm your email", code: "#0" });
-                }
-                if (confirmation_token == user.confirmation_token) {
-                    console.log("EMAIL CONFIRMATION_TOKEN  EQUAL INCOMING");
-
-                    user.confirmed = true;
-
-                    res.json({
-                        token: "Bearer " + token,
-                        name: user.name,
-                        type: user.type,
-                    });
-                    user.save();
-                } else {
-                    console.log("EMAIL CONFIRMATION_TOKEN  EQUAL INCOMING");
-
-                    res.status(401).json({
-                        error: "wrong confirmation code",
-                        code: "#1",
-                    });
-                }
             }
-     
+        });
 
-        /*  if(user){
+      /*  if(user){
          let user_=user
             let token= jwt.sign({...user_},"secret",{ expiresIn: '365d' })
             console.log(token)
@@ -195,7 +186,9 @@ const signinUser = (req, res, err) => {
         }else{
             res.status(404).json({error:"wrong email or password",code:"#2"})
         }*/
-    });
+    }
+    })
+    
 };
 
 const getUser = (req, res, err) => {
@@ -239,58 +232,135 @@ const getUser = (req, res, err) => {
     }
     
 };
-const editUser = (req, res, err) => {
-    console.log("BODY ", req.body.data);
-    User.findOneAndUpdate(
-        { _id: req.user._id },
-        { ...req.body.data },
-        { new: true },
-        (err, user) => {
-            res.json({ user });
-        }
-    );
-};
-
-const forgetPassword = (req, res, err) => {
-    User.findOne({ email: req.body.data.email }, (err, user) => {
-        if (!user) {
-            return res.json({ error: "user not found" });
-        }
-        console.log("SEND MAIL");
-        const to = req.body.data.email;
-        //     (from = "Workegypt <dev@workegypt.net>"), (subject = "forget password");
-        //     (text = ""),
-        //         (html = `
-        //     <div style="text-align: center;">
-        //     <h3>you are welcome</h3>
-        //     <h5>your email is ${req.body.data.email}</h5>
-        //     <h4>your password is :</h4>
-        //     <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
-        //     ${user.password}
-        //     </div>
-        //     <br>
-        //     <span>we recommend  to change your password</span>
-        // <script>
-
-        //     </script>
-
-        // </div>
-
-        //     `);
- 
-        let link=`${process.env.ROOT_URL}/reset?token=${jwt.sign({id:user._id,type:"reset_password"},process.env.JWT_RESETPASSWORD_SECRET, { expiresIn: '7d' })}`
-        forgetPasswordSendEmail(to,link, user.name)
-            .then(() => {
-                console.log("SEND EMAIL forgetPasswordSendEmail");
-                res.sendStatus(200);
-            })
-            .catch((error) => {
-                console.log("SEND EMAIL ERROR ", error);
-
-                res.json({ error });
+// const editUser = (req, res, err) => {
+//     console.log("BODY ", req.body.data);
+//     User.findOneAndUpdate(
+//         { _id: req.user._id },
+//         { ...req.body.data },
+//         { new: true },
+//         (err, user) => {
+//             res.json({ user });
+//         }
+//     );
+// };
+const editUser=(req,res,err)=>{
+    console.log("BODY ",req.body.data)
+       User.findOneAndUpdate({_id:req.user._id},req.body.data,{new:true},(err, user) =>{
+           bcrypt.genSalt(10, (err, salt) => {
+               bcrypt.hash(user.password, salt, (err, hash) => {
+               if (err) throw err;
+                user.password = hash;
+                console.log(user)
+               user.password = req.body.data.password;
+   
+               user
+                   .save()
+                    .then(user => console.log(user))
+                    .catch(err => console.log(err));
+                   res.json({ user });
+                });
             });
+       })
+      
+   }
+
+// const forgetPassword = (req, res, err) => {
+//     User.findOne({ email: req.body.data.email }, (err, user) => {
+//         if (!user) {
+//             return res.json({ error: "user not found" });
+//         }
+//         console.log("SEND MAIL");
+//         const to = req.body.data.email;
+//         //     (from = "Workegypt <dev@workegypt.net>"), (subject = "forget password");
+//         //     (text = ""),
+//         //         (html = `
+//         //     <div style="text-align: center;">
+//         //     <h3>you are welcome</h3>
+//         //     <h5>your email is ${req.body.data.email}</h5>
+//         //     <h4>your password is :</h4>
+//         //     <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
+//         //     ${user.password}
+//         //     </div>
+//         //     <br>
+//         //     <span>we recommend  to change your password</span>
+//         // <script>
+
+//         //     </script>
+
+//         // </div>
+
+//         //     `);
+ 
+//         let link=`${process.env.ROOT_URL}/reset?token=${jwt.sign({id:user._id,type:"reset_password"},process.env.JWT_RESETPASSWORD_SECRET, { expiresIn: '7d' })}`
+//         forgetPasswordSendEmail(to,link, user.name)
+//             .then(() => {
+//                 console.log("SEND EMAIL forgetPasswordSendEmail");
+//                 res.sendStatus(200);
+//             })
+//             .catch((error) => {
+//                 console.log("SEND EMAIL ERROR ", error);
+
+//                 res.json({ error });
+//             });
+//     });
+// };
+
+const forgetPassword=(req,res,err)=>{
+    User.findOne({email:req.body.data.email},(err,user)=>{
+        if(!user){
+        return res.json({error:"user not found"})
+        }
+        password =parseInt((Math.random() * 10000000), 10)
+        user.password= password
+
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(user.password, salt, (err, hash) => {
+               if (err) throw err;
+               user.password = hash;
+
+        User.findOneAndUpdate({email:req.body.data.email}
+            ,{password:user.password}, {new: true},
+             function (err, user) {
+                console.log(user);
+           });
+        });
     });
-};
+        console.log(user.password);
+        console.log("SEND MAIL")
+        const to=req.body.data.email
+        ,from="Workegypt <dev@workegypt.net>"
+        
+        ,subject="forget password"
+        text=""
+        ,html=`
+        <div style="text-align: center;">
+        <h3>you are welcome</h3>
+        <h5>your email is ${req.body.data.email}</h5>
+        <h4>your password is :</h4>
+        <div style="margin:auto;background: #00326F;color: white;font-weight: bold;width: fit-content;border-radius: 0px;padding: 20px;">
+        ${user.password}
+        </div>
+        <br>
+        <span>we recommend  to change your password</span>
+    <script>
+        
+        </script>
+    
+    </div>
+    
+        `
+        
+    
+        sendEmail({to,subject,text,html,from}).then(()=>{
+            res.sendStatus(200)
+        }).catch(error=>{
+            res.json({error})
+        });
+ 
+    })
+    
+}
+
 
 const resendConfirmation = (req, res, err) => {
     User.findOne({ email: req.body.data.email }, (err, user) => {

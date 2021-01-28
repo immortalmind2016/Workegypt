@@ -47,10 +47,10 @@ return storage
 
 var uploadVideo = multer({ storage: createStorageS3(),limits: { fileSize: 15000000 } })
 var uploadImage = multer({ storage: createStorage("public/uploads/images/company") })
-var uploadVideoA = multer({ storage: createStorageS3(),limits: { fileSize: 1000 } })
+var uploadVideoA = multer({ storage: createStorageS3(),limits: { fileSize: 15000000 } })
 var uploadImageA = multer({ storage: createStorage("public/uploads/images/applicant") })
 
-var uploadCv = multer({ storage: createStorage("public/uploads/cvs/applicant") })
+var uploadCv = multer({ storage: createStorage("public/uploads/cvs/applicant"),limits: { fileSize: 12000000 } })
 
 //Applicant
 /*

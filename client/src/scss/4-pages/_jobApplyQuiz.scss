@@ -1,0 +1,32 @@
+.job-apply-quiz {
+  max-width: 100rem;
+  margin: auto;
+
+  form {
+    @include media("md") {
+      max-width: 60rem;
+    }
+  }
+  aside {
+    .content {
+      min-height: 20rem;
+    }
+  }
+  .answer-field {
+    position: relative;
+    padding: 1rem;
+    textarea {
+      resize: none;
+      border: 1px solid #ddd;
+      width: 100%;
+      border-radius: 1rem;
+      padding: 1rem;
+      height: 10rem;
+    }
+    .badge {
+      position: absolute;
+      bottom: 10px;
+      right: 6px;
+    }
+  }
+}

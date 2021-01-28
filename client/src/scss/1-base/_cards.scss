@@ -1,0 +1,22 @@
+.main-card-layout {
+  background-color: #fff;
+  border-radius: 1.5rem;
+  border: 0.05rem solid $medium-gray;
+  padding: $padding-md;
+  &__title {
+    position: relative;
+    font-size: 1.4rem;
+    max-width: 100px;
+    margin-bottom: 2rem;
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 30%;
+      height: 0.3rem;
+      bottom: -0.7rem;
+      color: $dark-blue;
+      background-color: $dark-blue;
+    }
+  }
+}

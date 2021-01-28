@@ -1,0 +1,24 @@
+.homeCard {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 9rem;
+  padding: 3rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 5rem;
+
+  &__img {
+    width: 50%;
+  }
+  &:hover {
+    box-shadow: 1px 1px 5px 0px #dddddd, -1px -1px 5px 0px #dddddd;
+    transform: scale(1.1);
+  }
+  h3 {
+    color: #cdc446;
+    margin: 2rem 0;
+  }
+  p {
+    color: gray;
+  }
+}

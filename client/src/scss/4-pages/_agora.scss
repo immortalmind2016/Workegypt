@@ -1,0 +1,36 @@
+.ag-full {
+  height: 100vh;
+  min-height: 100%;
+  font-size: 14px;
+}
+
+.ag-header,
+.ag-footer {
+  /* flex-basis: 70px; */
+  width: 100%;
+  opacity: 0.8;
+  height: 70px;
+  color: #fff;
+}
+
+.ag-main {
+  width: 100%;
+  height: calc(100% - 100px);
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.ag-rounded {
+  border-radius: 19px !important;
+}
+
+.ag-href {
+  color: #fff;
+  cursor: pointer;
+}
+
+.ag-href:hover {
+  color: #fff;
+}

@@ -1,0 +1,29 @@
+.input--blank {
+  border: 0;
+  outline: 0;
+  &:active,
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}
+
+.input-required {
+  position: relative;
+  display: block;
+  & + .star {
+    color: red;
+    font-size: 20px;
+    position: absolute;
+    right: 5px;
+    top: -10px;
+  }
+}
+
+.general-input {
+  outline: 0;
+  border-radius: 1rem;
+  padding: 1rem;
+  border: solid 0.05rem rgb(199, 199, 199);
+  color: $darker_gray;
+}
