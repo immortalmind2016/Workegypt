@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const jwt=require("jsonwebtoken")
-const bcrypt=require("bcrypt")
+const bcrypt=require("bcryptjs")
 const User = new Schema({
     name: {
         type: String,
@@ -47,24 +47,35 @@ const User = new Schema({
     },
 });
 
-User.pre("save", async function (next) {
-    console.log("PRE SAVE password",this.isModified("password"))
-    try {
-   
-      this.salt = await bcrypt.genSalt();
-      this.password = await bcrypt.hash(this.password, this.salt);
-    } catch (e) {
-      next(e);
+
+// Encrypt password using bcrypt
+User.pre('save', async function(next) {
+    if (!this.isModified('password')) {
+      next();
     }
-    //}
-    next();
+  
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
   });
-  User.methods.checkPassword = async function (textPassword) {
-    //.methods called on instance
-    console.log("PASSWORD", this.password);
-    const hashed = await bcrypt.hash(textPassword, this.salt);
-    console.log("SALT", this.salt);
-    console.log("Hashed", hashed);
-    return hashed == this.password;
-  };
+
+// User.pre("save", async function (next) {
+//     console.log("PRE SAVE password",this.isModified("password"))
+//     try {
+   
+//       this.salt = await bcrypt.genSalt();
+//       this.password = await bcrypt.hash(this.password, this.salt);
+//     } catch (e) {
+//       next(e);
+//     }
+//     //}
+//     next();
+//   });
+//   User.methods.checkPassword = async function (textPassword) {
+//     //.methods called on instance
+//     console.log("PASSWORD", this.password);
+//     const hashed = await bcrypt.hash(textPassword, this.salt);
+//     console.log("SALT", this.salt);
+//     console.log("Hashed", hashed);
+//     return hashed == this.password;
+//   };
 module.exports = mongoose.model("User", User);

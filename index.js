@@ -3,14 +3,14 @@ const fs=require("fs")
 // DB Config
 const db = require("./config/keys").mongoURI;
 
-mongoose.connect(
-    "mongodb+srv://immortalminda:immortalminda@cluster0.hutzo.mongodb.net/workegypt?retryWrites=true&w=majority",
-    { useUnifiedTopology: true, useNewUrlParser: true }
-);
+// mongoose.connect(
+//     "mongodb+srv://immortalminda:immortalminda@cluster0.hutzo.mongodb.net/workegypt?retryWrites=true&w=majority",
+//     { useUnifiedTopology: true, useNewUrlParser: true }
+// );
 require("./model/Notification");
-//mongoose.connect(db
+mongoose.connect(db
 //"mongodb://localhost/workegypt"
-//, { useUnifiedTopology: true, useNewUrlParser: true })
+, { useUnifiedTopology: true, useNewUrlParser: true })
 
 //
 const express = require("express");
@@ -50,9 +50,12 @@ io.origins("*:*");
 require("./services/socket")(io);
 app.use(function (req, res, next) {
     var allowedOrigins = [
-        "https://8fib4t1ccaof.loclx.io",
-        "https://25.24.10.197:3000/",
-        "https://25.24.10.197:3000",
+        "http://8fib4t1ccaof.loclx.io",
+        "http://25.24.10.197:3000/",
+        "http://25.24.10.197:3000",
+        // "https://8fib4t1ccaof.loclx.io",
+        // "https://25.24.10.197:3000/",
+        // "https://25.24.10.197:3000",
         "http://7oltshuotddi.loclx.io",
         "http://cb6ac17b.ngrok.io",
         "http://ae435531.ngrok.io",
@@ -67,6 +70,7 @@ app.use(function (req, res, next) {
         "http://5945f4bd.ngrok.io",
         "http://42249189.ngrok.io",
         "http://localhost:3001",
+        "http://localhost:3000",
     ];
     var origin = req.headers.origin;
     if (allowedOrigins.indexOf(origin) > -1) {

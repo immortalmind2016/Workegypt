@@ -1,0 +1,81 @@
+.btn--icon {
+  outline: none;
+  border: none;
+  background: transparent;
+  transition: 0.3s ease;
+
+  &:active,
+  &:focus {
+    outline: none;
+    transform: scale(1.1);
+    transition: 0.3s ease;
+  }
+}
+
+.general-btn {
+  border: 0.2rem solid #00326f;
+  background-color: white;
+  border-radius: 2rem;
+  height: 4rem;
+  padding: 0.5rem 2rem;
+  transition: 0.3s ease;
+  color: $dark_blue;
+  outline: 0;
+  font-weight: bold;
+
+  &:hover {
+    background-color: $dark_blue;
+    color: #fff !important;
+    transition: 0.3s ease;
+    text-decoration: none;
+    
+  }
+  &:active {
+    text-decoration: none;
+    outline: 0;
+  }
+}
+
+.btn--add-plus {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  font-size: 1rem !important;
+}
+.btn--danger-delete {
+  font-size: 1rem !important;
+
+  color: #fff;
+  background-color: tomato;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  transition: 0.1s ease;
+  &:hover {
+    transform: scale(1.1);
+    transition: 0.1s ease;
+  }
+}
+
+.green-btn{
+  border:0;
+  background-color: $green; 
+  color: white;
+  outline: 0;
+  font-weight: bold;
+  &:hover {
+    background-color: $dark-green;
+    transition: 0.3s ease;  
+  }
+}

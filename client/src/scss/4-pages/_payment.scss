@@ -1,0 +1,84 @@
+.payment {
+  margin: 10rem 0;
+  input {
+    background-color: $body-bg;
+    margin: 0 $margin-md $margin-lg 0;
+  }
+  h2 {
+    width: 17.5rem;
+    position: relative;
+    margin-bottom: 5rem;
+    font-weight: bolder;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 0.5rem;
+      display: block;
+      background: $darker_gray;
+      bottom: -1.5rem;
+      left: 0;
+      right: 0;
+    }
+  }
+  button {
+    width: 15rem;
+    margin-bottom: 5rem;
+    border-radius: 1rem;
+    padding: $padding-md 0;
+  }
+  .payment-settings {
+    input {
+      width: 45%;
+    }
+  }
+  .account-settings {
+    input {
+      width: 70%;
+    }
+  }
+
+  .planCard {
+    width: 45%;
+    height: fit-content;
+    background-color: white;
+    border: solid 0.05rem rgb(199, 199, 199);
+    text-align: center;
+    margin: 0 2rem 2rem 0;
+    @media (max-width: 1200px) {
+      width: 44%;
+    }
+    h3 {
+      color: white;
+      padding: 1rem 0;
+      font-weight: bold;
+    }
+    .gold {
+      background-color: $gold;
+    }
+    .light-blue {
+      background-color: $light-blue;
+    }
+    .gray {
+      background-color: $darker-gray;
+    }
+    h4 {
+      font-weight: bold;
+      margin: 1.5rem 0;
+    }
+    p {
+      padding: 0 1rem 0 2rem;
+      text-align: left;
+    }
+    button {
+      margin: 0;
+      border: 0.2rem solid $light-blue !important;
+      margin: 2rem 0;
+      padding: 0.4rem 2rem !important;
+      width: 12rem;
+      &:hover {
+        background-color: $light_blue !important;
+      }
+    }
+  }
+}

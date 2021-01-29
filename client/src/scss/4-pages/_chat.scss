@@ -1,0 +1,142 @@
+.chat {
+  background-color: white;
+  margin-top: 10px;
+  border-radius: 2rem;
+  border: solid 0.05rem rgb(199, 199, 199);
+  height: auto;
+  overflow: hidden;
+  &__header {
+    border-bottom: solid 0.05rem rgb(199, 199, 199);
+    margin: 0;
+
+    .chat__header-name {
+      border-left: solid 0.05rem rgb(199, 199, 199);
+      padding: $padding-lg $padding-lg $padding-md 4rem;
+      display: flex;
+      width: fit-content;
+      h4 {
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__content {
+    margin: 0;
+    height: 100%;
+
+    .all-contacts {
+      height: 54.2rem;
+      overflow-y: auto;
+      direction: rtl;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track {
+        background: #fff;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 10px;
+      }
+      &:hover::-webkit-scrollbar-thumb {
+        background: #ddd;
+      }
+
+      .contact {
+        direction: ltr;
+        padding: $padding-md;
+        border-radius: 2rem;
+        margin-top: $margin-lg;
+        width: 100%;
+        cursor: pointer;
+        @media (max-width: 992px) {
+          width: fit-content;
+          margin: $margin-lg auto;
+        }
+        h4 {
+          margin: 0.5rem $margin-sm $margin-sm $margin-md;
+        }
+      }
+    }
+    .messages {
+      /* scroll bar style */
+      /* width */
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track {
+        background: #ddd;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 10px;
+      }
+
+      &:hover::-webkit-scrollbar-thumb {
+        background: #333;
+      }
+      width: 100%;
+      height: 50rem;
+      overflow-y: auto;
+      padding: $padding-lg $padding-md $padding-lg $padding-lg;
+      border-left: solid 0.05rem rgb(199, 199, 199);
+
+      .my-message {
+        width: 100%;
+        padding: 0 $padding-lg;
+        margin-bottom: $margin-lg;
+        &__text {
+          margin-left: 2rem;
+          width: fit-content;
+          height: fit-content;
+          p {
+            background-color: rgba($dark_blue, 0.9);
+            color: white;
+            border-radius: 3rem;
+            padding: $padding-md $padding-lg;
+            @media (max-width: 992px) {
+              width: 100%;
+            }
+          }
+        }
+      }
+      .reply {
+        width: 100%;
+        padding: 0 $padding-lg;
+        margin-bottom: $margin-lg;
+        &__text {
+          width: fit-content;
+          height: fit-content;
+          margin-right: 2rem;
+          p {
+            background-color: rgba(#daa520, 0.8);
+            color: white;
+            border-radius: 3rem;
+            padding: $padding-md $padding-lg;
+            margin-left: auto;
+            @media (max-width: 992px) {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+    input {
+      width: 100%;
+      outline: 0;
+      border-bottom-right-radius: 2rem;
+      padding: 1rem;
+      border: solid 0.05rem rgb(199, 199, 199);
+      color: $darker_gray;
+    }
+
+    .active {
+      background-color: $medium-gray;
+    }
+  }
+}

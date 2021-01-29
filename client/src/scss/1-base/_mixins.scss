@@ -1,0 +1,58 @@
+@mixin media($screen, $methodology: "min") {
+  @if $methodology == "min" {
+    // Extra small devices (portrait phones, less than 576px)
+    // No media query for `xs` since this is the default
+    @if $screen == "sm" {
+      @media (min-width: 576px) {
+        @content;
+      }
+    } @else if $screen == "md" {
+      // Medium devices (tablets, 768px and up)
+      @media (min-width: 768px) {
+        @content;
+      }
+    } @else if $screen== "lg" {
+      // Large devices (desktops, 992px and up)
+
+      @media (min-width: 992px) {
+        @content;
+      }
+    } @else if ($screen == "xl") {
+      // Extra large devices (large desktops, 1200px and up)
+      @media (min-width: 1200px) {
+        @content;
+      }
+    }
+  }
+
+  //----------------------------------
+  //here there is no XL devices since it is the default
+  @if ($methodology == "max") {
+    @if ($screen == "lg") {
+      // only large device and under, all under extra large devices (large desktops, 1200px and up)
+      @media (max-width: 1200px) {
+        @content;
+      }
+    }
+
+    @if ($screen == "md") {
+      //only medium devices and under, all under Large devices (desktops, 992px and up)
+      @media (max-width: 992px) {
+        @content;
+      }
+    }
+
+    @if ($screen == "sm") {
+      //only small devices and under, all under Medium devices (tablets, 768px and up)
+      @media (max-width: 768px) {
+        @content;
+      }
+    }
+    @if ($screen == "xs") {
+      //only extra small devices and under
+      @media (max-width: 576px) {
+        @content;
+      }
+    }
+  }
+}

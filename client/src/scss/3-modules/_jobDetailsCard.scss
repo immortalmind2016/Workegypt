@@ -1,0 +1,41 @@
+.jobDetailsCard {
+    background-color: white;
+    min-height: 30rem;
+    display: flex;
+    flex-direction: column;
+    border: solid 0.05rem $medium-gray;
+    border-radius: 1rem;
+    margin-top: 2rem;
+    padding: 0rem 3rem 2rem 3rem;
+    color: gray;
+  
+    &__header {
+      margin-bottom: 2rem;
+      &__text{
+        padding: 3rem 0 0 1.5rem;
+        
+       }
+    }
+    &__img {
+      width: 100%;
+    }
+    p{
+        font-size: 1.2rem;
+        @media (max-width:992px) {
+          margin-top: 2rem;
+         }
+        
+    }
+    button {
+      width: 40%;
+      height: 3rem;
+      margin: 2rem auto 0 auto;
+      border-radius: 1rem;
+      font-weight: bolder;
+      font-size: 1.4rem;
+      @media (max-width:992px) {
+        margin: 4rem auto 0 auto;
+       }
+    }
+  }
+  

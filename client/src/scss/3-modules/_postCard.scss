@@ -1,0 +1,37 @@
+.postCard {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border: solid 0.05rem $medium-gray;
+  border-radius: 1rem;
+  margin-top: 2rem;
+  padding: 2rem;
+  color: gray;
+
+  &__header {
+    margin-bottom: 2rem;
+
+    &__text {
+      padding: 3rem 0 0 1.5rem;
+    }
+  }
+  &__img {
+    width: 100%;
+  }
+  p {
+    margin: 0rem 0 3rem 0;
+    @media (max-width: 992px) {
+      margin: 2rem 0 3rem 0;
+    }
+  }
+  .btn {
+    width: 40%;
+    height: 3rem;
+    margin: 2rem auto 0 auto;
+    font-size: 1.4rem;
+    border-radius: 5px;
+  }
+  &__title {
+    color: #333;
+  }
+}

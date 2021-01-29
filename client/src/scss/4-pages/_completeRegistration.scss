@@ -1,0 +1,14 @@
+.complete-registration {
+  .start_now-btn {
+    @extend .main-card-layout;
+    background-color: lighten($dark-blue, 30%);
+  }
+
+  .timer {
+    color: #333;
+    margin: $margin-lg auto;
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}

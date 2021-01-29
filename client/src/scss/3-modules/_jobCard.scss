@@ -1,0 +1,20 @@
+.jobCard{
+    height: 14rem;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 1rem;
+    border:solid 0.05rem $medium-gray;
+    margin-bottom: 2rem;
+    color: gray;
+    img{
+        width: 32%;
+        height: 32%;
+        margin:0 auto 1rem auto;
+       
+    }
+    
+}

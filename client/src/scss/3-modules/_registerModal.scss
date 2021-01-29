@@ -1,0 +1,89 @@
+.auth-modal {
+  padding-right: 0 !important;
+
+  .modal-dialog {
+    .modal-content {
+      border-radius: 1rem;
+      border: none;
+      .modal-header {
+        border-bottom: 0;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        background-color: $darker_gray;
+        color: #333;
+        padding: 0;
+        margin-bottom: 2rem;
+        .applicant,
+        .company {
+          width: 25rem;
+          background-color: $dark_blue;
+          color: #fff;
+          cursor: pointer;
+          padding: 1rem;
+          height: 5.2rem;
+          span {
+            font-weight: bolder;
+            margin-left: 1.5rem;
+          }
+        }
+        .applicant {
+          border-top-left-radius: 1rem;
+        }
+        .company {
+          border-top-right-radius: 1rem;
+        }
+        .active-register {
+          background-color: #fff;
+          color: $dark_blue;
+        }
+      }
+
+      .modal-body {
+        border-bottom: 0;
+        text-align: center;
+        input {
+          width: 80%;
+          height: 3.5rem;
+          margin: 2rem 0 0 0;
+          outline: 0;
+          border-radius: 1rem;
+          padding: 1rem;
+          border: solid 0.05rem rgb(199, 199, 199);
+          color: $darker_gray;
+        }
+        .input-checkbox {
+          width: 80%;
+          display: flex;
+          background-color: white;
+          margin-top: 2rem;
+          margin: 4rem 0 0 0;
+          margin-left: 10%;
+          input {
+            width: 15%;
+            height: 2rem;
+            background-color: white !important;
+            margin: 0.5rem;
+          }
+          span {
+            margin-left: 1rem;
+            text-align: left;
+          }
+        }
+      }
+      .modal-footer {
+        border-top: 0;
+        margin: 3rem 0 3rem 0;
+        text-align: center;
+        display: block;
+        button {
+          width: 80%;
+          color: $dark_blue;
+          font-weight: bolder;
+          font-size: 1.4rem;
+          outline: 0;
+          height: auto;
+        }
+      }
+    }
+  }
+}
