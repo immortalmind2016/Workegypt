@@ -270,7 +270,7 @@ const forgetPassword = (req, res, err) => {
         res.sendStatus(200);
       })
       .catch((error) => {
-        console.log("SEND EMAIL ERROR ", error);
+        console.log("SEND EMAIL ERROR ", JSON.stringify(error,null,2));
 
         res.json({ error });
       });
