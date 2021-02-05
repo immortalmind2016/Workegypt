@@ -67,7 +67,7 @@ async function sendEmail({ to, subject, from, text, html }) {
     // verify connection configuration
     transporter.verify(function (error, success) {
         if (error) {
-            console.log(error);
+            console.log(JSON.stringify(error,null,2));
         } else {
             console.log("Server is ready to take our messages");
         }
