@@ -16,7 +16,7 @@ const templateIds = {
 const sendMessage = async (to, code, name) => {
     const msg = {
         to,
-        from: "immortal.mind2016@gmail.com", // Use the email address or domain you verified above
+        from: "admin@workegypt.net", // Use the email address or domain you verified above
         template_id: templateIds.verify.en,
         dynamic_template_data: {
             verification_code: code,
@@ -28,7 +28,7 @@ const sendMessage = async (to, code, name) => {
 const forgetPasswordSendEmail = async (to, link, name) => {
     const msg = {
         to,
-        from: "immortal.mind2016@gmail.com", // Use the email address or domain you verified above
+        from: "admin@workegypt.net", // Use the email address or domain you verified above
         template_id: templateIds.forget.en,
         dynamic_template_data: {
             link,
