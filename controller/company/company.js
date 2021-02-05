@@ -13,6 +13,7 @@ const InterviewCode = require("../../model/InterviewCode");
 const cuid = require("cuid");
 var randomstring = require("randomstring");
 const { sendPushNotificationToUser } = require("../../services/fcm");
+const { login } = require("../admin/admin");
 
 const getCompanyJobs = async (req, res, err) => {
     try {
@@ -396,11 +397,15 @@ const getProfiles = async (req, res, err) => {
             job_title,
         } = req.query;
         //  console.log(req.query)
+        //"basic_info.live_in"={ $regex: searchText, $options: "i" };
         if (country) {
-            filters.country = country;
+    
+            filters["basic_info.live_in"]={ $regex: country, $options: "i" };
         }
         if (city) {
-            filters.city = city;
+      
+            filters["basic_info.live_in"]={ $regex: city, $options: "i" };
+
         }
 
         if (careerLvl) {
