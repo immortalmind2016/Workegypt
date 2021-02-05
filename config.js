@@ -1,6 +1,6 @@
 module.exports = {
-    //url:"http://www.workegypt.net/",
-    url: "https://workegyptv2.herokuapp.com/",
+    url:"http://www.workegypt.net/",
+    //url: "https://workegyptv2.herokuapp.com/",
     username: "admin",
     notifications: {
         checkNewMessage:{

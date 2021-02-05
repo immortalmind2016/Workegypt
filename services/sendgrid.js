@@ -5,11 +5,11 @@ console.log();
 const messages = {};
 const templateIds = {
     verify: {
-        en: "d-8b75993bb3274507947437edc7f57a9a",
-        ar: "d-8b75993bb3274507947437edc7f57a9a",
+        en: "d-0278bb702c004aeeb3aab55ea4ecd539",
+        ar: "d-0278bb702c004aeeb3aab55ea4ecd539",
     },
     forget: {
-        en: "d-c87ce51c46d0497296ffa180b3a4c092",
+        en: " d-7de4d57ac2d04fe1a64f07125e037557",
     },
 };
 //ES8
