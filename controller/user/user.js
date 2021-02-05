@@ -235,7 +235,7 @@ const editUser = async (req, res, err) => {
 const forgetPassword = (req, res, err) => {
   User.findOne({ email: req.body.data.email }, (err, user) => {
     if (!user) {
-      return res.json({ error: "user not found" });
+      return res.status(404).json({ error: "user not found" });
     }
     console.log("SEND MAIL");
     const to = req.body.data.email;
