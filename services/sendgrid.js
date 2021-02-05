@@ -9,7 +9,7 @@ const templateIds = {
         ar: "d-0278bb702c004aeeb3aab55ea4ecd539",
     },
     forget: {
-        en: " d-7de4d57ac2d04fe1a64f07125e037557",
+        en: "d-7de4d57ac2d04fe1a64f07125e037557",
     },
 };
 //ES8
