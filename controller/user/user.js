@@ -2,7 +2,6 @@ var jwt = require("jsonwebtoken");
 const User = require("../../model/user");
 const Applicant_profile = require("../../model/Applicant_profile");
 const Company_profile = require("../../model/Company_profile");
-const { sendEmail } = require("../../services/sendEmail");
 const Notification = require("../../model/Notification");
 const { sendMessage, forgetPasswordSendEmail } = require("../../services/sendgrid");
 var randomstring = require("randomstring");
@@ -97,6 +96,7 @@ const signupUser = (req, res, err) => {
 
       //     `);*/
       try {
+        console.log("SEND EMAIL")
         sendMessage(to, user.confirmation_token, name);
       } catch (e) {
         console.log(e);
@@ -134,6 +134,9 @@ const signinUser = (req, res, err) => {
 
   User.findOne({ email }, async (err, user) => {
     console.log(await user.checkPassword(password), "CHECK PASSWORD ", password);
+    if(!user){
+      return res.status(404).json({ error: "wrong email or password", code: "#2" });
+    }
     if (!user || !(await user.checkPassword(password))) {
       return res.status(404).json({ error: "wrong email or password", code: "#2" });
     }
@@ -144,7 +147,7 @@ const signinUser = (req, res, err) => {
 
     if (user.confirmed) {
       console.log("EMAIL CONFIRMED");
-      res.json({
+     return res.json({
         token: "Bearer " + token,
         name: user.name,
         type: user.type,
@@ -237,7 +240,7 @@ const forgetPassword = (req, res, err) => {
     if (!user) {
       return res.status(404).json({ error: "user not found" });
     }
-    console.log("SEND MAIL");
+   
     const to = req.body.data.email;
     //     (from = "Workegypt <dev@workegypt.net>"), (subject = "forget password");
     //     (text = ""),
