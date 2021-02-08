@@ -235,6 +235,7 @@ const editUser = async (req, res, err) => {
   if(body.data.password){
    user.save();
   }
+  res.json({success:true})
  }catch(e){
   return res.status(404).json({ error: "Something went wrong !!" });
 }
