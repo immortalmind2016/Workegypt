@@ -232,7 +232,7 @@ const editUser = async (req, res, err) => {
   console.log("BODY ", req.body.data);
  try{
   let user = await User.findOneAndUpdate({ _id: req.user._id }, { ...req.body.data }, { new: true });
-  if(body.data.password){
+  if(req.data.password){
   await user.save();
   }
   return res.json({success:true})
