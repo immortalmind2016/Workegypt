@@ -237,7 +237,8 @@ const editUser = async (req, res, err) => {
   }
   return res.json({success:true})
  }catch(e){
-  return res.status(404).json({ error: "Something went wrong !!" });
+
+  return res.status(404).json({ error: e.message});
 }
 };
 
