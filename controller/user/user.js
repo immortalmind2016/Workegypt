@@ -133,7 +133,6 @@ const signinUser = (req, res, err) => {
   console.log(req.body.data);
 
   User.findOne({ email }, async (err, user) => {
-    console.log(await user.checkPassword(password), "CHECK PASSWORD ", password);
     if(!user){
       return res.status(404).json({ error: "wrong email or password", code: "#2" });
     }
