@@ -230,8 +230,14 @@ const getUser = (req, res, err) => {
 };
 const editUser = async (req, res, err) => {
   console.log("BODY ", req.body.data);
+ try{
   let user = await User.findOneAndUpdate({ _id: req.user._id }, { ...req.body.data }, { new: true });
-  user.save();
+  if(body.data.password){
+   user.save();
+  }
+ }catch(e){
+  return res.status(404).json({ error: "Something went wrong !!" });
+}
 };
 
 const forgetPassword = (req, res, err) => {
