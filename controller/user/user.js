@@ -129,7 +129,7 @@ const signupUser = (req, res, err) => {
 };
 
 const signinUser = (req, res, err) => {
-  const { email, password } = req.body.data;
+  const { email, password ,FCM_token} = req.body.data;
   console.log(req.body.data);
 
   User.findOne({ email }, async (err, user) => {
@@ -146,6 +146,10 @@ const signinUser = (req, res, err) => {
 
     if (user.confirmed) {
       console.log("EMAIL CONFIRMED");
+      if(FCM_token){
+        user.FCM_token=FCM_token
+        user.save()
+      }
      return res.json({
         token: "Bearer " + token,
         name: user.name,
