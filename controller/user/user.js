@@ -233,9 +233,9 @@ const editUser = async (req, res, err) => {
  try{
   let user = await User.findOneAndUpdate({ _id: req.user._id }, { ...req.body.data }, { new: true });
   if(body.data.password){
-   user.save();
+  await user.save();
   }
-  res.json({success:true})
+  return res.json({success:true})
  }catch(e){
   return res.status(404).json({ error: "Something went wrong !!" });
 }
