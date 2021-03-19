@@ -2,50 +2,53 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const User = new Schema({
-  name: {
-    type: String,
-    required: true,
-    index: true,
-  },
-  confirmation_token: {
-    type: String,
-  },
-  salt: String,
-  confirmed: {
-    type: Boolean,
-    default: false,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  created_date: {
-    type: Date,
-    default: Date.now(),
-  },
+const User = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    confirmation_token: {
+      type: String,
+    },
+    salt: String,
+    confirmed: {
+      type: Boolean,
+      default: false,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    created_date: {
+      type: Date,
+      default: Date.now(),
+    },
 
-  last_logout: {
-    type: Date,
-    default: null,
-  },
-  type: Boolean,
-  new: {
+    last_logout: {
+      type: Date,
+      default: null,
+    },
     type: Boolean,
-    default: true,
+    new: {
+      type: Boolean,
+      default: true,
+    },
+    payment: {
+      type: Object,
+    },
+    FCM_token: {
+      type: String,
+    },
   },
-  payment: {
-    type: Object,
-  },
-  FCM_token: {
-    type: String,
-  },
-});
+  { timestamps: { createdAt: "created_at" } }
+);
 
 // // Encrypt password using bcrypt
 // User.pre('save', async function(next) {
