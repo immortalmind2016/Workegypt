@@ -3,7 +3,10 @@ const User = require("../../model/user");
 const Applicant_profile = require("../../model/Applicant_profile");
 const Company_profile = require("../../model/Company_profile");
 const Notification = require("../../model/Notification");
-const { sendMessage, forgetPasswordSendEmail } = require("../../services/sendgrid");
+const {
+  sendMessage,
+  forgetPasswordSendEmail,
+} = require("../../services/sendgrid");
 var randomstring = require("randomstring");
 const getNotifications = async (req, res, err) => {
   const { page } = req.params;
@@ -31,7 +34,9 @@ const setReadNotification = async (req, res, err) => {
   await Notification.findOneAndUpdate(
     {
       ...{
-        ...(req.body.notificationId ? { notificationId: req.body.notificationId } : { _id: req.body._id }),
+        ...(req.body.notificationId
+          ? { notificationId: req.body.notificationId }
+          : { _id: req.body._id }),
       },
       user: req.user._id,
       isRead: false,
@@ -96,7 +101,7 @@ const signupUser = (req, res, err) => {
 
       //     `);*/
       try {
-        console.log("SEND EMAIL")
+        console.log("SEND EMAIL");
         sendMessage(to, user.confirmation_token, name);
       } catch (e) {
         console.log(e);
@@ -129,28 +134,34 @@ const signupUser = (req, res, err) => {
 };
 
 const signinUser = (req, res, err) => {
-  const { email, password ,FCM_token} = req.body.data;
+  const { email, password, FCM_token } = req.body.data;
   console.log(req.body.data);
 
   User.findOne({ email }, async (err, user) => {
-    if(!user){
-      return res.status(404).json({ error: "wrong email or password", code: "#2" });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "wrong email or password", code: "#2" });
     }
     if (!user || !(await user.checkPassword(password))) {
-      return res.status(404).json({ error: "wrong email or password", code: "#2" });
+      return res
+        .status(404)
+        .json({ error: "wrong email or password", code: "#2" });
     }
 
     let user_ = user;
 
-    let token = jwt.sign({ ...user_, password: null }, "secret", { expiresIn: "365d" });
+    let token = jwt.sign({ ...user_, password: null }, "secret", {
+      expiresIn: "365d",
+    });
 
     if (user.confirmed) {
       console.log("EMAIL CONFIRMED");
-      if(FCM_token){
-        user.FCM_token=FCM_token
-        user.save()
+      if (FCM_token) {
+        user.FCM_token = FCM_token;
+        user.save();
       }
-     return res.json({
+      return res.json({
         token: "Bearer " + token,
         name: user.name,
         type: user.type,
@@ -158,7 +169,9 @@ const signinUser = (req, res, err) => {
     } else {
       let confirmation_token = req.body.data.confirmation_token;
       if (!req.body.data.confirmation_token) {
-        return res.status(401).json({ error: "confirm your email", code: "#0" });
+        return res
+          .status(401)
+          .json({ error: "confirm your email", code: "#0" });
       }
       if (confirmation_token == user.confirmation_token) {
         console.log("EMAIL CONFIRMATION_TOKEN  EQUAL INCOMING");
@@ -234,16 +247,28 @@ const getUser = (req, res, err) => {
 };
 const editUser = async (req, res, err) => {
   console.log("BODY ", req.body.data);
- try{
-  let user = await User.findOneAndUpdate({ _id: req.user._id }, { ...req.body.data }, { new: true });
-  if(req.body.data.password){
-  await user.save();
+  try {
+    if (!req.body.data.oldPassword) {
+      return res.status(404).json({ error: e.message });
+    }
+    let user = await User.find({ _id: req.user._id });
+    if (!(await user.checkPassword(req.body.data.oldPassword))) {
+      return res
+        .status(404)
+        .json({ error: "wrong password password", code: "#2" });
+    }
+    user = await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { ...req.body.data },
+      { new: true }
+    );
+    if (req.body.data.password) {
+      await user.save();
+    }
+    return res.json({ success: true });
+  } catch (e) {
+    return res.status(404).json({ error: e.message });
   }
-  return res.json({success:true})
- }catch(e){
-
-  return res.status(404).json({ error: e.message});
-}
 };
 
 const forgetPassword = (req, res, err) => {
@@ -251,7 +276,7 @@ const forgetPassword = (req, res, err) => {
     if (!user) {
       return res.status(404).json({ error: "user not found" });
     }
-   
+
     const to = req.body.data.email;
     //     (from = "Workegypt <dev@workegypt.net>"), (subject = "forget password");
     //     (text = ""),
@@ -284,7 +309,7 @@ const forgetPassword = (req, res, err) => {
         res.sendStatus(200);
       })
       .catch((error) => {
-        console.log("SEND EMAIL ERROR ", JSON.stringify(error,null,2));
+        console.log("SEND EMAIL ERROR ", JSON.stringify(error, null, 2));
 
         res.json({ error });
       });

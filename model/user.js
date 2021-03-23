@@ -26,10 +26,6 @@ const User = new Schema(
       type: String,
       required: true,
     },
-    created_date: {
-      type: Date,
-      default: Date.now(),
-    },
 
     last_logout: {
       type: Date,
@@ -47,7 +43,7 @@ const User = new Schema(
       type: String,
     },
   },
-  { timestamps: { createdAt: "created_at" } }
+  { timestamps: { createdAt: "created_date" } }
 );
 
 // // Encrypt password using bcrypt

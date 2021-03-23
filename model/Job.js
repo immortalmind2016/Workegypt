@@ -92,7 +92,7 @@ const Job = new Schema(
       default: false,
     },
   },
-  { timestamps: { createdAt: "created_at" } }
+  { timestamps: { createdAt: "created_date" } }
 );
 
 module.exports = mongoose.model("Job", Job);
