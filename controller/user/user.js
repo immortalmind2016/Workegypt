@@ -251,7 +251,8 @@ const editUser = async (req, res, err) => {
     if (!req.body.data.oldPassword) {
       return res.status(404).json({ error: e.message });
     }
-    let user = await User.find({ _id: req.user._id });
+    let user = await User.findOne({ _id: req.user._id });
+    console.log(user, "CHECCCK PASSWORD");
     if (!(await user.checkPassword(req.body.data.oldPassword))) {
       return res
         .status(404)
