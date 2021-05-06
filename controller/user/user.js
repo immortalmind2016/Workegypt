@@ -247,7 +247,7 @@ const getUser = (req, res, err) => {
 };
 const editUser = async (req, res, err) => {
   try {
-    if (req.body?.data?.last_logout) {
+    if (req.body.data && req.body.data.last_logout) {
       await User.findOneAndUpdate(
         { _id: req.user._id },
         { ...req.body.data },
