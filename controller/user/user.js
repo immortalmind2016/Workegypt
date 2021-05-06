@@ -246,13 +246,20 @@ const getUser = (req, res, err) => {
   }
 };
 const editUser = async (req, res, err) => {
-  console.log("BODY ", req.body.data);
   try {
+    if (req.body?.data?.last_logout) {
+      await User.findOneAndUpdate(
+        { _id: req.user._id },
+        { ...req.body.data },
+        { new: true }
+      );
+      return res.send("OK");
+    }
     if (!req.body.data.oldPassword) {
-      return res.status(404).json({ error: e.message });
+      return res.status(404).json({ error: "Wrong old password" });
     }
     let user = await User.findOne({ _id: req.user._id });
-    console.log(user, "CHECCCK PASSWORD");
+
     if (!(await user.checkPassword(req.body.data.oldPassword))) {
       return res
         .status(404)
