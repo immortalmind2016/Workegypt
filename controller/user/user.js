@@ -15,7 +15,6 @@ const getNotifications = async (req, res, err) => {
   const results = await Promise.all([
     Notification.find({
       user: req.user._id,
-      isRead: false,
     })
       .skip(skip)
       .limit(limit),
@@ -173,7 +172,7 @@ const signinUser = (req, res, err) => {
           .status(401)
           .json({ error: "confirm your email", code: "#0" });
       }
-      if (confirmation_token == user.confirmation_token) {
+      if (confirmation_token.trim() == user.confirmation_token) {
         console.log("EMAIL CONFIRMATION_TOKEN  EQUAL INCOMING");
 
         user.confirmed = true;
